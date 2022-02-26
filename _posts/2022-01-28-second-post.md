@@ -1,7 +1,7 @@
 ---
 title: Second Post
 categories:
-- Futures
+- Legislation
 excerpt: |
   The second post
 feature_text: |

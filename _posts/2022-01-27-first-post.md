@@ -1,7 +1,7 @@
 ---
 title: First Post
 categories:
-- Trading
+- News
 excerpt: |
   The first post
 feature_text: |

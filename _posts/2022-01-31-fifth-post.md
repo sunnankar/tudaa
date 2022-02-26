@@ -1,7 +1,7 @@
 ---
 title: Fifth Post
 categories:
-- Trading
+- News
 excerpt: |
   The fifth post
 feature_text: |

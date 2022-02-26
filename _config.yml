@@ -103,7 +103,7 @@ navigation_header:
   Blog: /blog/
   Categories: /categories/
   Search: /search/
-  TUDAA: https://www.tudaa.org
+  TUDAA: /about/
 
 navigation_footer:
   Created by The Utah Digital Asset Association: https://www.tudaa.org

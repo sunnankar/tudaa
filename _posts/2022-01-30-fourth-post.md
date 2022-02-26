@@ -1,8 +1,8 @@
 ---
 title: Fourth Post
 categories:
-- Podcast
-- Trading
+- Education
+- News
 excerpt: |
   The fourth post.
 feature_text: |

@@ -1,7 +1,7 @@
 ---
 title: Third Post
 categories:
-- Options
+- Events
 excerpt: |
   The third post
 feature_text: |
