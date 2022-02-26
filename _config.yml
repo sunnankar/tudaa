@@ -106,7 +106,7 @@ navigation_header:
   TUDAA: /about/
 
 navigation_footer:
-  Created by: <a href="https://www.tudaa.org">The Utah Digital Asset Association</a>
+  Created by The Utah Digital Asset Association
 
 social_links: # Appears in sidebar. Set the urls then uncomment and comment out as desired
   Twitter: https://twitter.com/UTdigitalasset
