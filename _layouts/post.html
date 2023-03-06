@@ -1,25 +1,20 @@
 ---
 layout: default
 ---
+{% assign lang = page.lang %}{% assign t = site.data.translations[lang] %}
 
-{% include site-header.html %}
+<article class="post">
+  <h1>{{ page.title }}</h1>
 
-<main class="main  container">
-
-  <article class="article  article--post  content  typeset">
-
-    <h1>{{ page.title }}</h1>
-    {% include post-meta.html %}
+  <div class="entry">
     {{ content }}
+  </div>
 
-    {% include nav-share.html %}
+  <div class="date">
+  	{% assign date = page.date | date: "%B %e, %Y" %}
+  	{{ t.post.written-by | replace: '%author%', page.author | replace: '%authorurl%', page.authorurl | replace: '%date%', date }}
+  </div>
 
-    {% include post-comments.html %}
-
-  </article>
-
-  {% if page.aside == true %}{% include site-aside.html %}{% endif %}
-
-</main>
-
-{% include site-footer.html %}
+  {% include recommendedposts.html %}
+  {% include disqus.html %}
+</article>
