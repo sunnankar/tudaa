@@ -1,8 +1,14 @@
 export default (config = {}) => ({
-	// blockInformation
+	bitcoinPrice: null,
+
 	init() {
 		this.fetchBitcoinPrices();
 		this.fetchBlockChainInformation();
+
+		// SET UP WEBSOCKET FOR REAL TIME BITCOIN PRICE
+		const pricesWs = new WebSocket("wss://ws.coincap.io/prices?assets=bitcoin");
+		pricesWs.onmessage = (msg) =>
+			(this.bitcoinPrice = JSON.parse(msg.data)?.bitcoin);
 	},
 
 	fetchBitcoinPrices() {
