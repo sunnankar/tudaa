@@ -1,47 +1,81 @@
 <!DOCTYPE html>
-<html lang="en-US"><head>
-	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	<meta charset="utf-8" />
-	<title>Happy Jekylling! - </title>
+<html lang="en-US">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="utf-8" />
+    <title>Happy Jekylling! -</title>
 
-	<!-- meta tags, etc -->
-	<script src="/vite-dev/@vite/client" type="module"></script> <script src="/vite-dev/entrypoints/application.js" crossorigin="anonymous" type="module"></script>
+    <!-- meta tags, etc -->
+    <script
+      src="/vite-dev/assets/application-9XwUEHL0.js"
+      crossorigin="anonymous"
+      type="module"
+    ></script>
 
- <link rel="stylesheet" href="/vite-dev/entrypoints/application.scss" media="screen"/>
-</head>
-<body class="text-red-500" >
+    <link
+      rel="stylesheet"
+      href="/vite-dev/assets/application-DNQrChWg.css"
+      media="screen"
+    />
+  </head>
+  <body class="text-red-500">
     <!-- ## You're ready to go!
 
 Start developing your Jekyll website. -->
 
-
     <div x-data="dashboard()">
-      <dl class="mx-auto grid grid-cols-1 gap-px bg-gray-900/5 sm:grid-cols-2 lg:grid-cols-4">
-        <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2 bg-white px-4 py-10 sm:px-6 xl:px-8">
+      <dl
+        class="grid grid-cols-1 gap-px mx-auto bg-gray-900/5 sm:grid-cols-2 lg:grid-cols-4"
+      >
+        <div
+          class="flex flex-wrap items-baseline justify-between px-4 py-10 bg-white gap-x-4 gap-y-2 sm:px-6 xl:px-8"
+        >
           <dt class="text-sm font-medium leading-6 text-gray-500">Price</dt>
           <dd class="text-xs font-medium text-gray-700">+4.75%</dd>
-          <dd x-money.en-US.USD.decimal="bitcoinPrice" class="w-full flex-none text-3xl font-medium leading-10 tracking-tight text-gray-900"></dd>
+          <dd
+            x-money.en-US.USD.decimal="bitcoinPrice"
+            class="flex-none w-full text-3xl font-medium leading-10 tracking-tight text-gray-900"
+          ></dd>
         </div>
-        <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2 bg-white px-4 py-10 sm:px-6 xl:px-8">
-          <dt class="text-sm font-medium leading-6 text-gray-500 capitalize">current difficulty</dt>
+        <div
+          class="flex flex-wrap items-baseline justify-between px-4 py-10 bg-white gap-x-4 gap-y-2 sm:px-6 xl:px-8"
+        >
+          <dt class="text-sm font-medium leading-6 text-gray-500 capitalize">
+            current difficulty
+          </dt>
           <dd class="text-xs font-medium text-rose-600">+54.02%</dd>
-          <dd class="w-full flex-none text-3xl font-medium leading-10 tracking-tight text-gray-900">$12,787.00</dd>
+          <dd
+            x-text="currentDifficulty"
+            class="flex-none w-full text-3xl font-medium leading-10 tracking-tight text-gray-900"
+          ></dd>
         </div>
-        <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2 bg-white px-4 py-10 sm:px-6 xl:px-8">
-          <dt class="text-sm font-medium leading-6 text-gray-500">Mining Reward</dt>
+        <div
+          class="flex flex-wrap items-baseline justify-between px-4 py-10 bg-white gap-x-4 gap-y-2 sm:px-6 xl:px-8"
+        >
+          <dt class="text-sm font-medium leading-6 text-gray-500">
+            Mining Reward
+          </dt>
           <dd class="text-xs font-medium text-gray-700">-1.39%</dd>
-          <dd class="w-full flex-none text-3xl font-medium leading-10 tracking-tight text-gray-900">$245,988.00</dd>
+          <dd
+            x-text="miningReward"
+            class="flex-none w-full text-3xl font-medium leading-10 tracking-tight text-gray-900"
+          ></dd>
         </div>
-        <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2 bg-white px-4 py-10 sm:px-6 xl:px-8">
-          <dt class="text-sm font-medium leading-6 text-gray-500">Block Height</dt>
+        <div
+          class="flex flex-wrap items-baseline justify-between px-4 py-10 bg-white gap-x-4 gap-y-2 sm:px-6 xl:px-8"
+        >
+          <dt class="text-sm font-medium leading-6 text-gray-500">
+            Block Height
+          </dt>
           <dd class="text-xs font-medium text-rose-600">+10.18%</dd>
-          <dd class="w-full flex-none text-3xl font-medium leading-10 tracking-tight text-gray-900">$30,156.00</dd>
+          <dd
+            x-text="blockHeight"
+            class="flex-none w-full text-3xl font-medium leading-10 tracking-tight text-gray-900"
+          ></dd>
         </div>
-      </dl>      
+      </dl>
     </div>
 
-    <div>
-      
-    </div>
+    <div></div>
   </body>
 </html>

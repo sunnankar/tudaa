@@ -1,5 +1,8 @@
 export default (config = {}) => ({
   bitcoinPrice: null,
+  currentDifficulty: null,
+  miningReward: null,
+  blockHeight: null,
 
   init() {
     this.fetchBitcoinPrices();
@@ -75,6 +78,11 @@ export default (config = {}) => ({
             "- Estimated 2024 Halving Date:",
             estimatedHalvingDate.toISOString().split("T")[0]
           );
+          this.currentDifficulty = blockchainMetrics.data.difficulty;
+          this.miningReward =
+            blockchainMetrics.data.inflation_usd_24h /
+            blockchainMetrics.data.blocks_24h;
+          this.blockHeight = blockchainMetrics.data.blocks;
         }
       })
       .catch((error) => {
