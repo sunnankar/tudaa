@@ -5,9 +5,9 @@
 	<title>Happy Jekylling! - </title>
 
 	<!-- meta tags, etc -->
-	<script src="/vite-dev/@vite/client" type="module"></script> <script src="/vite-dev/entrypoints/application.js" crossorigin="anonymous" type="module"></script>
+	 <script src="/vite/assets/application-DnVCOzrz.js" crossorigin="anonymous" type="module"></script>
 
- <link rel="stylesheet" href="/vite-dev/entrypoints/application.scss" media="screen"/>
+ <link rel="stylesheet" href="/vite/assets/application-CNOtcbjY.css" media="screen"/>
 </head>
 <body>
 		<!-- ## You're ready to go!
@@ -23,10 +23,9 @@ Start developing your Jekyll website. -->
 					class="flex flex-wrap items-baseline justify-between px-4 py-10 bg-white shadow-md gap-x-4 gap-y-2 sm:px-6 xl:px-8"
 				>
 					<dt class="text-sm font-medium leading-6 text-gray-500">Price</dt>
-					<dd class="text-xs font-medium text-gray-700">+4.75%</dd>
 					<dd
 						x-money.en-US.USD.decimal="bitcoinPrice"
-						class="flex-none w-full text-xl font-medium leading-10 tracking-tight text-gray-900"
+						class="flex-none w-full text-2xl font-medium leading-10 tracking-tight text-gray-900"
 					></dd>
 				</div>
 
@@ -36,10 +35,9 @@ Start developing your Jekyll website. -->
 					<dt class="text-sm font-medium leading-6 text-gray-500 capitalize">
 						current difficulty
 					</dt>
-					<dd class="text-xs font-medium text-rose-600">+54.02%</dd>
 					<dd
 						x-text="currentDifficulty"
-						class="flex-none w-full text-xl font-medium leading-10 tracking-tight text-gray-900"
+						class="flex-none w-full text-2xl font-medium leading-10 tracking-tight text-gray-900"
 					></dd>
 				</div>
 
@@ -49,10 +47,9 @@ Start developing your Jekyll website. -->
 					<dt class="text-sm font-medium leading-6 text-gray-500">
 						Mining Reward
 					</dt>
-					<dd class="text-xs font-medium text-gray-700">-1.39%</dd>
 					<dd
 						x-text="miningReward"
-						class="flex-none w-full text-xl font-medium leading-10 tracking-tight text-gray-900"
+						class="flex-none w-full text-2xl font-medium leading-10 tracking-tight text-gray-900"
 					></dd>
 				</div>
 
@@ -62,10 +59,9 @@ Start developing your Jekyll website. -->
 					<dt class="text-sm font-medium leading-6 text-gray-500">
 						Block Height
 					</dt>
-					<dd class="text-xs font-medium text-rose-600">+10.18%</dd>
 					<dd
 						x-text="blockHeight"
-						class="flex-none w-full text-xl font-medium leading-10 tracking-tight text-gray-900"
+						class="flex-none w-full text-2xl font-medium leading-10 tracking-tight text-gray-900"
 					></dd>
 				</div>
 
@@ -77,7 +73,7 @@ Start developing your Jekyll website. -->
 					</dt>
 					<dd
 						x-text="estimatedHalvingDate"
-						class="flex-none w-full text-xl font-medium leading-10 tracking-tight text-gray-900"
+						class="flex-none w-full text-2xl font-medium leading-10 tracking-tight text-gray-900"
 					></dd>
 				</div>
 			</dl>
@@ -93,24 +89,24 @@ Start developing your Jekyll website. -->
 								<span class="inline-flex rounded-md shadow-sm isolate">
 									<button
 										type="button"
-										class="relative inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 bg-white rounded-l-md ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-10"
-										x-bind:class="activeMovingAverage == '50' && 'bg-gray-300'"
+										class="relative inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-l-md ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-10"
+										x-bind:class="activeMovingAverage == '50' ? 'bg-gray-300' : 'bg-white'"
 										x-on:click="setActiveMovingAverage('50')"
 									>
 										50D MA
 									</button>
 									<button
 										type="button"
-										class="relative inline-flex items-center px-3 py-2 -ml-px text-sm font-medium text-gray-700 bg-white ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-10"
-										x-bind:class="activeMovingAverage == '100' && 'bg-gray-300'"
+										class="relative inline-flex items-center px-3 py-2 -ml-px text-sm font-medium text-gray-700 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-10"
+										x-bind:class="activeMovingAverage == '100' ? 'bg-gray-300' : 'bg-white'"
 										x-on:click="setActiveMovingAverage('100')"
 									>
 										100D MA
 									</button>
 									<button
 										type="button"
-										class="relative inline-flex items-center px-3 py-2 -ml-px text-sm font-medium text-gray-700 bg-white rounded-r-md ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-10"
-										x-bind:class="activeMovingAverage == '200' && 'bg-gray-300'"
+										class="relative inline-flex items-center px-3 py-2 -ml-px text-sm font-medium text-gray-700 rounded-r-md ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-10"
+										x-bind:class="activeMovingAverage == '200' ? 'bg-gray-300' : 'bg-white'"
 										x-on:click="setActiveMovingAverage('200')"
 									>
 										200D MA
@@ -120,48 +116,48 @@ Start developing your Jekyll website. -->
 								<span class="inline-flex rounded-md shadow-sm isolate">
 									<button
 										type="button"
-										class="relative inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 bg-white rounded-l-md ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-10"
-										x-bind:class="activeTimeFrame == '1D' && 'bg-gray-300'"
+										class="relative inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-l-md ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-10"
+										x-bind:class="activeTimeFrame == '1D' ? 'bg-gray-300' : 'bg-white'"
 										x-on:click="setActiveTimeFrame('1D')"
 									>
 										1D
 									</button>
 									<button
 										type="button"
-										class="relative inline-flex items-center px-3 py-2 -ml-px text-sm font-medium text-gray-700 bg-white ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-10"
-										x-bind:class="activeTimeFrame == '1W' && 'bg-gray-300'"
+										class="relative inline-flex items-center px-3 py-2 -ml-px text-sm font-medium text-gray-700 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-10"
+										x-bind:class="activeTimeFrame == '1W' ? 'bg-gray-300' : 'bg-white'"
 										x-on:click="setActiveTimeFrame('1W')"
 									>
 										1W
 									</button>
 									<button
 										type="button"
-										class="relative inline-flex items-center px-3 py-2 -ml-px text-sm font-medium text-gray-700 bg-white ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-10"
-										x-bind:class="activeTimeFrame == '1M' && 'bg-gray-300'"
+										class="relative inline-flex items-center px-3 py-2 -ml-px text-sm font-medium text-gray-700 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-10"
+										x-bind:class="activeTimeFrame == '1M' ? 'bg-gray-300' : 'bg-white'"
 										x-on:click="setActiveTimeFrame('1M')"
 									>
 										1M
 									</button>
 									<button
 										type="button"
-										class="relative inline-flex items-center px-3 py-2 -ml-px text-sm font-medium text-gray-700 bg-white ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-10"
-										x-bind:class="activeTimeFrame == '1Y' && 'bg-gray-300'"
+										class="relative inline-flex items-center px-3 py-2 -ml-px text-sm font-medium text-gray-700 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-10"
+										x-bind:class="activeTimeFrame == '1Y' ? 'bg-gray-300' : 'bg-white'"
 										x-on:click="setActiveTimeFrame('1Y')"
 									>
 										1Y
 									</button>
 									<button
 										type="button"
-										class="relative inline-flex items-center px-3 py-2 -ml-px text-sm font-medium text-gray-700 bg-white ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-10"
-										x-bind:class="activeTimeFrame == 'YTD' && 'bg-gray-300'"
+										class="relative inline-flex items-center px-3 py-2 -ml-px text-sm font-medium text-gray-700 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-10"
+										x-bind:class="activeTimeFrame == 'YTD' ? 'bg-gray-300' : 'bg-white'"
 										x-on:click="setActiveTimeFrame('YTD')"
 									>
 										YTD
 									</button>
 									<button
 										type="button"
-										class="relative inline-flex items-center px-3 py-2 -ml-px text-sm font-medium text-gray-700 bg-white rounded-r-md ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-10"
-										x-bind:class="activeTimeFrame == 'ALL' && 'bg-gray-300'"
+										class="relative inline-flex items-center px-3 py-2 -ml-px text-sm font-medium text-gray-700 rounded-r-md ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-10"
+										x-bind:class="activeTimeFrame == 'ALL' ? 'bg-gray-300' : 'bg-white'"
 										x-on:click="setActiveTimeFrame('ALL')"
 									>
 										All

@@ -243,7 +243,7 @@ export default (config = {}) => ({
 			],
 			chart: {
 				id: "chartLine",
-				height: 120,
+				height: 130,
 				type: "area",
 				brush: {
 					target: "chart",
