@@ -2,7 +2,7 @@ export default (config = {}) => ({
 	// blockInformation
 	init() {
 		this.fetchBitcoinPrices();
-		this.fetchBlockChainInformation();
+		//this.fetchBlockChainInformation();
 	},
 
 	fetchBitcoinPrices() {

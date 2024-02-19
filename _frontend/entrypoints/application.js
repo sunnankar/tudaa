@@ -13,6 +13,9 @@ window.axios = axios;
 
 import Alpine from "alpinejs";
 import dashboard from "../components/dashboard";
+import btcVolatility from "../components/btc-volatility";
+
 window.Alpine = Alpine;
 Alpine.data("dashboard", dashboard);
+Alpine.data('btcVolatility', btcVolatility)
 Alpine.start();
