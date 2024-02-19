@@ -176,39 +176,6 @@ export default (config = {}) => ({
 				width: [2, 1],
 				curve: "smooth",
 			},
-			// tooltip: {
-			// 	shared: true,
-			// 	custom: [
-			// 		function ({ seriesIndex, dataPointIndex, w }) {
-			// 			return w.globals.series[seriesIndex][dataPointIndex];
-			// 		},
-			// 		function ({ seriesIndex, dataPointIndex, w }) {
-			// 			return w.globals.series[seriesIndex][dataPointIndex];
-			// 		},
-			// 		function ({ seriesIndex, dataPointIndex, w }) {
-			// 			var o = w.globals.seriesCandleO[seriesIndex][dataPointIndex];
-			// 			var h = w.globals.seriesCandleH[seriesIndex][dataPointIndex];
-			// 			var l = w.globals.seriesCandleL[seriesIndex][dataPointIndex];
-			// 			var c = w.globals.seriesCandleC[seriesIndex][dataPointIndex];
-			// 			return (
-			// 				'<div class="apexcharts-tooltip-candlestick">' +
-			// 				'<div>Open: <span class="value">' +
-			// 				o +
-			// 				"</span></div>" +
-			// 				'<div>High: <span class="value">' +
-			// 				h +
-			// 				"</span></div>" +
-			// 				'<div>Low: <span class="value">' +
-			// 				l +
-			// 				"</span></div>" +
-			// 				'<div>Close: <span class="value">' +
-			// 				c +
-			// 				"</span></div>" +
-			// 				"</div>"
-			// 			);
-			// 		},
-			// 	],
-			// },
 			legend: {
 				position: "top",
 				horizontalAlign: "left",

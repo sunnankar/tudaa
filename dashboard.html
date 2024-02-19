@@ -1,0 +1,159 @@
+---
+layout: default
+title: "Dashboard"
+permalink: "dashboard"
+---
+
+<div x-data="dashboard()">
+	<dl
+		class="grid grid-cols-1 mx-auto gap-x-2 bg-gray-900/5 sm:grid-cols-2 lg:grid-cols-5"
+	>
+		<div
+			class="flex flex-wrap items-baseline justify-between px-4 py-10 bg-white shadow-md gap-x-4 sm:px-6 xl:px-8"
+		>
+			<dt class="text-sm font-medium leading-6 text-gray-500">Price</dt>
+			<dd
+				x-money.en-US.USD.decimal="bitcoinPrice"
+				class="flex-none w-full text-lg font-medium tracking-tight text-gray-900"
+			></dd>
+		</div>
+
+		<div
+			class="flex flex-wrap items-baseline justify-between px-4 py-10 bg-white shadow-md gap-x-4 sm:px-6 xl:px-8"
+		>
+			<dt class="text-sm font-medium leading-6 text-gray-500 capitalize">
+				current difficulty
+			</dt>
+			<dd
+				x-text="currentDifficulty"
+				class="flex-none w-full text-lg font-medium tracking-tight text-gray-900"
+			></dd>
+		</div>
+
+		<div
+			class="flex flex-wrap items-baseline justify-between px-4 py-10 bg-white shadow-md gap-x-4 sm:px-6 xl:px-8"
+		>
+			<dt class="text-sm font-medium leading-6 text-gray-500">Mining Reward</dt>
+			<dd
+				x-text="miningReward"
+				class="flex-none w-full text-lg font-medium tracking-tight text-gray-900"
+			></dd>
+		</div>
+
+		<div
+			class="flex flex-wrap items-baseline justify-between px-4 py-10 bg-white shadow-md gap-x-4 sm:px-6 xl:px-8"
+		>
+			<dt class="text-sm font-medium leading-6 text-gray-500">Block Height</dt>
+			<dd
+				x-text="blockHeight"
+				class="flex-none w-full text-lg font-medium tracking-tight text-gray-900"
+			></dd>
+		</div>
+
+		<div
+			class="flex flex-wrap items-baseline justify-between px-4 py-10 bg-white shadow-md gap-x-4 sm:px-6 xl:px-8"
+		>
+			<dt class="text-sm font-medium leading-6 text-gray-500">
+				Estimated 2024 Halving Date:
+			</dt>
+			<dd
+				x-text="estimatedHalvingDate"
+				class="flex-none w-full text-lg font-medium tracking-tight text-gray-900"
+			></dd>
+		</div>
+	</dl>
+
+	<div class="grid grid-cols-1 py-2 bg-slate-50">
+		<div class="bg-white shadow-md">
+			<div class="p-4 pb-5 sm:flex sm:justify-between">
+				<h3 class="text-base font-semibold leading-6 text-gray-900">
+					Bitcoin Prices In US Dollar (USD)
+				</h3>
+				<div class="mt-3 sm:ml-4 sm:mt-0">
+					<div class="flex items-center space-x-6">
+						<span class="inline-flex rounded-md shadow-sm isolate">
+							<button
+								type="button"
+								class="relative inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-l-md ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-10"
+								x-bind:class="activeMovingAverage == '50' ? 'bg-gray-300' : 'bg-white'"
+								x-on:click="setActiveMovingAverage('50')"
+							>
+								50D MA
+							</button>
+							<button
+								type="button"
+								class="relative inline-flex items-center px-3 py-2 -ml-px text-sm font-medium text-gray-700 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-10"
+								x-bind:class="activeMovingAverage == '100' ? 'bg-gray-300' : 'bg-white'"
+								x-on:click="setActiveMovingAverage('100')"
+							>
+								100D MA
+							</button>
+							<button
+								type="button"
+								class="relative inline-flex items-center px-3 py-2 -ml-px text-sm font-medium text-gray-700 rounded-r-md ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-10"
+								x-bind:class="activeMovingAverage == '200' ? 'bg-gray-300' : 'bg-white'"
+								x-on:click="setActiveMovingAverage('200')"
+							>
+								200D MA
+							</button>
+						</span>
+
+						<span class="inline-flex rounded-md shadow-sm isolate">
+							<button
+								type="button"
+								class="relative inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-l-md ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-10"
+								x-bind:class="activeTimeFrame == '1D' ? 'bg-gray-300' : 'bg-white'"
+								x-on:click="setActiveTimeFrame('1D')"
+							>
+								1D
+							</button>
+							<button
+								type="button"
+								class="relative inline-flex items-center px-3 py-2 -ml-px text-sm font-medium text-gray-700 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-10"
+								x-bind:class="activeTimeFrame == '1W' ? 'bg-gray-300' : 'bg-white'"
+								x-on:click="setActiveTimeFrame('1W')"
+							>
+								1W
+							</button>
+							<button
+								type="button"
+								class="relative inline-flex items-center px-3 py-2 -ml-px text-sm font-medium text-gray-700 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-10"
+								x-bind:class="activeTimeFrame == '1M' ? 'bg-gray-300' : 'bg-white'"
+								x-on:click="setActiveTimeFrame('1M')"
+							>
+								1M
+							</button>
+							<button
+								type="button"
+								class="relative inline-flex items-center px-3 py-2 -ml-px text-sm font-medium text-gray-700 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-10"
+								x-bind:class="activeTimeFrame == '1Y' ? 'bg-gray-300' : 'bg-white'"
+								x-on:click="setActiveTimeFrame('1Y')"
+							>
+								1Y
+							</button>
+							<button
+								type="button"
+								class="relative inline-flex items-center px-3 py-2 -ml-px text-sm font-medium text-gray-700 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-10"
+								x-bind:class="activeTimeFrame == 'YTD' ? 'bg-gray-300' : 'bg-white'"
+								x-on:click="setActiveTimeFrame('YTD')"
+							>
+								YTD
+							</button>
+							<button
+								type="button"
+								class="relative inline-flex items-center px-3 py-2 -ml-px text-sm font-medium text-gray-700 rounded-r-md ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-10"
+								x-bind:class="activeTimeFrame == 'ALL' ? 'bg-gray-300' : 'bg-white'"
+								x-on:click="setActiveTimeFrame('ALL')"
+							>
+								All
+							</button>
+						</span>
+					</div>
+				</div>
+			</div>
+
+			<div x-ref="chart" class="p-2"></div>
+			<div x-ref="chartLine" class="p-2"></div>
+		</div>
+	</div>
+</div>
