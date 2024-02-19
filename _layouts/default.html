@@ -7,63 +7,63 @@
 
 		<div x-data="dashboard()">
 			<dl
-				class="grid grid-cols-1 gap-px mx-auto bg-gray-900/5 sm:grid-cols-2 lg:grid-cols-5"
+				class="grid grid-cols-1 mx-auto gap-x-2 bg-gray-900/5 sm:grid-cols-2 lg:grid-cols-5"
 			>
 				<div
-					class="flex flex-wrap items-baseline justify-between px-4 py-10 bg-white shadow-md gap-x-4 gap-y-2 sm:px-6 xl:px-8"
+					class="flex flex-wrap items-baseline justify-between px-4 py-10 bg-white shadow-md gap-x-4 sm:px-6 xl:px-8"
 				>
 					<dt class="text-sm font-medium leading-6 text-gray-500">Price</dt>
 					<dd
 						x-money.en-US.USD.decimal="bitcoinPrice"
-						class="flex-none w-full text-2xl font-medium leading-10 tracking-tight text-gray-900"
+						class="flex-none w-full text-lg font-medium tracking-tight text-gray-900"
 					></dd>
 				</div>
 
 				<div
-					class="flex flex-wrap items-baseline justify-between px-4 py-10 bg-white shadow-md gap-x-4 gap-y-2 sm:px-6 xl:px-8"
+					class="flex flex-wrap items-baseline justify-between px-4 py-10 bg-white shadow-md gap-x-4 sm:px-6 xl:px-8"
 				>
 					<dt class="text-sm font-medium leading-6 text-gray-500 capitalize">
 						current difficulty
 					</dt>
 					<dd
 						x-text="currentDifficulty"
-						class="flex-none w-full text-2xl font-medium leading-10 tracking-tight text-gray-900"
+						class="flex-none w-full text-lg font-medium tracking-tight text-gray-900"
 					></dd>
 				</div>
 
 				<div
-					class="flex flex-wrap items-baseline justify-between px-4 py-10 bg-white shadow-md gap-x-4 gap-y-2 sm:px-6 xl:px-8"
+					class="flex flex-wrap items-baseline justify-between px-4 py-10 bg-white shadow-md gap-x-4 sm:px-6 xl:px-8"
 				>
 					<dt class="text-sm font-medium leading-6 text-gray-500">
 						Mining Reward
 					</dt>
 					<dd
 						x-text="miningReward"
-						class="flex-none w-full text-2xl font-medium leading-10 tracking-tight text-gray-900"
+						class="flex-none w-full text-lg font-medium tracking-tight text-gray-900"
 					></dd>
 				</div>
 
 				<div
-					class="flex flex-wrap items-baseline justify-between px-4 py-10 bg-white shadow-md gap-x-4 gap-y-2 sm:px-6 xl:px-8"
+					class="flex flex-wrap items-baseline justify-between px-4 py-10 bg-white shadow-md gap-x-4 sm:px-6 xl:px-8"
 				>
 					<dt class="text-sm font-medium leading-6 text-gray-500">
 						Block Height
 					</dt>
 					<dd
 						x-text="blockHeight"
-						class="flex-none w-full text-2xl font-medium leading-10 tracking-tight text-gray-900"
+						class="flex-none w-full text-lg font-medium tracking-tight text-gray-900"
 					></dd>
 				</div>
 
 				<div
-					class="flex flex-wrap items-baseline justify-between px-4 py-10 bg-white shadow-md gap-x-4 gap-y-2 sm:px-6 xl:px-8"
+					class="flex flex-wrap items-baseline justify-between px-4 py-10 bg-white shadow-md gap-x-4 sm:px-6 xl:px-8"
 				>
 					<dt class="text-sm font-medium leading-6 text-gray-500">
 						Estimated 2024 Halving Date:
 					</dt>
 					<dd
 						x-text="estimatedHalvingDate"
-						class="flex-none w-full text-2xl font-medium leading-10 tracking-tight text-gray-900"
+						class="flex-none w-full text-lg font-medium tracking-tight text-gray-900"
 					></dd>
 				</div>
 			</dl>

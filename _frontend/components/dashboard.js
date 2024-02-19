@@ -302,38 +302,47 @@ export default (config = {}) => ({
 	},
 
 	computeMovingAverageAndStdDevBands(data, windowSize, numDeviations) {
+		// Arrays to store moving averages and standard deviation bands
 		const movingAverages = [];
 		const stdDevBands = [];
 
+		// Loop through the data to compute moving averages and standard deviation bands
 		for (let i = windowSize - 1; i < data.length; i++) {
+			// Extract timestamp and closing prices for the current window
 			const timestamp = data[i][0];
 			const closingPrices = data
 				.slice(i - windowSize + 1, i + 1)
 				.map((row) => row[4]);
+
+			// Compute the average closing price for the current window
 			const average =
 				closingPrices.reduce((acc, curr) => acc + curr, 0) / windowSize;
 
-			// Compute standard deviation
+			// Compute standard deviation for the current window
 			const sumSquaredDiffs = closingPrices.reduce(
 				(acc, curr) => acc + Math.pow(curr - average, 2),
 				0
 			);
 			const stdDev = Math.sqrt(sumSquaredDiffs / windowSize);
 
+			// Push the computed moving average into the movingAverages array
 			movingAverages.push({
-				x: new Date(timestamp),
-				y: average.toFixed(2), // Round to 2 decimal places
+				x: new Date(timestamp), // Convert timestamp to Date object
+				y: average.toFixed(2), // Round average to 2 decimal places
 			});
 
+			// Compute upper and lower bounds for the standard deviation bands
+			const upperBound = (average + numDeviations * stdDev).toFixed(2);
+			const lowerBound = (average - numDeviations * stdDev).toFixed(2);
+
+			// Push the upper and lower bounds into the stdDevBands array
 			stdDevBands.push({
-				x: new Date(timestamp),
-				y: [
-					(average + numDeviations * stdDev).toFixed(2),
-					(average - numDeviations * stdDev).toFixed(2),
-				],
+				x: new Date(timestamp), // Convert timestamp to Date object
+				y: [upperBound, lowerBound], // Store upper and lower bounds as an array
 			});
 		}
 
+		// Return an object containing movingAverages and stdDevBands arrays
 		return { movingAverages, stdDevBands };
 	},
 
