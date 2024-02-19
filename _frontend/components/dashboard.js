@@ -2,6 +2,18 @@
 export default (config = {}) => ({
 	bitcoinPrice: null,
 
+	activeMovingAverage: "50",
+
+	activeTimeFrame: "ALL",
+
+	chart: null,
+
+	chartLine: null,
+
+	priceObject: [],
+
+	rawPriceData: null,
+
 	init() {
 		this.fetchBitcoinPrices();
 		this.fetchBlockChainInformation();
@@ -53,92 +65,163 @@ export default (config = {}) => ({
 					throw new Error("Failed to fetch data");
 				}
 
-				this.drawChart(response.data);
+				this.rawPriceData = response.data;
+				this.priceObject = this.formatData(this.rawPriceData);
+				this.drawChart();
 			})
 			.catch((error) => {
 				console.error("Error:", error.message);
 			});
 	},
 
-	drawChart(data) {
-		var options = {
+	getChartOption() {
+		const movingAverageAndStdDevBands = this.computeMovingAverageAndStdDevBands(
+			this.rawPriceData,
+			+this.activeMovingAverage,
+			2
+		);
+
+		return {
 			series: [
 				{
-					name: "50D MA",
+					name: "Price USD",
 					type: "line",
-					data: this.computeMovingAverages(data, 50),
+					data: this.priceObject,
 				},
-				// {
-				// 	name: "100D MA",
-				// 	type: "line",
-				// 	data: this.computeMovingAverages(data, 100),
-				// },
-				// {
-				// 	name: "200D MA",
-				// 	type: "line",
-				// 	data: this.computeMovingAverages(data, 200),
-				// },
 				{
-					name: "Bitcoin Prices",
-					type: "candlestick",
-					data: this.formatData(data),
+					name: `${this.activeMovingAverage}D MA`,
+					type: "line",
+					data: movingAverageAndStdDevBands.movingAverages,
+				},
+				{
+					name: `${this.activeMovingAverage}D STDEV`,
+					type: "rangeArea",
+					data: movingAverageAndStdDevBands.stdDevBands,
 				},
 			],
 			chart: {
+				id: "chart",
 				height: 400,
-				type: "line",
+				type: "rangeArea",
+				stacked: false,
+				toolbar: {
+					show: false,
+					autoSelected: "pan",
+				},
 			},
-			title: {
-				text: "Bitcoin Prices In US Dollar (USD)",
-				align: "left",
+			dataLabels: {
+				enabled: false,
 			},
 			stroke: {
 				width: [2, 1],
+				curve: "smooth",
 			},
-			tooltip: {
-				shared: true,
-				custom: [
-					function ({ seriesIndex, dataPointIndex, w }) {
-						return w.globals.series[seriesIndex][dataPointIndex];
-					},
-					function ({ seriesIndex, dataPointIndex, w }) {
-						var o = w.globals.seriesCandleO[seriesIndex][dataPointIndex];
-						var h = w.globals.seriesCandleH[seriesIndex][dataPointIndex];
-						var l = w.globals.seriesCandleL[seriesIndex][dataPointIndex];
-						var c = w.globals.seriesCandleC[seriesIndex][dataPointIndex];
-						return (
-							'<div class="apexcharts-tooltip-candlestick">' +
-							'<div>Open: <span class="value">' +
-							o +
-							"</span></div>" +
-							'<div>High: <span class="value">' +
-							h +
-							"</span></div>" +
-							'<div>Low: <span class="value">' +
-							l +
-							"</span></div>" +
-							'<div>Close: <span class="value">' +
-							c +
-							"</span></div>" +
-							"</div>"
-						);
-					},
-				],
+			// tooltip: {
+			// 	shared: true,
+			// 	custom: [
+			// 		function ({ seriesIndex, dataPointIndex, w }) {
+			// 			return w.globals.series[seriesIndex][dataPointIndex];
+			// 		},
+			// 		function ({ seriesIndex, dataPointIndex, w }) {
+			// 			return w.globals.series[seriesIndex][dataPointIndex];
+			// 		},
+			// 		function ({ seriesIndex, dataPointIndex, w }) {
+			// 			var o = w.globals.seriesCandleO[seriesIndex][dataPointIndex];
+			// 			var h = w.globals.seriesCandleH[seriesIndex][dataPointIndex];
+			// 			var l = w.globals.seriesCandleL[seriesIndex][dataPointIndex];
+			// 			var c = w.globals.seriesCandleC[seriesIndex][dataPointIndex];
+			// 			return (
+			// 				'<div class="apexcharts-tooltip-candlestick">' +
+			// 				'<div>Open: <span class="value">' +
+			// 				o +
+			// 				"</span></div>" +
+			// 				'<div>High: <span class="value">' +
+			// 				h +
+			// 				"</span></div>" +
+			// 				'<div>Low: <span class="value">' +
+			// 				l +
+			// 				"</span></div>" +
+			// 				'<div>Close: <span class="value">' +
+			// 				c +
+			// 				"</span></div>" +
+			// 				"</div>"
+			// 			);
+			// 		},
+			// 	],
+			// },
+			legend: {
+				position: "top",
+				horizontalAlign: "left",
 			},
 			xaxis: {
 				type: "datetime",
 			},
-			plotOptions: {
-				candlestick: {
-					wick: {
-						useFillColor: true,
+			yaxis: {
+				opposite: true,
+				labels: {
+					formatter: function (value) {
+						return value.toLocaleString("en-US", {
+							style: "currency",
+							currency: "USD", // Change 'USD' to your desired currency code
+						});
 					},
 				},
 			},
 		};
+	},
 
-		var chart = new ApexCharts(this.$refs.chart, options);
-		chart.render();
+	drawChart() {
+		this.chart = new ApexCharts(this.$refs.chart, this.getChartOption());
+		this.chart.render();
+
+		// Line
+		var optionsLine = {
+			series: [
+				{
+					data: this.priceObject,
+				},
+			],
+			chart: {
+				id: "chartLine",
+				height: 120,
+				type: "area",
+				brush: {
+					target: "chart",
+					enabled: true,
+				},
+				selection: {
+					enabled: true,
+				},
+			},
+			colors: ["#008FFB"],
+			fill: {
+				type: "gradient",
+				gradient: {
+					opacityFrom: 0.91,
+					opacityTo: 0.1,
+				},
+			},
+			xaxis: {
+				type: "datetime",
+				tooltip: {
+					enabled: false,
+				},
+			},
+			yaxis: {
+				opposite: true,
+				tickAmount: 2,
+				labels: {
+					formatter: function (value) {
+						return value.toLocaleString("en-US", {
+							style: "currency",
+							currency: "USD", // Change 'USD' to your desired currency code
+						});
+					},
+				},
+			},
+		};
+		this.chartLine = new ApexCharts(this.$refs.chartLine, optionsLine);
+		this.chartLine.render();
 	},
 
 	formatData(data) {
@@ -147,19 +230,20 @@ export default (config = {}) => ({
 		for (let i = 0; i < data.length; i++) {
 			const row = data[i];
 			const timestamp = row[0];
-			const values = [row[1], row[2], row[3], row[4]];
+			// const values = [row[1], row[2], row[3], row[4]];
 
 			formattedData[i] = {
 				x: new Date(timestamp),
-				y: values,
+				y: row[4],
 			};
 		}
 
 		return formattedData;
 	},
 
-	computeMovingAverages(data, windowSize) {
+	computeMovingAverageAndStdDevBands(data, windowSize, numDeviations) {
 		const movingAverages = [];
+		const stdDevBands = [];
 
 		for (let i = windowSize - 1; i < data.length; i++) {
 			const timestamp = data[i][0];
@@ -169,12 +253,78 @@ export default (config = {}) => ({
 			const average =
 				closingPrices.reduce((acc, curr) => acc + curr, 0) / windowSize;
 
+			// Compute standard deviation
+			const sumSquaredDiffs = closingPrices.reduce(
+				(acc, curr) => acc + Math.pow(curr - average, 2),
+				0
+			);
+			const stdDev = Math.sqrt(sumSquaredDiffs / windowSize);
+
 			movingAverages.push({
 				x: new Date(timestamp),
 				y: average.toFixed(2), // Round to 2 decimal places
 			});
+
+			stdDevBands.push({
+				x: new Date(timestamp),
+				y: [
+					(average + numDeviations * stdDev).toFixed(2),
+					(average - numDeviations * stdDev).toFixed(2),
+				],
+			});
 		}
 
-		return movingAverages;
+		return { movingAverages, stdDevBands };
+	},
+
+	setActiveMovingAverage(newValue) {
+		this.activeMovingAverage = newValue;
+		this.chart.updateOptions(this.getChartOption(), false, true);
+	},
+
+	setActiveTimeFrame(newValue) {
+		this.activeTimeFrame = newValue;
+
+		switch (newValue) {
+			case "1D":
+				this.chart.zoomX(new Date().getTime(), new Date().getTime());
+				this.chartLine.zoomX(new Date().getTime(), new Date().getTime());
+				break;
+
+			case "1W":
+				let oneWeekAgo = new Date(new Date());
+				oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+				this.chart.zoomX(oneWeekAgo.getTime(), new Date().getTime());
+				this.chartLine.zoomX(oneWeekAgo.getTime(), new Date().getTime());
+				break;
+
+			case "1M":
+				const oneMonthAgo = new Date(new Date());
+				oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
+				this.chart.zoomX(oneMonthAgo.getTime(), new Date().getTime());
+				this.chartLine.zoomX(oneMonthAgo.getTime(), new Date().getTime());
+				break;
+
+			case "1Y":
+				const oneYearAgo = new Date(new Date());
+				oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
+				this.chart.zoomX(oneYearAgo.getTime(), new Date().getTime());
+				this.chartLine.zoomX(oneYearAgo.getTime(), new Date().getTime());
+				break;
+
+			case "YTD":
+				const yearToDate = new Date(new Date().getFullYear(), 0, 1); // January is 0
+				this.chart.zoomX(yearToDate.getTime(), new Date().getTime());
+				this.chartLine.zoomX(yearToDate.getTime(), new Date().getTime());
+				break;
+
+			case "ALL":
+				this.chart.zoomX(undefined, new Date().getTime());
+				this.chartLine.zoomX(undefined, new Date().getTime());
+				break;
+
+			default:
+				break;
+		}
 	},
 });
