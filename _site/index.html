@@ -4,17 +4,18 @@
 	<meta charset="utf-8" />
 	<title>Happy Jekylling! - </title>
 
-	<!-- meta tags, etc -->
-	<script src="/vite-dev/@vite/client" type="module"></script> <script src="/vite-dev/entrypoints/application.js" crossorigin="anonymous" type="module"></script>
-
+    <!-- meta tags, etc -->
+    <script
+      src="/vite-dev/assets/application-9XwUEHL0.js"
+      crossorigin="anonymous"
+      type="module"
+    ></script>
  <link rel="stylesheet" href="/vite-dev/entrypoints/application.scss" media="screen"/>
 </head>
 <body>
 		<!-- ## You're ready to go!
 
 Start developing your Jekyll website. -->
-
-
 		<div x-data="dashboard()">
 			<dl
 				class="grid grid-cols-1 gap-px mx-auto bg-gray-900/5 sm:grid-cols-2 lg:grid-cols-4"
@@ -37,10 +38,9 @@ Start developing your Jekyll website. -->
 						current difficulty
 					</dt>
 					<dd class="text-xs font-medium text-rose-600">+54.02%</dd>
-					<dd
+					<dd x-text="currentDifficulty"
 						class="flex-none w-full text-3xl font-medium leading-10 tracking-tight text-gray-900"
 					>
-						$12,787.00
 					</dd>
 				</div>
 
@@ -52,9 +52,9 @@ Start developing your Jekyll website. -->
 					</dt>
 					<dd class="text-xs font-medium text-gray-700">-1.39%</dd>
 					<dd
+              x-text="miningReward"
 						class="flex-none w-full text-3xl font-medium leading-10 tracking-tight text-gray-900"
 					>
-						$245,988.00
 					</dd>
 				</div>
 
@@ -65,10 +65,9 @@ Start developing your Jekyll website. -->
 						Block Height
 					</dt>
 					<dd class="text-xs font-medium text-rose-600">+10.18%</dd>
-					<dd
+					<dd x-text="blockHeight"
 						class="flex-none w-full text-3xl font-medium leading-10 tracking-tight text-gray-900"
 					>
-						$30,156.00
 					</dd>
 				</div>
 			</dl>
