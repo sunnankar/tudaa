@@ -5,7 +5,10 @@ export default (config = {}) => ({
 
     btcVolatilityData: [],
     days: 21, //default
-    bitcoinDataSetDuration: 42,
+    bitcoinDataSetDuration: 100,
+    activeTimeFrame: "21",
+    chart: null,
+
     init() {
         this.getHistoricalBitcoinPrices(this.bitcoinDataSetDuration).then(data => {
             if (data != null) {
@@ -24,12 +27,16 @@ export default (config = {}) => ({
                 let historicalVolatility = this.calculateHistoricalRealizedVolatility(btcDataObject, this.days);
                 console.log("Historical Daily Realized Volatility for a window of", this.days, "days:");
                 historicalVolatility.forEach((volatility, index) => {
+
                     this.btcVolatilityData.push({
-                        date: volatility.date, price: volatility.volatility.toFixed(2)
+                        date: volatility.date, price: volatility.volatility.toFixed(2),
+                        days: index + this.days
                     })
 
                 });
-                this.drawBitCoinsVolatilityGraph();
+
+                if (this.btcVolatilityData.length > 0) this.drawBitCoinsVolatilityGraph();
+
             }
 
         }).catch(e => {
@@ -96,8 +103,28 @@ export default (config = {}) => ({
             }],
         }
 
-        var chart = new ApexCharts(this.$refs.btcGraph, options);
+        this.chart = new ApexCharts(this.$refs.btcGraph, options);
+        this.chart.render();
+    },
 
-        chart.render();
+    setActiveTimeFrame(timeValue) {
+        switch (timeValue) {
+            case '21D':
+                this.btcVolatilityData = []
+                this.chart.destroy();
+                this.days = 21;
+                this.init();
+                break;
+
+            case '45D':
+                this.btcVolatilityData = []
+                this.chart.destroy();
+                this.days = 45;
+                this.init();
+                break;
+
+            default:
+                break;
+        }
     }
 });
