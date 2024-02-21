@@ -139,7 +139,7 @@ PLATFORMS
 
 DEPENDENCIES
   faraday (~> 2.7, >= 2.7.11)
-  jekyll (~> 4.2)
+  jekyll
   jekyll-postcss
   jekyll-timeago (~> 0.13.1)
   jekyll-vite

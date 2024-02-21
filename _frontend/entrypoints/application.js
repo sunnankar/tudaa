@@ -13,6 +13,7 @@ import money from "alpinejs-money";
 
 import ApexCharts from "apexcharts";
 import dashboard from "../components/dashboard";
+import btcVolatility from "../components/btc-volatility";
 
 window.axios = axios;
 // window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
@@ -22,4 +23,5 @@ window.ApexCharts = ApexCharts;
 
 Alpine.plugin(money);
 Alpine.data("dashboard", dashboard);
+Alpine.data('volatility', btcVolatility);
 Alpine.start();
