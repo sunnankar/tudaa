@@ -8,4 +8,7 @@ title: "Happy Jekylling!"
 Start developing your Jekyll website. -->
 
 <p>TUDAA is a software development team.
-<p>The <a href="https://www.tudaa.org/dashboard">Dashboard</a>
+<ul>
+<li><a href="https://www.tudaa.org/dashboard">Dashboard</a></li>
+<li><a href="https://www.tudaa.org/volatility">Volatility</a></li>
+</ul>
