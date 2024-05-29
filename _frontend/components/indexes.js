@@ -29,7 +29,7 @@ export default (config = {}) => ({
 
     fetchDifficulty() {
         // Send GET request using Axios
-        axios.get("http://127.0.0.1:8000/cumulative_difficulty")
+        axios.get("https://mwc2.pacificpool.ws/api/price-indexes/cumulative_difficulty")
             .then((response) => {
                 if (response.status !== 200) {
                     throw new Error("Failed to fetch data");
