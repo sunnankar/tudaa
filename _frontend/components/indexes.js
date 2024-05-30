@@ -22,7 +22,7 @@ export default (config = {}) => ({
         this.setupVwapWebSocket();
 
         // SET UP WEBSOCKET FOR REAL TIME BITCOIN PRICE
-		const pricesWs = new WebSocket("ws://localhost:8000/ws/spot_price");
+		const pricesWs = new WebSocket("wss://mwc2.pacificpool.ws/api/ws-price-indexes/spot_price");
         pricesWs.onmessage = (msg) =>
 			(this.spotPrice = JSON.parse(msg.data));
     },
@@ -50,7 +50,7 @@ export default (config = {}) => ({
     },
 
     setupVwapWebSocket() {
-        const vwapWs = new WebSocket("ws://localhost:8000/ws/vwap");
+        const vwapWs = new WebSocket("wss://mwc2.pacificpool.ws/api/ws-price-indexes/vwap");
         vwapWs.onmessage = (msg) => {
             const data = JSON.parse(msg.data);
             console.log("VWAP Data:", data);
