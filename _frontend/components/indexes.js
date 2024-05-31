@@ -99,12 +99,12 @@ export default (config = {}) => ({
             const data = JSON.parse(msg.data);
             console.log("VWAP Data:", data);
             console.log("Spot Price Data:", this.spotPrice);
-            this.vwap_2h = data.vwap_2h;
-            this.vwap_24h = data.vwap_24h;
-            this.vwap_72h = data.vwap_72h;
-            this.vwap_1w = data.vwap_1w;
-            this.vwap_1m = data.vwap_1m;
-            this.vwap_1q = data.vwap_1q;
+            this.vwap_2h = this.formatToEightDecimalPlaces(data.vwap_2h, 8);
+            this.vwap_24h = this.formatToEightDecimalPlaces(data.vwap_24h, 8);
+            this.vwap_72h = this.formatToEightDecimalPlaces(data.vwap_72h, 8);
+            this.vwap_1w = this.formatToEightDecimalPlaces(data.vwap_1w, 8);
+            this.vwap_1m = this.formatToEightDecimalPlaces(data.vwap_1m, 8);
+            this.vwap_1q = this.formatToEightDecimalPlaces(data.vwap_1q, 8);
         };
     },
 
@@ -118,6 +118,25 @@ export default (config = {}) => ({
             let number = parseFloat(trimmedInput);
             // Format the number based on the locale
             return new Intl.NumberFormat().format(number);
+        } else {
+            // Return the input as is if it's not a number
+            return trimmedInput;
+        }
+    },
+
+    formatToEightDecimalPlaces(input, precision) {
+        // If null retrun null
+        if (input === null) return null;
+
+        // Convert input to a string and trim whitespace
+        let trimmedInput = String(input).trim();
+    
+        // Check if the trimmed input can be converted to a number
+        if (!isNaN(trimmedInput) && trimmedInput !== '') {
+            // Convert the trimmed input to a number
+            let number = parseFloat(trimmedInput);
+            // Format the number to nth (precision) decimal places
+            return number.toFixed(precision);
         } else {
             // Return the input as is if it's not a number
             return trimmedInput;
