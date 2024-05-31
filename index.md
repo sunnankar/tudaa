@@ -9,7 +9,7 @@ Start developing your Jekyll website. -->
 
 <p>TUDAA is a software development team.
 <ul>
-<li><a href="https://www.tudaa.org/dashboard">Dashboard</a></li>
-<li><a href="https://www.tudaa.org/volatility">Volatility</a></li>
-<li><a href="https://www.tudaa.org/indexes">Price Indexes</a></li>
+<li><a href="/dashboard">Dashboard</a></li>
+<li><a href="/volatility">Volatility</a></li>
+<li><a href="/indexes">Price Indexes</a></li>
 </ul>

@@ -43,13 +43,13 @@ export default (config = {}) => ({
                 }
                 const data = response.data;
                 console.log("Difficulty Data:", data);
-                this.currentDifficulty = data.current_difficulty;
-                this.two_hour_cumulative_difficulty = data["2 hours"];
-                this.twenty_four_hour_cumulative_difficulty = data["24 hours"];
-                this.seventy_two_hour_cumulative_difficulty = data["72 hours"];
-                this.one_week_cumulative_difficulty = data["one week"];
-                this.one_month_cumulative_difficulty = data["one month"];
-                this.one_quarter_cumulative_difficulty = data["one quarter"];
+                this.currentDifficulty = this.formatString(data["current_difficulty"]);
+                this.two_hour_cumulative_difficulty = this.formatString(data["2 hours"]);
+                this.twenty_four_hour_cumulative_difficulty = this.formatString(data["24 hours"]);
+                this.seventy_two_hour_cumulative_difficulty = this.formatString(data["72 hours"]);
+                this.one_week_cumulative_difficulty = this.formatString(data["one week"]);
+                this.one_month_cumulative_difficulty = this.formatString(data["one month"]);
+                this.one_quarter_cumulative_difficulty = this.formatString(data["one quarter"]);
             })
             .catch((error) => {
                 console.error("Error:", error.message);
@@ -106,6 +106,21 @@ export default (config = {}) => ({
             this.vwap_1m = data.vwap_1m;
             this.vwap_1q = data.vwap_1q;
         };
-    }
+    },
 
+    formatString(input) {
+        // Convert input to a string and trim whitespace
+        let trimmedInput = String(input).trim();
+    
+        // Check if the trimmed input can be converted to a number
+        if (!isNaN(trimmedInput) && trimmedInput !== '') {
+            // Convert the trimmed input to a number
+            let number = parseFloat(trimmedInput);
+            // Format the number based on the locale
+            return new Intl.NumberFormat().format(number);
+        } else {
+            // Return the input as is if it's not a number
+            return trimmedInput;
+        }
+    }
 });
