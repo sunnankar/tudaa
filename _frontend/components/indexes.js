@@ -16,6 +16,10 @@ export default (config = {}) => ({
     vwap_2h: null,
     spotPrice: null,
     bitcoinPrice: null,
+    starttime:null,
+    endtime:null,
+    interval:null,
+    Vwap:null,
 
     init() {
         this.fetchDifficulty();
@@ -37,12 +41,46 @@ export default (config = {}) => ({
                 const data = response.data;
                 console.log("Difficulty Data:", data);
                 this.currentDifficulty = data.current_difficulty;
-                this.two_hour_cumulative_difficulty = data.two_hour_cumulative_difficulty;
-                this.twenty_four_hour_cumulative_difficulty = data.twenty_four_hour_cumulative_difficulty;
-                this.seventy_two_hour_cumulative_difficulty = data.seventy_two_hour_cumulative_difficulty;
-                this.one_week_cumulative_difficulty = data.one_week_cumulative_difficulty;
-                this.one_month_cumulative_difficulty = data.one_month_cumulative_difficulty;
-                this.one_quarter_cumulative_difficulty = data.one_quarter_cumulative_difficulty;
+                this.two_hour_cumulative_difficulty = data["2 hours"];
+                this.twenty_four_hour_cumulative_difficulty = data["24 hours"];
+                this.seventy_two_hour_cumulative_difficulty = data["72 hours"];
+                this.one_week_cumulative_difficulty = data["one week"];
+                this.one_month_cumulative_difficulty = data["one month"];
+                this.one_quarter_cumulative_difficulty = data["one quarter"];
+            })
+            .catch((error) => {
+                console.error("Error:", error.message);
+            });
+    },
+
+    fetchInterval() {
+        // Send GET request using Axios
+        axios.get("https://mwc2.pacificpool.ws/api/price-indexes/cumulative_difficulty_db_interval")
+            .then((response) => {
+                if (response.status !== 200) {
+                    throw new Error("Failed to fetch data");
+                }
+                const data = response.data;
+                console.log("Difficulty Data:", data);
+                this.starttime = data.starttime;
+                this.endtime = data.endtime;
+                this.interval = data.interval;
+            })
+            .catch((error) => {
+                console.error("Error:", error.message);
+            });
+    },
+
+    fetchVwapInterval() {
+        // Send GET request using Axios
+        axios.get("https://mwc2.pacificpool.ws/api/price-indexes/vwap_interval")
+            .then((response) => {
+                if (response.status !== 200) {
+                    throw new Error("Failed to fetch data");
+                }
+                const data = response.data;
+                console.log("Difficulty Data:", data);
+                this.currentDifficulty = data.current_difficulty;
             })
             .catch((error) => {
                 console.error("Error:", error.message);
