@@ -19,7 +19,9 @@ export default (config = {}) => ({
     startTime:null,
     endTime:null,
     interval:null,
-    Vwap:null,
+    VwapstartTime:null,
+    VwapEndTime:null,
+    VwapInterval:null,
 
     init() {
         this.fetchDifficulty();
@@ -81,7 +83,10 @@ export default (config = {}) => ({
                 }
                 const data = response.data;
                 console.log("VwapInterval Data:", data);
-                this.currentDifficulty = data.current_difficulty;
+
+                this.VwapstartTime = data["Start Time"];
+                this.VwapEndTime = data["End Time"];
+                this.VwapInterval = data["Interval"];
             })
             .catch((error) => {
                 console.error("Error:", error.message);
