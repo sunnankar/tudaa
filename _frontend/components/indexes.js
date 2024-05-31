@@ -24,7 +24,8 @@ export default (config = {}) => ({
     init() {
         this.fetchDifficulty();
         this.setupVwapWebSocket();
-
+        this.fetchInterval();
+        this.fetchVwapInterval();
         // SET UP WEBSOCKET FOR REAL TIME BITCOIN PRICE
 		const pricesWs = new WebSocket("wss://mwc2.pacificpool.ws/api/ws-price-indexes/spot_price");
         pricesWs.onmessage = (msg) =>
