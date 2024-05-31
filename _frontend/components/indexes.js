@@ -16,8 +16,8 @@ export default (config = {}) => ({
     vwap_2h: null,
     spotPrice: null,
     bitcoinPrice: null,
-    starttime:null,
-    endtime:null,
+    startTime:null,
+    endTime:null,
     interval:null,
     Vwap:null,
 
@@ -61,9 +61,9 @@ export default (config = {}) => ({
                     throw new Error("Failed to fetch data");
                 }
                 const data = response.data;
-                console.log("Difficulty Data:", data);
-                this.starttime = data.starttime;
-                this.endtime = data.endtime;
+                console.log("Difficulty Interval Data:", data);
+                this.startTime = data.starttime;
+                this.endTime = data.endtime;
                 this.interval = data.interval;
             })
             .catch((error) => {
@@ -79,7 +79,7 @@ export default (config = {}) => ({
                     throw new Error("Failed to fetch data");
                 }
                 const data = response.data;
-                console.log("Difficulty Data:", data);
+                console.log("VwapInterval Data:", data);
                 this.currentDifficulty = data.current_difficulty;
             })
             .catch((error) => {
