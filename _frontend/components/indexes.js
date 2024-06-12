@@ -28,6 +28,7 @@ export default (config = {}) => ({
         this.setupVwapWebSocket();
         this.fetchInterval();
         this.fetchVwapInterval();
+        this.setupVolumeWebSocket();
         // SET UP WEBSOCKET FOR REAL TIME BITCOIN PRICE
 		const pricesWs = new WebSocket("wss://mwc2.pacificpool.ws/api/ws-price-indexes/spot_price");
         pricesWs.onmessage = (msg) =>
@@ -105,6 +106,21 @@ export default (config = {}) => ({
             this.vwap_1w = this.formatToEightDecimalPlaces(data.vwap_1w, 8);
             this.vwap_1m = this.formatToEightDecimalPlaces(data.vwap_1m, 8);
             this.vwap_1q = this.formatToEightDecimalPlaces(data.vwap_1q, 8);
+        };
+    },
+
+    setupVolumeWebSocket() {
+        const vwapWs = new WebSocket("wss://mwc2.pacificpool.ws/api/ws-price-indexes/vwap_volume");
+        vwapWs.onmessage = (msg) => {
+            const data = JSON.parse(msg.data);
+            console.log("VWAP Data:", data);
+            console.log("Spot Price Data:", this.spotPrice);
+            // this.vwap_2h = this.formatToEightDecimalPlaces(data.vwap_2h, 8);
+            // this.vwap_24h = this.formatToEightDecimalPlaces(data.vwap_24h, 8);
+            // this.vwap_72h = this.formatToEightDecimalPlaces(data.vwap_72h, 8);
+            // this.vwap_1w = this.formatToEightDecimalPlaces(data.vwap_1w, 8);
+            // this.vwap_1m = this.formatToEightDecimalPlaces(data.vwap_1m, 8);
+            // this.vwap_1q = this.formatToEightDecimalPlaces(data.vwap_1q, 8);
         };
     },
 
