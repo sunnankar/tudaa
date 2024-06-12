@@ -71,6 +71,51 @@ permalink: "indexes"
 					></dd>
 				</div>
 			</div>
+
+			<div class="grid grid-cols-4 gap-4">
+				<div>
+					<h2 class="text-lg font-semibold">2 Hour Volume</h2>
+					<dd
+						x-text="volume_2h ? volume_2h : volume_24h"
+						class="text-sm font-medium text-gray-600"
+					></dd>
+				</div>
+				<div>
+					<h2 class="text-lg font-semibold">24 Hour Volume</h2>
+					<dd
+						x-text="volume_24h"
+						class="text-sm font-medium text-gray-600"
+					></dd>
+				</div>
+				<div>
+					<h2 class="text-lg font-semibold">72 Hour Volume</h2>
+					<dd
+						x-text="volume_72h"
+						class="text-sm font-medium text-gray-600"
+					></dd>
+				</div>
+				<div>
+					<h2 class="text-lg font-semibold">One Week Volume</h2>
+					<dd
+						x-text="volume_1w"
+						class="text-sm font-medium text-gray-600"
+					></dd>
+				</div>
+				<div>
+					<h2 class="text-lg font-semibold">One Month Volume</h2>
+					<dd
+						x-text="volume_1m"
+						class="text-sm font-medium text-gray-600"
+					></dd>
+				</div>
+				<div>
+					<h2 class="text-lg font-semibold">One Quarter Volume</h2>
+					<dd
+						x-text="volume_1q"
+						class="text-sm font-medium text-gray-600"
+					></dd>
+				</div>
+			</div>
 		</div>
 
 		<div class="mt-16">
