@@ -113,8 +113,7 @@ export default (config = {}) => ({
         const vwapWs = new WebSocket("wss://mwc2.pacificpool.ws/api/ws-price-indexes/vwap_volume");
         vwapWs.onmessage = (msg) => {
             const data = JSON.parse(msg.data);
-            console.log("VWAP Data:", data);
-            console.log("Spot Price Data:", this.spotPrice);
+            console.log("Volume Data:", data);
             // this.vwap_2h = this.formatToEightDecimalPlaces(data.vwap_2h, 8);
             // this.vwap_24h = this.formatToEightDecimalPlaces(data.vwap_24h, 8);
             // this.vwap_72h = this.formatToEightDecimalPlaces(data.vwap_72h, 8);
