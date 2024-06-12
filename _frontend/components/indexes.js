@@ -14,6 +14,12 @@ export default (config = {}) => ({
     vwap_72h: null,
     vwap_24h: null,
     vwap_2h: null,
+    volume_1q: null,
+    volume_1m: null,
+    volume_1w: null,
+    volume_72h: null,
+    volume_24h: null,
+    volume_2h: null,
     spotPrice: null,
     bitcoinPrice: null,
     startTime:null,
@@ -114,12 +120,12 @@ export default (config = {}) => ({
         vwapWs.onmessage = (msg) => {
             const data = JSON.parse(msg.data);
             console.log("Volume Data:", data);
-            // this.vwap_2h = this.formatToEightDecimalPlaces(data.vwap_2h, 8);
-            // this.vwap_24h = this.formatToEightDecimalPlaces(data.vwap_24h, 8);
-            // this.vwap_72h = this.formatToEightDecimalPlaces(data.vwap_72h, 8);
-            // this.vwap_1w = this.formatToEightDecimalPlaces(data.vwap_1w, 8);
-            // this.vwap_1m = this.formatToEightDecimalPlaces(data.vwap_1m, 8);
-            // this.vwap_1q = this.formatToEightDecimalPlaces(data.vwap_1q, 8);
+            this.volume_2h = this.formatToEightDecimalPlaces(data.vwap_2h, 8);
+            this.volume_24h = this.formatToEightDecimalPlaces(data.vwap_24h, 8);
+            this.volume_72h = this.formatToEightDecimalPlaces(data.vwap_72h, 8);
+            this.volume_1w = this.formatToEightDecimalPlaces(data.vwap_1w, 8);
+            this.volume_1m = this.formatToEightDecimalPlaces(data.vwap_1m, 8);
+            this.volume_1q = this.formatToEightDecimalPlaces(data.vwap_1q, 8);
         };
     },
 
