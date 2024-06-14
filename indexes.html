@@ -7,7 +7,7 @@ permalink: "indexes"
 <div x-data="indexes()">
 	<div class="container px-4 py-8 mx-auto">
 		<div>
-			<h1 class="text-2xl font-bold">MWC Price Data</h1>
+			<h1 class="text-2xl font-bold">MWC-BTC Price Data</h1>
 
 			<div class="mb-6 text-sm text-gray-600">
 				<span>Available data from</span>
@@ -25,6 +25,117 @@ permalink: "indexes"
 					<h2 class="text-lg font-semibold">Spot Price</h2>
 					<dd
 						x-text="spotPrice"
+						class="text-sm font-medium text-gray-600"
+					></dd>
+				</div>
+				<div>
+					<h2 class="text-lg font-semibold">2 Hour VWAP</h2>
+					<dd
+						x-text="vwap_2h ? vwap_2h : vwap_24h"
+						class="text-sm font-medium text-gray-600"
+					></dd>
+				</div>
+				<div>
+					<h2 class="text-lg font-semibold">24 Hour VWAP</h2>
+					<dd
+						x-text="vwap_24h"
+						class="text-sm font-medium text-gray-600"
+					></dd>
+				</div>
+				<div>
+					<h2 class="text-lg font-semibold">72 Hour VWAP</h2>
+					<dd
+						x-text="vwap_72h"
+						class="text-sm font-medium text-gray-600"
+					></dd>
+				</div>
+				<div>
+					<h2 class="text-lg font-semibold">One Week VWAP</h2>
+					<dd
+						x-text="vwap_1w"
+						class="text-sm font-medium text-gray-600"
+					></dd>
+				</div>
+				<div>
+					<h2 class="text-lg font-semibold">One Month VWAP</h2>
+					<dd
+						x-text="vwap_1m"
+						class="text-sm font-medium text-gray-600"
+					></dd>
+				</div>
+				<div>
+					<h2 class="text-lg font-semibold">One Quarter VWAP</h2>
+					<dd
+						x-text="vwap_1q"
+						class="text-sm font-medium text-gray-600"
+					></dd>
+				</div>
+			</div>
+
+			<div class="grid grid-cols-4 gap-4">
+				<div>
+					<h2 class="text-lg font-semibold">2 Hour Volume</h2>
+					<dd
+						x-text="volume_2h ? volume_2h : volume_24h"
+						class="text-sm font-medium text-gray-600"
+					></dd>
+				</div>
+				<div>
+					<h2 class="text-lg font-semibold">24 Hour Volume</h2>
+					<dd
+						x-text="volume_24h"
+						class="text-sm font-medium text-gray-600"
+					></dd>
+				</div>
+				<div>
+					<h2 class="text-lg font-semibold">72 Hour Volume</h2>
+					<dd
+						x-text="volume_72h"
+						class="text-sm font-medium text-gray-600"
+					></dd>
+				</div>
+				<div>
+					<h2 class="text-lg font-semibold">One Week Volume</h2>
+					<dd
+						x-text="volume_1w"
+						class="text-sm font-medium text-gray-600"
+					></dd>
+				</div>
+				<div>
+					<h2 class="text-lg font-semibold">One Month Volume</h2>
+					<dd
+						x-text="volume_1m"
+						class="text-sm font-medium text-gray-600"
+					></dd>
+				</div>
+				<div>
+					<h2 class="text-lg font-semibold">One Quarter Volume</h2>
+					<dd
+						x-text="volume_1q"
+						class="text-sm font-medium text-gray-600"
+					></dd>
+				</div>
+			</div>
+		</div>
+		<div>
+			<h1 class="text-2xl font-bold">MWC-USDT Price Data</h1>
+
+			<div class="mb-6 text-sm text-gray-600">
+				<span>Available data from</span>
+				<strong class="text-gray-800" x-text="VwapstartTime ? VwapstartTime : 'Loading...'"></strong>
+                    to
+                    <strong class="text-gray-800" x-text="VwapEndTime ? VwapEndTime : 'Loading...'"></strong>
+                    <dd
+                        x-text="interval ? `VwapInterval: ${interval}` : 'No data available at the moment for this period'"
+                        class="text-sm font-medium text-gray-600"
+                    ></dd>
+			</div>
+
+			<div class="grid grid-cols-4 gap-4">
+				<div>
+					<h2 class="text-lg font-semibold">Spot Price</h2>
+					<dd
+						x-money.en-US.USD.decimal="mwcusdtSpotPrice"
 						class="text-sm font-medium text-gray-600"
 					></dd>
 				</div>
