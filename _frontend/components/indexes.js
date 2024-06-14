@@ -21,6 +21,7 @@ export default (config = {}) => ({
     volume_24h: null,
     volume_2h: null,
     spotPrice: null,
+    mwcusdtSpotPrice:null,
     bitcoinPrice: null,
     startTime:null,
     endTime:null,
@@ -39,6 +40,10 @@ export default (config = {}) => ({
 		const pricesWs = new WebSocket("wss://mwc2.pacificpool.ws/api/ws-price-indexes/spot_price");
         pricesWs.onmessage = (msg) =>
 			(this.spotPrice = JSON.parse(msg.data));
+
+        const mwcusdt = new WebSocket("wss://mwc2.pacificpool.ws/api/ws-price-indexes/mwcusdt_spotprice");
+        mwcusdt.onmessage = (msg) =>
+			(this.mwcusdtSpotPrice = JSON.parse(msg.data));
     },
 
     fetchDifficulty() {
