@@ -20,6 +20,7 @@ export default (config = {}) => ({
     volume_72h: null,
     volume_24h: null,
     volume_2h: null,
+    moving_average_200: null,
     spotPrice: null,
     mwcusdtSpotPrice:null,
     bitcoinPrice: null,
@@ -36,6 +37,7 @@ export default (config = {}) => ({
         this.fetchInterval();
         this.fetchVwapInterval();
         this.setupVolumeWebSocket();
+        this.fetchMovingAverage();
         // SET UP WEBSOCKET FOR REAL TIME BITCOIN PRICE
 		const pricesWs = new WebSocket("wss://mwc2.pacificpool.ws/api/ws-price-indexes/spot_price");
         pricesWs.onmessage = (msg) =>
@@ -62,6 +64,22 @@ export default (config = {}) => ({
                 this.one_week_cumulative_difficulty = this.formatString(data["one week"]);
                 this.one_month_cumulative_difficulty = this.formatString(data["one month"]);
                 this.one_quarter_cumulative_difficulty = this.formatString(data["one quarter"]);
+            })
+            .catch((error) => {
+                console.error("Error:", error.message);
+            });
+    },
+
+    fetchMovingAverage() {
+        // Send GET request using Axios
+        axios.get("https://mwc2.pacificpool.ws/api/price-indexes/calculate_200_day_moving_average")
+            .then((response) => {
+                if (response.status !== 200) {
+                    throw new Error("Failed to fetch data");
+                }
+                const data = response.data;
+                console.log("moving_average_200 Data:", data);
+                this.moving_average_200 = this.formatString(data["200_day_moving_average"]);
             })
             .catch((error) => {
                 console.error("Error:", error.message);
