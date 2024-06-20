@@ -38,6 +38,7 @@ export default (config = {}) => ({
         this.fetchVwapInterval();
         this.setupVolumeWebSocket();
         this.fetchMovingAverage();
+        this.fetchOneQuarterDifficulty();
         // SET UP WEBSOCKET FOR REAL TIME BITCOIN PRICE
 		const pricesWs = new WebSocket("wss://mwc2.pacificpool.ws/api/ws-price-indexes/spot_price");
         pricesWs.onmessage = (msg) =>
@@ -117,6 +118,25 @@ export default (config = {}) => ({
                 this.VwapstartTime = data["Start Time"];
                 this.VwapEndTime = data["End Time"];
                 this.VwapInterval = data["Interval"];
+            })
+            .catch((error) => {
+                console.error("Error:", error.message);
+            });
+    },
+
+    fetchOneQuarterDifficulty() {
+        // Send GET request using Axios
+        axios.get("https://mwc2.pacificpool.ws/api/price-indexes/block_data_last_quarter")
+            .then((response) => {
+                if (response.status !== 200) {
+                    throw new Error("Failed to fetch data");
+                }
+                const data = response.data;
+                console.log("One Quarter Difficulty Data:", data);
+
+                // this.VwapstartTime = data["Start Time"];
+                // this.VwapEndTime = data["End Time"];
+                // this.VwapInterval = data["Interval"];
             })
             .catch((error) => {
                 console.error("Error:", error.message);
