@@ -125,7 +125,23 @@ export default (config = {}) => ({
 
     fetchOneQuarterDifficulty() {
         // Send GET request using Axios
-        axios.get("https://mwc2.pacificpool.ws/api/price-indexes/block_data_last_quarter")
+        axios.get("https://mwc2.pacificpool.ws/api/price-indexes/block_data_one_quarter")
+            .then((response) => {
+                if (response.status !== 200) {
+                    throw new Error("Failed to fetch data");
+                }
+                const data = response.data;
+                console.log("One Quarter Difficulty Data:", data);
+                this.one_quarter_cumulative_difficulty = this.formatString(data);
+            })
+            .catch((error) => {
+                console.error("Error:", error.message);
+            });
+    },
+
+    fetchOneMonth() {
+        // Send GET request using Axios
+        axios.get("https://mwc2.pacificpool.ws/api/price-indexes/block_data_one_month")
             .then((response) => {
                 if (response.status !== 200) {
                     throw new Error("Failed to fetch data");
