@@ -64,7 +64,6 @@ export default (config = {}) => ({
                 this.seventy_two_hour_cumulative_difficulty = this.formatString(data["72 hours"]);
                 this.one_week_cumulative_difficulty = this.formatString(data["one week"]);
                 this.one_month_cumulative_difficulty = this.formatString(data["one month"]);
-                this.one_quarter_cumulative_difficulty = this.formatString(data["one quarter"]);
             })
             .catch((error) => {
                 console.error("Error:", error.message);
@@ -133,10 +132,7 @@ export default (config = {}) => ({
                 }
                 const data = response.data;
                 console.log("One Quarter Difficulty Data:", data);
-
-                // this.VwapstartTime = data["Start Time"];
-                // this.VwapEndTime = data["End Time"];
-                // this.VwapInterval = data["Interval"];
+                this.one_quarter_cumulative_difficulty = this.formatString(data);
             })
             .catch((error) => {
                 console.error("Error:", error.message);
