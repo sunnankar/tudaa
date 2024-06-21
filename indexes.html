@@ -4,6 +4,14 @@ title: "Price Indexes"
 permalink: "indexes"
 ---
 
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+<script type="module">
+    import indexes from './alpine-component.js';
+    document.addEventListener('alpine:init', () => {
+        Alpine.data('indexes', indexes);
+    });
+</script>
+
 <div x-data="indexes()">
 	<div class="container px-4 py-8 mx-auto">
 		<div>
