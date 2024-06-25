@@ -1,5 +1,4 @@
-export default function data() {
-    return {
+export default (config = {}) => ({
         currentDifficulty: null,
         two_hour_cumulative_difficulty: null,
         twenty_four_hour_cumulative_difficulty: null,
@@ -15,12 +14,24 @@ export default function data() {
         vwap_72h: null,
         vwap_24h: null,
         vwap_2h: null,
+        vwap_usdt_1q: null,
+        vwap_usdt_1m: null,
+        vwap_usdt_1w: null,
+        vwap_usdt_72h: null,
+        vwap_usdt_24h: null,
+        vwap_usdt_2h: null,
         volume_1q: null,
         volume_1m: null,
         volume_1w: null,
         volume_72h: null,
         volume_24h: null,
         volume_2h: null,
+        volume_usdt_1q: null,
+        volume_usdt_1m: null,
+        volume_usdt_1w: null,
+        volume_usdt_72h: null,
+        volume_usdt_24h: null,
+        volume_usdt_2h: null,
         moving_average_200: null,
         spotPrice: null,
         mwcusdtSpotPrice: null,
@@ -40,6 +51,7 @@ export default function data() {
             this.setupVolumeWebSocket();
             this.fetchMovingAverage();
             this.setupPriceWebSocket();
+            this.setupVwapusdtWebSocket();
         },
 
         fetchDifficulty() {
@@ -130,6 +142,23 @@ export default function data() {
             };
         },
 
+        setupVwapusdtWebSocket() {
+            const vwapWs = new WebSocket("wss://mwc2.pacificpool.ws/api/ws-price-indexes/vwap_usdt");
+            vwapWs.onmessage = (msg) => {
+                const data = JSON.parse(msg.data);
+                console.log("VWAPUSDT Data:", data);
+                this.vwap_usdt_2h = this.formatToEightDecimalPlaces(data.vwap_2h, 8);
+                this.vwap_usdt_24h = this.formatToEightDecimalPlaces(data.vwap_24h, 8);
+                this.vwap_usdt_72h = this.formatToEightDecimalPlaces(data.vwap_72h, 8);
+                this.vwap_usdt_1w = this.formatToEightDecimalPlaces(data.vwap_1w, 8);
+                this.vwap_usdt_1m = this.formatToEightDecimalPlaces(data.vwap_1m, 8);
+                this.vwap_usdt_1q = this.formatToEightDecimalPlaces(data.vwap_1q, 8);
+            };
+            vwapWs.onclose = () => {
+                setTimeout(this.setupVwapusdtWebSocket, 1000); // Reconnect after 1 second
+            };
+        },
+
         setupVolumeWebSocket() {
             const volumeWs = new WebSocket("wss://mwc2.pacificpool.ws/api/ws-price-indexes/vwap_volume");
             volumeWs.onmessage = (msg) => {
@@ -185,9 +214,9 @@ export default function data() {
                 return trimmedInput;
             }
         }
-    }
-}
+    });
 
-document.addEventListener('alpine:init', () => {
-    Alpine.data('data', data)
-});
+
+// document.addEventListener('alpine:init', () => {
+//     Alpine.data('data', data)
+// });
