@@ -6,10 +6,12 @@ export default (config = {}) => ({
 	one_week_cumulative_difficulty: null,
 	one_month_cumulative_difficulty: null,
 	one_quarter_cumulative_difficulty: null,
+	two_weeks_cumulative_difficulty: null,
 	blockHeight: null,
 	market: null,
 	vwap_1q: null,
 	vwap_1m: null,
+	vwap_2w: null,
 	vwap_1w: null,
 	vwap_72h: null,
 	vwap_24h: null,
@@ -17,11 +19,13 @@ export default (config = {}) => ({
 	vwap_usdt_1q: null,
 	vwap_usdt_1m: null,
 	vwap_usdt_1w: null,
+	vwap_usdt_2w: null,
 	vwap_usdt_72h: null,
 	vwap_usdt_24h: null,
 	vwap_usdt_2h: null,
 	volume_1q: null,
 	volume_1m: null,
+	volume_2w: null,
 	volume_1w: null,
 	volume_72h: null,
 	volume_24h: null,
@@ -29,6 +33,7 @@ export default (config = {}) => ({
 	volume_usdt_1q: null,
 	volume_usdt_1m: null,
 	volume_usdt_1w: null,
+	volume_usdt_2w: null,
 	volume_usdt_72h: null,
 	volume_usdt_24h: null,
 	volume_usdt_2h: null,
@@ -53,14 +58,13 @@ export default (config = {}) => ({
 			this.fetchMovingAverage();
 			this.setupPriceWebSocket();
 			this.setupVwapusdtWebSocket();
+			this.setupVolumeusdtWebSocket();
 		});
 	},
 
 	fetchDifficulty() {
 		axios
-			.get(
-				"https://mwc2.pacificpool.ws/api/price-indexes/cumulative_difficulty"
-			)
+			.get("https://mwc2.pacificpool.ws/api/price-indexes/cumulative_difficulty")
 			.then((response) => {
 				if (response.status !== 200) {
 					throw new Error("Failed to fetch data");
@@ -68,24 +72,13 @@ export default (config = {}) => ({
 				const data = response.data;
 				console.log("Difficulty Data:", data);
 				this.currentDifficulty = this.formatString(data["current_difficulty"]);
-				this.two_hour_cumulative_difficulty = this.formatString(
-					data["2 hours"]
-				);
-				this.twenty_four_hour_cumulative_difficulty = this.formatString(
-					data["24 hours"]
-				);
-				this.seventy_two_hour_cumulative_difficulty = this.formatString(
-					data["72 hours"]
-				);
-				this.one_week_cumulative_difficulty = this.formatString(
-					data["one week"]
-				);
-				this.one_month_cumulative_difficulty = this.formatString(
-					data["one month"]
-				);
-				this.one_quarter_cumulative_difficulty = this.formatString(
-					data["one quarter"]
-				);
+				this.two_hour_cumulative_difficulty = this.formatString(data["2 hours"]);
+				this.twenty_four_hour_cumulative_difficulty = this.formatString(data["24 hours"]);
+				this.seventy_two_hour_cumulative_difficulty = this.formatString(data["72 hours"]);
+				this.one_week_cumulative_difficulty = this.formatString(data["one week"]);
+				this.two_weeks_cumulative_difficulty = this.formatString(data["two weeks"]);
+				this.one_month_cumulative_difficulty = this.formatString(data["one month"]);
+				this.one_quarter_cumulative_difficulty = this.formatString(data["one quarter"]);
 			})
 			.catch((error) => {
 				console.error("Error:", error.message);
@@ -94,18 +87,14 @@ export default (config = {}) => ({
 
 	fetchMovingAverage() {
 		axios
-			.get(
-				"https://mwc2.pacificpool.ws/api/price-indexes/calculate_200_day_moving_average"
-			)
+			.get("https://mwc2.pacificpool.ws/api/price-indexes/calculate_200_day_moving_average")
 			.then((response) => {
 				if (response.status !== 200) {
 					throw new Error("Failed to fetch data");
 				}
 				const data = response.data;
 				console.log("moving_average_200 Data:", data);
-				this.moving_average_200 = this.formatString(
-					data["200_day_moving_average"]
-				);
+				this.moving_average_200 = this.formatString(data["200_day_moving_average"]);
 			})
 			.catch((error) => {
 				console.error("Error:", error.message);
@@ -114,9 +103,7 @@ export default (config = {}) => ({
 
 	fetchInterval() {
 		axios
-			.get(
-				"https://mwc2.pacificpool.ws/api/price-indexes/cumulative_difficulty_db_interval"
-			)
+			.get("https://mwc2.pacificpool.ws/api/price-indexes/cumulative_difficulty_db_interval")
 			.then((response) => {
 				if (response.status !== 200) {
 					throw new Error("Failed to fetch data");
@@ -152,9 +139,11 @@ export default (config = {}) => ({
 	},
 
 	setupVwapWebSocket() {
-		const vwapWs = new WebSocket(
-			"wss://mwc2.pacificpool.ws/api/ws-price-indexes/vwap"
-		);
+		const vwapWs = new WebSocket("wss://mwc2.pacificpool.ws/api/ws-price-indexes/vwap_mwc");
+
+		vwapWs.onopen = () => {
+			console.log("Connected to wss://mwc2.pacificpool.ws/api/ws-price-indexes/vwap_mwc");
+		};
 
 		vwapWs.onmessage = (msg) => {
 			const data = JSON.parse(msg.data);
@@ -163,40 +152,85 @@ export default (config = {}) => ({
 			this.vwap_24h = this.formatToEightDecimalPlaces(data.vwap_24h, 8);
 			this.vwap_72h = this.formatToEightDecimalPlaces(data.vwap_72h, 8);
 			this.vwap_1w = this.formatToEightDecimalPlaces(data.vwap_1w, 8);
+			this.vwap_2w = this.formatToEightDecimalPlaces(data.vwap_2w, 8);
 			this.vwap_1m = this.formatToEightDecimalPlaces(data.vwap_1m, 8);
 			this.vwap_1q = this.formatToEightDecimalPlaces(data.vwap_1q, 8);
 		};
 
 		vwapWs.onclose = () => {
+			console.log("Disconnected from wss://mwc2.pacificpool.ws/api/ws-price-indexes/vwap_mwc. Reconnecting...");
 			setTimeout(this.setupVwapWebSocket.bind(this), 1000); // Reconnect after 1 second
+		};
+
+		vwapWs.onerror = (error) => {
+			console.error("WebSocket error:", error);
 		};
 	},
 
 	setupVwapusdtWebSocket() {
-		const vwapWs = new WebSocket(
-			"wss://mwc2.pacificpool.ws/api/ws-price-indexes/vwap_usdt"
-		);
+		const vwapWs = new WebSocket("wss://mwc2.pacificpool.ws/api/ws-price-indexes/vwap_usdt");
+
+		vwapWs.onopen = () => {
+			console.log("Connected to wss://mwc2.pacificpool.ws/api/ws-price-indexes/vwap_usdt");
+		};
 
 		vwapWs.onmessage = (msg) => {
 			const data = JSON.parse(msg.data);
 			console.log("VWAPUSDT Data:", data);
-			this.vwap_usdt_2h = this.formatToEightDecimalPlaces(data.vwap_2h, 8);
-			this.vwap_usdt_24h = this.formatToEightDecimalPlaces(data.vwap_24h, 8);
-			this.vwap_usdt_72h = this.formatToEightDecimalPlaces(data.vwap_72h, 8);
-			this.vwap_usdt_1w = this.formatToEightDecimalPlaces(data.vwap_1w, 8);
-			this.vwap_usdt_1m = this.formatToEightDecimalPlaces(data.vwap_1m, 8);
-			this.vwap_usdt_1q = this.formatToEightDecimalPlaces(data.vwap_1q, 8);
+			this.vwap_usdt_2h = this.formatToEightDecimalPlaces(data["2 hours"], 8);
+			this.vwap_usdt_24h = this.formatToEightDecimalPlaces(data["24 hours"], 8);
+			this.vwap_usdt_72h = this.formatToEightDecimalPlaces(data["72 hours"], 8);
+			this.vwap_usdt_1w = this.formatToEightDecimalPlaces(data["one week"], 8);
+			this.vwap_usdt_2w = this.formatToEightDecimalPlaces(data["two weeks"], 8);
+			this.vwap_usdt_1m = this.formatToEightDecimalPlaces(data["one month"], 8);
+			this.vwap_usdt_1q = this.formatToEightDecimalPlaces(data["one quarter"], 8);
 		};
 
 		vwapWs.onclose = () => {
+			console.log("Disconnected from wss://mwc2.pacificpool.ws/api/ws-price-indexes/vwap_usdt. Reconnecting...");
 			setTimeout(this.setupVwapusdtWebSocket.bind(this), 1000); // Reconnect after 1 second
+		};
+
+		vwapWs.onerror = (error) => {
+			console.error("WebSocket error:", error);
+		};
+	},
+
+	setupVolumeusdtWebSocket() {
+		const vwapWs = new WebSocket("wss://mwc2.pacificpool.ws/api/ws-price-indexes/vwap_volume_usdt");
+
+		vwapWs.onopen = () => {
+			console.log("Connected to wss://mwc2.pacificpool.ws/api/ws-price-indexes/vwap_volume_usdt");
+		};
+
+		vwapWs.onmessage = (msg) => {
+			const data = JSON.parse(msg.data);
+			console.log("VWAPUSDT Data:", data);
+			this.volume_usdt_2h = this.formatToEightDecimalPlaces(data["2 hours"], 8);
+			this.volume_usdt_24h = this.formatToEightDecimalPlaces(data["24 hours"], 8);
+			this.volume_usdt_72h = this.formatToEightDecimalPlaces(data["72 hours"], 8);
+			this.volume_usdt_1w = this.formatToEightDecimalPlaces(data["one week"], 8);
+			this.volume_usdt_2w = this.formatToEightDecimalPlaces(data["two weeks"], 8);
+			this.volume_usdt_1m = this.formatToEightDecimalPlaces(data["one month"], 8);
+			this.volume_usdt_1q = this.formatToEightDecimalPlaces(data["one quarter"], 8);
+		};
+
+		vwapWs.onclose = () => {
+			console.log("Disconnected from wss://mwc2.pacificpool.ws/api/ws-price-indexes/vwap_volume_usdt. Reconnecting...");
+			setTimeout(this.setupVolumeusdtWebSocket.bind(this), 1000); // Reconnect after 1 second
+		};
+
+		vwapWs.onerror = (error) => {
+			console.error("WebSocket error:", error);
 		};
 	},
 
 	setupVolumeWebSocket() {
-		const volumeWs = new WebSocket(
-			"wss://mwc2.pacificpool.ws/api/ws-price-indexes/vwap_volume"
-		);
+		const volumeWs = new WebSocket("wss://mwc2.pacificpool.ws/api/ws-price-indexes/vwap_volume");
+
+		volumeWs.onopen = () => {
+			console.log("Connected to wss://mwc2.pacificpool.ws/api/ws-price-indexes/vwap_volume");
+		};
 
 		volumeWs.onmessage = (msg) => {
 			const data = JSON.parse(msg.data);
@@ -205,38 +239,58 @@ export default (config = {}) => ({
 			this.volume_24h = this.formatToEightDecimalPlaces(data.vwap_24h, 8);
 			this.volume_72h = this.formatToEightDecimalPlaces(data.vwap_72h, 8);
 			this.volume_1w = this.formatToEightDecimalPlaces(data.vwap_1w, 8);
+			this.volume_2w = this.formatToEightDecimalPlaces(data.vwap_2w, 8);
 			this.volume_1m = this.formatToEightDecimalPlaces(data.vwap_1m, 8);
 			this.volume_1q = this.formatToEightDecimalPlaces(data.vwap_1q, 8);
 		};
 
 		volumeWs.onclose = () => {
+			console.log("Disconnected from wss://mwc2.pacificpool.ws/api/ws-price-indexes/vwap_volume. Reconnecting...");
 			setTimeout(this.setupVolumeWebSocket.bind(this), 1000); // Reconnect after 1 second
+		};
+
+		volumeWs.onerror = (error) => {
+			console.error("WebSocket error:", error);
 		};
 	},
 
 	setupPriceWebSocket() {
-		const pricesWs = new WebSocket(
-			"wss://mwc2.pacificpool.ws/api/ws-price-indexes/spot_price"
-		);
+		const pricesWs = new WebSocket("wss://mwc2.pacificpool.ws/api/ws-price-indexes/spot_price_mwc");
+
+		pricesWs.onopen = () => {
+			console.log("Connected to wss://mwc2.pacificpool.ws/api/ws-price-indexes/spot_price_mwc");
+		};
 
 		pricesWs.onmessage = (msg) => {
 			this.spotPrice = JSON.parse(msg.data);
 		};
 
 		pricesWs.onclose = () => {
+			console.log("Disconnected from wss://mwc2.pacificpool.ws/api/ws-price-indexes/spot_price_mwc. Reconnecting...");
 			setTimeout(this.setupPriceWebSocket.bind(this), 1000); // Reconnect after 1 second
 		};
 
-		const mwcusdt = new WebSocket(
-			"wss://mwc2.pacificpool.ws/api/ws-price-indexes/mwcusdt_spotprice"
-		);
+		pricesWs.onerror = (error) => {
+			console.error("WebSocket error:", error);
+		};
+
+		const mwcusdt = new WebSocket("wss://mwc2.pacificpool.ws/api/ws-price-indexes/usdt_spotprice");
+
+		mwcusdt.onopen = () => {
+			console.log("Connected to wss://mwc2.pacificpool.ws/api/ws-price-indexes/usdt_spotprice");
+		};
 
 		mwcusdt.onmessage = (msg) => {
 			this.mwcusdtSpotPrice = JSON.parse(msg.data);
 		};
 
 		mwcusdt.onclose = () => {
+			console.log("Disconnected from wss://mwc2.pacificpool.ws/api/ws-price-indexes/usdt_spotprice. Reconnecting...");
 			setTimeout(this.setupPriceWebSocket.bind(this), 1000); // Reconnect after 1 second
+		};
+
+		mwcusdt.onerror = (error) => {
+			console.error("WebSocket error:", error);
 		};
 	},
 
@@ -264,7 +318,3 @@ export default (config = {}) => ({
 		}
 	},
 });
-
-// document.addEventListener('alpine:init', () => {
-//     Alpine.data('data', data)
-// });
