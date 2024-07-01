@@ -49,12 +49,13 @@ export default (config = {}) => ({
 	VwapInterval: null,
 
 	init() {
+		console.log('Component initialized');
 		this.loadFromStorage();
 		this.$nextTick(() => {
 			this.fetchDifficulty();
 			this.fetchUSDTVolumeVWAP();
 			this.fetchInterval();
-			this.fetchVwapInterval();
+			// this.fetchVwapInterval();
 			this.fetchMWCPriceVWAP();
 			this.fetchMovingAverage();
 			this.fetchMWCVolumeVWAP();
@@ -69,6 +70,7 @@ export default (config = {}) => ({
         keys.forEach(key => {
             const value = localStorage.getItem(key);
             if (value !== null) {
+				console.log(`Loading ${key} from storage`);
                 this[key] = JSON.parse(value);
             }
         });
@@ -78,6 +80,7 @@ export default (config = {}) => ({
         const keys = Object.keys(this);
         keys.forEach(key => {
             localStorage.setItem(key, JSON.stringify(this[key]));
+			console.log(`Saving ${key} to storage`);
         });
     },
 
@@ -234,25 +237,25 @@ export default (config = {}) => ({
 			});
 	},
 
-	fetchVwapInterval() {
-		axios
-			.get("https://mwc2.pacificpool.ws/api/price-indexes/vwap_interval")
-			.then((response) => {
-				if (response.status !== 200) {
-					throw new Error("Failed to fetch data");
-				}
-				const data = response.data;
-				console.log("VwapInterval Data:", data);
+	// fetchVwapInterval() {
+	// 	axios
+	// 		.get("https://mwc2.pacificpool.ws/api/price-indexes/vwap_interval")
+	// 		.then((response) => {
+	// 			if (response.status !== 200) {
+	// 				throw new Error("Failed to fetch data");
+	// 			}
+	// 			const data = response.data;
+	// 			console.log("VwapInterval Data:", data);
 
-				this.VwapstartTime = data["Start Time"];
-				this.VwapEndTime = data["End Time"];
-				this.VwapInterval = data["Interval"];
-				this.saveToStorage();
-			})
-			.catch((error) => {
-				console.error("Error:", error.message);
-			});
-	},
+	// 			this.VwapstartTime = data["Start Time"];
+	// 			this.VwapEndTime = data["End Time"];
+	// 			this.VwapInterval = data["Interval"];
+	// 			this.saveToStorage();
+	// 		})
+	// 		.catch((error) => {
+	// 			console.error("Error:", error.message);
+	// 		});
+	// },
 
 	fetchMWCSpotPrice() {
 		axios
