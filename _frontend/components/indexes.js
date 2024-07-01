@@ -49,6 +49,7 @@ export default (config = {}) => ({
 	VwapInterval: null,
 
 	init() {
+		this.loadFromStorage();
 		this.$nextTick(() => {
 			this.fetchDifficulty();
 			this.fetchUSDTVolumeVWAP();
@@ -62,6 +63,23 @@ export default (config = {}) => ({
 			this.fetchUSDTSpotPrice();
 		});
 	},
+
+	loadFromStorage() {
+        const keys = Object.keys(this);
+        keys.forEach(key => {
+            const value = localStorage.getItem(key);
+            if (value !== null) {
+                this[key] = JSON.parse(value);
+            }
+        });
+    },
+
+    saveToStorage() {
+        const keys = Object.keys(this);
+        keys.forEach(key => {
+            localStorage.setItem(key, JSON.stringify(this[key]));
+        });
+    },
 
 	fetchDifficulty() {
 		axios
@@ -80,6 +98,7 @@ export default (config = {}) => ({
 				this.two_weeks_cumulative_difficulty = this.formatString(data["two weeks"]);
 				this.one_month_cumulative_difficulty = this.formatString(data["one month"]);
 				this.one_quarter_cumulative_difficulty = this.formatString(data["one quarter"]);
+				this.saveToStorage();
 			})
 			.catch((error) => {
 				console.error("Error:", error.message);
@@ -102,6 +121,7 @@ export default (config = {}) => ({
 				this.vwap_2w = this.formatToEightDecimalPlaces(data["two weeks"], 8);
 				this.vwap_1m = this.formatToEightDecimalPlaces(data["one month"], 8);
 				this.vwap_1q = this.formatToEightDecimalPlaces(data["one quarter"], 8);
+				this.saveToStorage();
 			})
 			.catch((error) => {
 				console.error("Error:", error.message);
@@ -124,6 +144,7 @@ export default (config = {}) => ({
 				this.volume_2w = this.formatToEightDecimalPlaces(data["two weeks"], 8);
 				this.volume_1m = this.formatToEightDecimalPlaces(data["one month"], 8);
 				this.volume_1q = this.formatToEightDecimalPlaces(data["one quarter"], 8);
+				this.saveToStorage();
 			})
 			.catch((error) => {
 				console.error("Error:", error.message);
@@ -146,6 +167,7 @@ export default (config = {}) => ({
 				this.vwap_usdt_2w = this.formatToEightDecimalPlaces(data["two weeks"], 8);
 				this.vwap_usdt_1m = this.formatToEightDecimalPlaces(data["one month"], 8);
 				this.vwap_usdt_1q = this.formatToEightDecimalPlaces(data["one quarter"], 8);
+				this.saveToStorage();
 			})
 			.catch((error) => {
 				console.error("Error:", error.message);
@@ -168,6 +190,7 @@ export default (config = {}) => ({
 				this.volume_usdt_2w = this.formatToEightDecimalPlaces(data["two weeks"], 8);
 				this.volume_usdt_1m = this.formatToEightDecimalPlaces(data["one month"], 8);
 				this.volume_usdt_1q = this.formatToEightDecimalPlaces(data["one quarter"], 8);
+				this.saveToStorage();
 			})
 			.catch((error) => {
 				console.error("Error:", error.message);
@@ -185,6 +208,7 @@ export default (config = {}) => ({
 				const data = response.data;
 				console.log("moving_average_200 Data:", data);
 				this.moving_average_200 = this.formatString(data["200_day_moving_average"]);
+				this.saveToStorage();
 			})
 			.catch((error) => {
 				console.error("Error:", error.message);
@@ -203,6 +227,7 @@ export default (config = {}) => ({
 				this.startTime = data.starttime;
 				this.endTime = data.endtime;
 				this.interval = data.interval;
+				this.saveToStorage();
 			})
 			.catch((error) => {
 				console.error("Error:", error.message);
@@ -222,6 +247,7 @@ export default (config = {}) => ({
 				this.VwapstartTime = data["Start Time"];
 				this.VwapEndTime = data["End Time"];
 				this.VwapInterval = data["Interval"];
+				this.saveToStorage();
 			})
 			.catch((error) => {
 				console.error("Error:", error.message);
@@ -238,6 +264,7 @@ export default (config = {}) => ({
 				const data = response.data;
 				console.log("moving_average_200 Data:", data);
 				this.spotPrice = data.spot_price;
+				this.saveToStorage();
 			})
 			.catch((error) => {
 				console.error("Error:", error.message);
@@ -254,6 +281,7 @@ export default (config = {}) => ({
 				const data = response.data;
 				console.log("moving_average_200 Data:", data);
 				this.mwcusdtSpotPrice = data.spot_price;
+				this.saveToStorage();
 			})
 			.catch((error) => {
 				console.error("Error:", error.message);
