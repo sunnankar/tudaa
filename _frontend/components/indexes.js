@@ -60,8 +60,7 @@ export default (config = {}) => ({
 			this.fetchMovingAverage();
 			this.fetchMWCVolumeVWAP();
 			this.fetchUSDTPriceVWAP();
-			this.fetchMWCSpotPrice();
-			this.fetchUSDTSpotPrice();
+			this.setupPriceWebSocket();
 		});
 	},
 
@@ -291,6 +290,45 @@ export default (config = {}) => ({
 			});
 	},
 
+	setupPriceWebSocket() {
+		const pricesWs = new WebSocket("wss://mwc2.pacificpool.ws/api/ws-price-indexes/spot_price_mwc");
+
+		pricesWs.onopen = () => {
+			console.log("Connected to wss://mwc2.pacificpool.ws/api/ws-price-indexes/spot_price_mwc");
+		};
+
+		pricesWs.onmessage = (msg) => {
+			this.spotPrice = JSON.parse(msg.data);
+		};
+
+		pricesWs.onclose = () => {
+			console.log("Disconnected from wss://mwc2.pacificpool.ws/api/ws-price-indexes/spot_price_mwc. Reconnecting...");
+			setTimeout(this.setupPriceWebSocket.bind(this), 1000); // Reconnect after 1 second
+		};
+
+		pricesWs.onerror = (error) => {
+			console.error("WebSocket error:", error);
+		};
+
+		const mwcusdt = new WebSocket("wss://mwc2.pacificpool.ws/api/ws-price-indexes/usdt_spotprice");
+
+		mwcusdt.onopen = () => {
+			console.log("Connected to wss://mwc2.pacificpool.ws/api/ws-price-indexes/usdt_spotprice");
+		};
+
+		mwcusdt.onmessage = (msg) => {
+			this.mwcusdtSpotPrice = JSON.parse(msg.data);
+		};
+
+		mwcusdt.onclose = () => {
+			console.log("Disconnected from wss://mwc2.pacificpool.ws/api/ws-price-indexes/usdt_spotprice. Reconnecting...");
+			setTimeout(this.setupPriceWebSocket.bind(this), 1000); // Reconnect after 1 second
+		};
+
+		mwcusdt.onerror = (error) => {
+			console.error("WebSocket error:", error);
+		};
+	},
 
 	formatString(input) {
 		let trimmedInput = String(input).trim();
