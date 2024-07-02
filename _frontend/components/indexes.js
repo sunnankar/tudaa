@@ -165,7 +165,9 @@ export default (config = {}) => ({
 				}
 				const data = response.data;
 				console.log("VWAPUSDT Data:", data);
-				this.vwap_usdt_2h = this.formatToEightDecimalPlaces(data["2 hours"], 8);
+				if (data["2 hours"] !== "None" && data["2 hours"] !== "No data found for the given interval" && data["2 hours"] !== null) {
+                    this.vwap_usdt_2h = this.formatToEightDecimalPlaces(data["2 hours"], 8);
+				}
 				this.vwap_usdt_24h = this.formatToEightDecimalPlaces(data["24 hours"], 8);
 				this.vwap_usdt_72h = this.formatToEightDecimalPlaces(data["72 hours"], 8);
 				this.vwap_usdt_1w = this.formatToEightDecimalPlaces(data["one week"], 8);
