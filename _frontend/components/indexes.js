@@ -142,7 +142,9 @@ export default (config = {}) => ({
 				}
 				const data = response.data;
 				console.log("Volume Data:", data);
-				this.volume_2h = this.formatToEightDecimalPlaces(data["2 hours"], 8);
+				if (data["2 hours"] !== "None" && data["2 hours"] !== "No data found for the given interval" && data["2 hours"] !== null) {
+                    this.volume_2h = this.formatToEightDecimalPlaces(data["2 hours"], 8);
+				}
 				this.volume_24h = this.formatToEightDecimalPlaces(data["24 hours"], 8);
 				this.volume_72h = this.formatToEightDecimalPlaces(data["72 hours"], 8);
 				this.volume_1w = this.formatToEightDecimalPlaces(data["one week"], 8);
@@ -190,7 +192,9 @@ export default (config = {}) => ({
 				}
 				const data = response.data; // Corrected here: Use response.data directly
 				console.log("VWAPUSDT Data:", data);
-				this.volume_usdt_2h = this.formatToEightDecimalPlaces(data["2 hours"], 8);
+				if (data["2 hours"] !== "None" && data["2 hours"] !== "No data found for the given interval" && data["2 hours"] !== null) {
+                    this.volume_usdt_2h = this.formatToEightDecimalPlaces(data["2 hours"], 8);
+				}
 				this.volume_usdt_24h = this.formatToEightDecimalPlaces(data["24 hours"], 8);
 				this.volume_usdt_72h = this.formatToEightDecimalPlaces(data["72 hours"], 8);
 				this.volume_usdt_1w = this.formatToEightDecimalPlaces(data["one week"], 8);
