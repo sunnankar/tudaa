@@ -298,7 +298,7 @@ export default (config = {}) => ({
 		};
 
 		pricesWs.onmessage = (msg) => {
-			this.spotPrice = JSON.parse(msg.data.spot_price);
+			this.spotPrice = JSON.parse(msg.data);
 		};
 
 		pricesWs.onclose = () => {
