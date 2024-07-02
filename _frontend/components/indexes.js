@@ -298,7 +298,7 @@ export default (config = {}) => ({
 		};
 
 		pricesWs.onmessage = (msg) => {
-			this.spotPrice = JSON.parse(msg.data);
+			this.spotPrice = JSON.parse(msg.data.spot_price);
 		};
 
 		pricesWs.onclose = () => {
@@ -317,7 +317,7 @@ export default (config = {}) => ({
 		};
 
 		mwcusdt.onmessage = (msg) => {
-			this.mwcusdtSpotPrice = JSON.parse(msg.data);
+			this.mwcusdtSpotPrice = JSON.parse(msg.data.spot_price);
 		};
 
 		mwcusdt.onclose = () => {
