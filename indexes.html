@@ -31,8 +31,8 @@ permalink: "indexes"
                 <div>
                     <h2 class="text-lg font-semibold">2 Hour VWAP</h2>
                     <dd
-                        x-text="vwap_2h || vwap_24h || vwap_72h || vwap_1w || vwap_2w || vwap_1m || vwap_1q"
-                        class="text-sm font-medium text-gray-600"
+						x-text="vwap_2h !== 'None' && vwap_2h !== 'No data found for the given interval' ? vwap_2h : (vwap_24h !== 'None' && vwap_24h !== 'No data found for the given interval' ? vwap_24h : (vwap_72h !== 'None' && vwap_72h !== 'No data found for the given interval' ? vwap_72h : (vwap_1w !== 'None' && vwap_1w !== 'No data found for the given interval' ? vwap_1w : (vwap_2w !== 'None' && vwap_2w !== 'No data found for the given interval' ? vwap_2w : (vwap_1m !== 'None' && vwap_1m !== 'No data found for the given interval' ? vwap_1m : vwap_1q))))))"
+						class="text-sm font-medium text-gray-600"
                     ></dd>
                 </div>
                 <div>
