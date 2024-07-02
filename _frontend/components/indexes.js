@@ -310,13 +310,14 @@ export default (config = {}) => ({
 			console.error("WebSocket error:", error);
 		};
 
-		const mwcusdt = new WebSocket("wss://mwc2.pacificpool.ws/api/ws-price-indexes/usdt_spotprice");
+		const mwcusdt = new WebSocket("wss://mwc2.pacificpool.ws/api/ws-price-indexes/spot_price_usdt");
 
 		mwcusdt.onopen = () => {
-			console.log("Connected to wss://mwc2.pacificpool.ws/api/ws-price-indexes/usdt_spotprice");
+			console.log("Connected to wss://mwc2.pacificpool.ws/api/ws-price-indexes/spot_price_usdt");
 		};
 
 		mwcusdt.onmessage = (msg) => {
+			console.log("log spot"+msg.data.spot_price)
 			this.mwcusdtSpotPrice = JSON.parse(msg.data.spot_price);
 		};
 
