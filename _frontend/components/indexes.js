@@ -318,7 +318,7 @@ export default (config = {}) => ({
 
 		mwcusdt.onmessage = (msg) => {
 			console.log("log spot"+msg.data)
-			this.mwcusdtSpotPrice = JSON.parse(msg.data.spot_price);
+			this.mwcusdtSpotPrice = JSON.parse(msg.data);
 		};
 
 		mwcusdt.onclose = () => {
