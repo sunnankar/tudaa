@@ -5,413 +5,413 @@ permalink: "indexes"
 ---
 
 <div x-data="indexes()">
-	<div class="container px-4 py-8 mx-auto">
-		<div>
-			<h1 class="text-2xl font-bold">MWC-BTC Price Data</h1>
+    <div class="container px-4 py-8 mx-auto">
+        <div>
+            <h1 class="text-2xl font-bold">MWC-BTC Price Data</h1>
 
-			<div class="mb-6 text-sm text-gray-600">
-				<span>Available data from</span>
-				<strong class="text-gray-800" x-text="VwapstartTime ? VwapstartTime : 'Loading...'"></strong>
-                    to
-                    <strong class="text-gray-800" x-text="VwapEndTime ? VwapEndTime : 'Loading...'"></strong>
+            <div class="mb-6 text-sm text-gray-600">
+                <span>Available data from</span>
+                <strong class="text-gray-800" x-text="VwapstartTime ? VwapstartTime : 'Loading...'"></strong>
+                to
+                <strong class="text-gray-800" x-text="VwapEndTime ? VwapEndTime : 'Loading...'"></strong>
+                <dd
+                    x-text="interval ? `VwapInterval: ${interval}` : 'No data available at the moment for this period'"
+                    class="text-sm font-medium text-gray-600"
+                ></dd>
+            </div>
+
+            <div class="grid grid-cols-4 gap-4">
+                <div>
+                    <h2 class="text-lg font-semibold">Spot Price</h2>
                     <dd
-                        x-text="interval ? `VwapInterval: ${interval}` : 'No data available at the moment for this period'"
+                        x-text="spotPrice"
                         class="text-sm font-medium text-gray-600"
                     ></dd>
-			</div>
-
-			<div class="grid grid-cols-4 gap-4">
-				<div>
-					<h2 class="text-lg font-semibold">Spot Price</h2>
-					<dd
-						x-text="spotPrice"
-						class="text-sm font-medium text-gray-600"
-					></dd>
-				</div>
-				<div>
-					<h2 class="text-lg font-semibold">2 Hour VWAP</h2>
-					<dd
-						x-text="vwap_2h ? vwap_2h : vwap_24h"
-						class="text-sm font-medium text-gray-600"
-					></dd>
-				</div>
-				<div>
-					<h2 class="text-lg font-semibold">24 Hour VWAP</h2>
-					<dd
-						x-text="vwap_24h ? vwap_24h: vwap_72h"
-						class="text-sm font-medium text-gray-600"
-					></dd>
-				</div>
-				<div>
-					<h2 class="text-lg font-semibold">72 Hour VWAP</h2>
-					<dd
-						x-text="vwap_72h ? vwap_72h : vwap_1w"
-						class="text-sm font-medium text-gray-600"
-					></dd>
-				</div>
-				<div>
-					<h2 class="text-lg font-semibold">One Week VWAP</h2>
-					<dd
-						x-text="vwap_1w"
-						class="text-sm font-medium text-gray-600"
-					></dd>
-				</div>
-				<div>
-					<h2 class="text-lg font-semibold">Two Weeks VWAP</h2>
-					<dd
-						x-text="vwap_2w"
-						class="text-sm font-medium text-gray-600"
-					></dd>
-				</div>
-				<div>
-					<h2 class="text-lg font-semibold">One Month VWAP</h2>
-					<dd
-						x-text="vwap_1m"
-						class="text-sm font-medium text-gray-600"
-					></dd>
-				</div>
-				<div>
-					<h2 class="text-lg font-semibold">One Quarter VWAP</h2>
-					<dd
-						x-text="vwap_1q"
-						class="text-sm font-medium text-gray-600"
-					></dd>
-				</div>
-			</div>
-
-			<div class="grid grid-cols-4 gap-4">
-				<div>
-					<h2 class="text-lg font-semibold">2 Hour Volume</h2>
-					<dd
-						x-text="volume_2h ? volume_2h : volume_24h"
-						class="text-sm font-medium text-gray-600"
-					></dd>
-				</div>
-				<div>
-					<h2 class="text-lg font-semibold">24 Hour Volume</h2>
-					<dd
-						x-text="volume_24h ? volume_24h: volume_72h "
-						class="text-sm font-medium text-gray-600"
-					></dd>
-				</div>
-				<div>
-					<h2 class="text-lg font-semibold">72 Hour Volume</h2>
-					<dd
-						x-text="volume_72h ? volume_72h: volume_1w"
-						class="text-sm font-medium text-gray-600"
-					></dd>
-				</div>
-				<div>
-					<h2 class="text-lg font-semibold">One Week Volume</h2>
-					<dd
-						x-text="volume_1w ? volume_1w : volume_2w"
-						class="text-sm font-medium text-gray-600"
-					></dd>
-				</div>
-				<div>
-					<h2 class="text-lg font-semibold">Two Weeks Volume</h2>
-					<dd
-						x-text="volume_2w"
-						class="text-sm font-medium text-gray-600"
-					></dd>
-				</div>
-				<div>
-					<h2 class="text-lg font-semibold">One Month Volume</h2>
-					<dd
-						x-text="volume_1m"
-						class="text-sm font-medium text-gray-600"
-					></dd>
-				</div>
-				<div>
-					<h2 class="text-lg font-semibold">One Quarter Volume</h2>
-					<dd
-						x-text="volume_1q"
-						class="text-sm font-medium text-gray-600"
-					></dd>
-				</div>
-			</div>
-		</div>
-		<div>
-			<h1 class="text-2xl font-bold">MWC-USDT Price Data</h1>
-
-			<div class="mb-6 text-sm text-gray-600">
-				<span>Available data from</span>
-				<strong class="text-gray-800" x-text="VwapstartTime ? VwapstartTime : 'Loading...'"></strong>
-                    to
-                    <strong class="text-gray-800" x-text="VwapEndTime ? VwapEndTime : 'Loading...'"></strong>
+                </div>
+                <div>
+                    <h2 class="text-lg font-semibold">2 Hour VWAP</h2>
                     <dd
-                        x-text="interval ? `VwapInterval: ${interval}` : 'No data available at the moment for this period'"
+                        x-text="vwap_2h || vwap_24h || vwap_72h || vwap_1w || vwap_2w || vwap_1m || vwap_1q"
                         class="text-sm font-medium text-gray-600"
                     ></dd>
-			</div>
-
-			<div class="grid grid-cols-4 gap-4">
-				<div>
-					<h2 class="text-lg font-semibold">Spot Price</h2>
-					<dd
-						x-money.en-US.USD.decimal="mwcusdtSpotPrice"
-						class="text-sm font-medium text-gray-600"
-					></dd>
-				</div>
-				<div>
-					<h2 class="text-lg font-semibold">2 Hour VWAP</h2>
-					<dd
-						x-text="vwap_usdt_2h ? vwap_usdt_2h : vwap_usdt_24h"
-						class="text-sm font-medium text-gray-600"
-					></dd>
-				</div>
-				<div>
-					<h2 class="text-lg font-semibold">24 Hour VWAP</h2>
-					<dd
-						x-text="vwap_usdt_24h ? vwap_usdt_24h: vwap_usdt_72h"
-						class="text-sm font-medium text-gray-600"
-					></dd>
-				</div>
-				<div>
-					<h2 class="text-lg font-semibold">72 Hour VWAP</h2>
-					<dd
-						x-text="vwap_usdt_72h ? vwap_usdt_72h : vwap_usdt_1w"
-						class="text-sm font-medium text-gray-600"
-					></dd>
-				</div>
-				<div>
-					<h2 class="text-lg font-semibold">One Week VWAP</h2>
-					<dd
-						x-text="vwap_usdt_1w ? vwap_usdt_1w : vwap_usdt_2w"
-						class="text-sm font-medium text-gray-600"
-					></dd>
-				</div>
-				<div>
-					<h2 class="text-lg font-semibold">Two Weeks VWAP</h2>
-					<dd
-						x-text="vwap_usdt_2w"
-						class="text-sm font-medium text-gray-600"
-					></dd>
-				</div>
-				<div>
-					<h2 class="text-lg font-semibold">One Month VWAP</h2>
-					<dd
-						x-text="vwap_usdt_1m"
-						class="text-sm font-medium text-gray-600"
-					></dd>
-				</div>
-				<div>
-					<h2 class="text-lg font-semibold">One Quarter VWAP</h2>
-					<dd
-						x-text="vwap_usdt_1q"
-						class="text-sm font-medium text-gray-600"
-					></dd>
-				</div>
-			</div>
-
-			<div class="grid grid-cols-4 gap-4">
-				<div>
-					<h2 class="text-lg font-semibold">2 Hour Volume</h2>
-					<dd
-						x-text="volume_usdt_2h ? volume_usdt_2h : volume_usdt_24h"
-						class="text-sm font-medium text-gray-600"
-					></dd>
-				</div>
-				<div>
-					<h2 class="text-lg font-semibold">24 Hour Volume</h2>
-					<dd
-						x-text="volume_usdt_24h ? volume_usdt_24h:volume_usdt_72h"
-						class="text-sm font-medium text-gray-600"
-					></dd>
-				</div>
-				<div>
-					<h2 class="text-lg font-semibold">72 Hour Volume</h2>
-					<dd
-						x-text="volume_usdt_72h ? volume_usdt_72h:volume_usdt_1w"
-						class="text-sm font-medium text-gray-600"
-					></dd>
-				</div>
-				<div>
-					<h2 class="text-lg font-semibold">One Week Volume</h2>
-					<dd
-						x-text="volume_usdt_1w ? volume_usdt_1w:volume_usdt_2w"
-						class="text-sm font-medium text-gray-600"
-					></dd>
-				</div>
-				<div>
-					<h2 class="text-lg font-semibold">Two Weeks Volume</h2>
-					<dd
-						x-text="volume_usdt_2w"
-						class="text-sm font-medium text-gray-600"
-					></dd>
-				</div>
-				<div>
-					<h2 class="text-lg font-semibold">One Month Volume</h2>
-					<dd
-						x-text="volume_usdt_1m"
-						class="text-sm font-medium text-gray-600"
-					></dd>
-				</div>
-				<div>
-					<h2 class="text-lg font-semibold">One Quarter Volume</h2>
-					<dd
-						x-text="volume_usdt_1q"
-						class="text-sm font-medium text-gray-600"
-					></dd>
-				</div>
-			</div>
-		</div>
-
-		<div class="mt-16">
-			<h1 class="text-2xl font-bold">MWC Blockchain Difficulty Data</h1>
-
-			<div class="mb-6 text-sm text-gray-600">
-				<span>Available data from</span>
-                    <strong class="text-gray-800" x-text="startTime ? startTime : 'Loading...'"></strong>
-                    to
-                    <strong class="text-gray-800" x-text="endTime ? endTime : 'Loading...'"></strong>
+                </div>
+                <div>
+                    <h2 class="text-lg font-semibold">24 Hour VWAP</h2>
                     <dd
-                        x-text="interval ? `Interval: ${interval}` : 'No data available at the moment for this period'"
+                        x-text="vwap_24h || vwap_72h || vwap_1w || vwap_2w || vwap_1m || vwap_1q"
                         class="text-sm font-medium text-gray-600"
                     ></dd>
-			</div>
-
-			<div class="grid grid-cols-4 gap-4">
-				<div>
-					<h2 class="text-lg font-semibold">Current Difficulty</h2>
-					<dd
-						x-text="currentDifficulty ? currentDifficulty : 'No data available at the moment for this period'"
-						class="text-sm font-medium text-gray-600"
-					></dd>
-				</div>
-				<div>
-					<h2 class="text-lg font-semibold">2 Hour Cumulative Difficulty</h2>
-					<dd
-						x-text="two_hour_cumulative_difficulty ? two_hour_cumulative_difficulty : twenty_four_hour_cumulative_difficulty"
-						class="text-sm font-medium text-gray-600"
-					></dd>
-				</div>
-				<div>
-					<h2 class="text-lg font-semibold">24 Hour Cumulative Difficulty</h2>
-					<dd
-						x-text="twenty_four_hour_cumulative_difficulty ? twenty_four_hour_cumulative_difficulty : 'Loading.....'"
-						class="text-sm font-medium text-gray-600"
-					></dd>
-				</div>
-				<div>
-					<h2 class="text-lg font-semibold">72 Hour Cumulative Difficulty</h2>
-					<dd
-						x-text="seventy_two_hour_cumulative_difficulty ? seventy_two_hour_cumulative_difficulty : 'Loading.....'"
-						class="text-sm font-medium text-gray-600"
-					></dd>
-				</div>
-				<div>
-					<h2 class="text-lg font-semibold">One Week Cumulative Difficulty</h2>
-					<dd
-						x-text="one_week_cumulative_difficulty ? one_week_cumulative_difficulty : 'Loading.....'"
-						class="text-sm font-medium text-gray-600"
-					></dd>
-				</div>
-				<div>
-					<h2 class="text-lg font-semibold">Two Weeks Cumulative Difficulty</h2>
-					<dd
-						x-text="one_week_cumulative_difficulty ? one_week_cumulative_difficulty : 'Loading.....'"
-						class="text-sm font-medium text-gray-600"
-					></dd>
-				</div>
-				<div>
-					<h2 class="text-lg font-semibold">One Month Cumulative Difficulty</h2>
-					<dd
-						x-text="one_month_cumulative_difficulty ? one_month_cumulative_difficulty : 'Loading.....'"
-						class="text-sm font-medium text-gray-600"
-					></dd>
-				</div>
-				<div>
-					<h2 class="text-lg font-semibold">
-						One Quarter Cumulative Difficulty
-					</h2>
-					<dd
-						x-text="one_quarter_cumulative_difficulty ? one_quarter_cumulative_difficulty : 'Loading.....'"
-						class="text-sm font-medium text-gray-600"
-					></dd>
-				</div>
-				<div>
-					<h2 class="text-lg font-semibold">
-						2OO Day Moving Average
-					</h2>
-					<dd
-						x-text="moving_average_200 ? moving_average_200 : 'Loading.....'"
-						class="text-sm font-medium text-gray-600"
-					></dd>
-				</div>
-			</div>
-		</div>
-
-		<div class="mt-16">
-			<h1 class="text-2xl font-bold">GRIN Blockchain Difficulty Data</h1>
-
-			<div class="mb-6 text-sm text-gray-600">
-				<span>Available data from</span>
-                    <strong class="text-gray-800" x-text="startTime ? startTime : 'Loading...'"></strong>
-                    to
-                    <strong class="text-gray-800" x-text="endTime ? endTime : 'Loading...'"></strong>
+                </div>
+                <div>
+                    <h2 class="text-lg font-semibold">72 Hour VWAP</h2>
                     <dd
-                        x-text="interval ? `Interval: ${interval}` : 'No data available at the moment for this period'"
+                        x-text="vwap_72h || vwap_1w || vwap_2w || vwap_1m || vwap_1q"
                         class="text-sm font-medium text-gray-600"
                     ></dd>
-			</div>
+                </div>
+                <div>
+                    <h2 class="text-lg font-semibold">One Week VWAP</h2>
+                    <dd
+                        x-text="vwap_1w || vwap_2w || vwap_1m || vwap_1q"
+                        class="text-sm font-medium text-gray-600"
+                    ></dd>
+                </div>
+                <div>
+                    <h2 class="text-lg font-semibold">Two Weeks VWAP</h2>
+                    <dd
+                        x-text="vwap_2w || vwap_1m || vwap_1q"
+                        class="text-sm font-medium text-gray-600"
+                    ></dd>
+                </div>
+                <div>
+                    <h2 class="text-lg font-semibold">One Month VWAP</h2>
+                    <dd
+                        x-text="vwap_1m || vwap_1q"
+                        class="text-sm font-medium text-gray-600"
+                    ></dd>
+                </div>
+                <div>
+                    <h2 class="text-lg font-semibold">One Quarter VWAP</h2>
+                    <dd
+                        x-text="vwap_1q"
+                        class="text-sm font-medium text-gray-600"
+                    ></dd>
+                </div>
+            </div>
 
-			<div class="grid grid-cols-4 gap-4">
-				<div>
-					<h2 class="text-lg font-semibold">Current Difficulty</h2>
-					<dd
-						x-text="currentDifficulty ? currentDifficulty : 'No data available at the moment for this period'"
-						class="text-sm font-medium text-gray-600"
-					></dd>
-				</div>
-				<div>
-					<h2 class="text-lg font-semibold">2 Hour Cumulative Difficulty</h2>
-					<dd
-						x-text="two_hour_cumulative_difficulty ? two_hour_cumulative_difficulty : 'Loading.....'"
-						class="text-sm font-medium text-gray-600"
-					></dd>
-				</div>
-				<div>
-					<h2 class="text-lg font-semibold">24 Hour Cumulative Difficulty</h2>
-					<dd
-						x-text="twenty_four_hour_cumulative_difficulty ? twenty_four_hour_cumulative_difficulty : 'Loading.....'"
-						class="text-sm font-medium text-gray-600"
-					></dd>
-				</div>
-				<div>
-					<h2 class="text-lg font-semibold">72 Hour Cumulative Difficulty</h2>
-					<dd
-						x-text="seventy_two_hour_cumulative_difficulty ? seventy_two_hour_cumulative_difficulty : 'Loading.....'"
-						class="text-sm font-medium text-gray-600"
-					></dd>
-				</div>
-				<div>
-					<h2 class="text-lg font-semibold">One Week Cumulative Difficulty</h2>
-					<dd
-						x-text="one_week_cumulative_difficulty ? one_week_cumulative_difficulty : 'Loading.....'"
-						class="text-sm font-medium text-gray-600"
-					></dd>
-				</div>
-				<div>
-					<h2 class="text-lg font-semibold">One Month Cumulative Difficulty</h2>
-					<dd
-						x-text="one_month_cumulative_difficulty ? one_month_cumulative_difficulty : 'Loading.....'"
-						class="text-sm font-medium text-gray-600"
-					></dd>
-				</div>
-				<div>
-					<h2 class="text-lg font-semibold">
-						One Quarter Cumulative Difficulty
-					</h2>
-					<dd
-						x-text="one_quarter_cumulative_difficulty ? one_quarter_cumulative_difficulty : 'Loading.....'"
-						class="text-sm font-medium text-gray-600"
-					></dd>
-				</div>
-			</div>
-	</div>
-	</div>
+            <div class="grid grid-cols-4 gap-4">
+                <div>
+                    <h2 class="text-lg font-semibold">2 Hour Volume</h2>
+                    <dd
+                        x-text="volume_2h || volume_24h || volume_72h || volume_1w || volume_2w || volume_1m || volume_1q"
+                        class="text-sm font-medium text-gray-600"
+                    ></dd>
+                </div>
+                <div>
+                    <h2 class="text-lg font-semibold">24 Hour Volume</h2>
+                    <dd
+                        x-text="volume_24h || volume_72h || volume_1w || volume_2w || volume_1m || volume_1q"
+                        class="text-sm font-medium text-gray-600"
+                    ></dd>
+                </div>
+                <div>
+                    <h2 class="text-lg font-semibold">72 Hour Volume</h2>
+                    <dd
+                        x-text="volume_72h || volume_1w || volume_2w || volume_1m || volume_1q"
+                        class="text-sm font-medium text-gray-600"
+                    ></dd>
+                </div>
+                <div>
+                    <h2 class="text-lg font-semibold">One Week Volume</h2>
+                    <dd
+                        x-text="volume_1w || volume_2w || volume_1m || volume_1q"
+                        class="text-sm font-medium text-gray-600"
+                    ></dd>
+                </div>
+                <div>
+                    <h2 class="text-lg font-semibold">Two Weeks Volume</h2>
+                    <dd
+                        x-text="volume_2w || volume_1m || volume_1q"
+                        class="text-sm font-medium text-gray-600"
+                    ></dd>
+                </div>
+                <div>
+                    <h2 class="text-lg font-semibold">One Month Volume</h2>
+                    <dd
+                        x-text="volume_1m || volume_1q"
+                        class="text-sm font-medium text-gray-600"
+                    ></dd>
+                </div>
+                <div>
+                    <h2 class="text-lg font-semibold">One Quarter Volume</h2>
+                    <dd
+                        x-text="volume_1q"
+                        class="text-sm font-medium text-gray-600"
+                    ></dd>
+                </div>
+            </div>
+        </div>
+        <div>
+            <h1 class="text-2xl font-bold">MWC-USDT Price Data</h1>
+
+            <div class="mb-6 text-sm text-gray-600">
+                <span>Available data from</span>
+                <strong class="text-gray-800" x-text="VwapstartTime ? VwapstartTime : 'Loading...'"></strong>
+                to
+                <strong class="text-gray-800" x-text="VwapEndTime ? VwapEndTime : 'Loading...'"></strong>
+                <dd
+                    x-text="interval ? `VwapInterval: ${interval}` : 'No data available at the moment for this period'"
+                    class="text-sm font-medium text-gray-600"
+                ></dd>
+            </div>
+
+            <div class="grid grid-cols-4 gap-4">
+                <div>
+                    <h2 class="text-lg font-semibold">Spot Price</h2>
+                    <dd
+                        x-money.en-US.USD.decimal="mwcusdtSpotPrice"
+                        class="text-sm font-medium text-gray-600"
+                    ></dd>
+                </div>
+                <div>
+                    <h2 class="text-lg font-semibold">2 Hour VWAP</h2>
+                    <dd
+                        x-text="vwap_usdt_2h || vwap_usdt_24h || vwap_usdt_72h || vwap_usdt_1w || vwap_usdt_2w || vwap_usdt_1m || vwap_usdt_1q"
+                        class="text-sm font-medium text-gray-600"
+                    ></dd>
+                </div>
+                <div>
+                    <h2 class="text-lg font-semibold">24 Hour VWAP</h2>
+                    <dd
+                        x-text="vwap_usdt_24h || vwap_usdt_72h || vwap_usdt_1w || vwap_usdt_2w || vwap_usdt_1m || vwap_usdt_1q"
+                        class="text-sm font-medium text-gray-600"
+                    ></dd>
+                </div>
+                <div>
+                    <h2 class="text-lg font-semibold">72 Hour VWAP</h2>
+                    <dd
+                        x-text="vwap_usdt_72h || vwap_usdt_1w || vwap_usdt_2w || vwap_usdt_1m || vwap_usdt_1q"
+                        class="text-sm font-medium text-gray-600"
+                    ></dd>
+                </div>
+                <div>
+                    <h2 class="text-lg font-semibold">One Week VWAP</h2>
+                    <dd
+                        x-text="vwap_usdt_1w || vwap_usdt_2w || vwap_usdt_1m || vwap_usdt_1q"
+                        class="text-sm font-medium text-gray-600"
+                    ></dd>
+                </div>
+                <div>
+                    <h2 class="text-lg font-semibold">Two Weeks VWAP</h2>
+                    <dd
+                        x-text="vwap_usdt_2w || vwap_usdt_1m || vwap_usdt_1q"
+                        class="text-sm font-medium text-gray-600"
+                    ></dd>
+                </div>
+                <div>
+                    <h2 class="text-lg font-semibold">One Month VWAP</h2>
+                    <dd
+                        x-text="vwap_usdt_1m || vwap_usdt_1q"
+                        class="text-sm font-medium text-gray-600"
+                    ></dd>
+                </div>
+                <div>
+                    <h2 class="text-lg font-semibold">One Quarter VWAP</h2>
+                    <dd
+                        x-text="vwap_usdt_1q"
+                        class="text-sm font-medium text-gray-600"
+                    ></dd>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-4 gap-4">
+                <div>
+                    <h2 class="text-lg font-semibold">2 Hour Volume</h2>
+                    <dd
+                        x-text="volume_usdt_2h || volume_usdt_24h || volume_usdt_72h || volume_usdt_1w || volume_usdt_2w || volume_usdt_1m || volume_usdt_1q"
+                        class="text-sm font-medium text-gray-600"
+                    ></dd>
+                </div>
+                <div>
+                    <h2 class="text-lg font-semibold">24 Hour Volume</h2>
+                    <dd
+                        x-text="volume_usdt_24h || volume_usdt_72h || volume_usdt_1w || volume_usdt_2w || volume_usdt_1m || volume_usdt_1q"
+                        class="text-sm font-medium text-gray-600"
+                    ></dd>
+                </div>
+                <div>
+                    <h2 class="text-lg font-semibold">72 Hour Volume</h2>
+                    <dd
+                        x-text="volume_usdt_72h || volume_usdt_1w || volume_usdt_2w || volume_usdt_1m || volume_usdt_1q"
+                        class="text-sm font-medium text-gray-600"
+                    ></dd>
+                </div>
+                <div>
+                    <h2 class="text-lg font-semibold">One Week Volume</h2>
+                    <dd
+                        x-text="volume_usdt_1w || volume_usdt_2w || volume_usdt_1m || volume_usdt_1q"
+                        class="text-sm font-medium text-gray-600"
+                    ></dd>
+                </div>
+                <div>
+                    <h2 class="text-lg font-semibold">Two Weeks Volume</h2>
+                    <dd
+                        x-text="volume_usdt_2w || volume_usdt_1m || volume_usdt_1q"
+                        class="text-sm font-medium text-gray-600"
+                    ></dd>
+                </div>
+                <div>
+                    <h2 class="text-lg font-semibold">One Month Volume</h2>
+                    <dd
+                        x-text="volume_usdt_1m || volume_usdt_1q"
+                        class="text-sm font-medium text-gray-600"
+                    ></dd>
+                </div>
+                <div>
+                    <h2 class="text-lg font-semibold">One Quarter Volume</h2>
+                    <dd
+                        x-text="volume_usdt_1q"
+                        class="text-sm font-medium text-gray-600"
+                    ></dd>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-16">
+            <h1 class="text-2xl font-bold">MWC Blockchain Difficulty Data</h1>
+
+            <div class="mb-6 text-sm text-gray-600">
+                <span>Available data from</span>
+                <strong class="text-gray-800" x-text="startTime ? startTime : 'Loading...'"></strong>
+                to
+                <strong class="text-gray-800" x-text="endTime ? endTime : 'Loading...'"></strong>
+                <dd
+                    x-text="interval ? `Interval: ${interval}` : 'No data available at the moment for this period'"
+                    class="text-sm font-medium text-gray-600"
+                ></dd>
+            </div>
+
+            <div class="grid grid-cols-4 gap-4">
+                <div>
+                    <h2 class="text-lg font-semibold">Current Difficulty</h2>
+                    <dd
+                        x-text="currentDifficulty ? currentDifficulty : 'No data available at the moment for this period'"
+                        class="text-sm font-medium text-gray-600"
+                    ></dd>
+                </div>
+                <div>
+                    <h2 class="text-lg font-semibold">2 Hour Cumulative Difficulty</h2>
+                    <dd
+                        x-text="two_hour_cumulative_difficulty || twenty_four_hour_cumulative_difficulty || seventy_two_hour_cumulative_difficulty || one_week_cumulative_difficulty || one_month_cumulative_difficulty || one_quarter_cumulative_difficulty"
+                        class="text-sm font-medium text-gray-600"
+                    ></dd>
+                </div>
+                <div>
+                    <h2 class="text-lg font-semibold">24 Hour Cumulative Difficulty</h2>
+                    <dd
+                        x-text="twenty_four_hour_cumulative_difficulty || seventy_two_hour_cumulative_difficulty || one_week_cumulative_difficulty || one_month_cumulative_difficulty || one_quarter_cumulative_difficulty"
+                        class="text-sm font-medium text-gray-600"
+                    ></dd>
+                </div>
+                <div>
+                    <h2 class="text-lg font-semibold">72 Hour Cumulative Difficulty</h2>
+                    <dd
+                        x-text="seventy_two_hour_cumulative_difficulty || one_week_cumulative_difficulty || one_month_cumulative_difficulty || one_quarter_cumulative_difficulty"
+                        class="text-sm font-medium text-gray-600"
+                    ></dd>
+                </div>
+                <div>
+                    <h2 class="text-lg font-semibold">One Week Cumulative Difficulty</h2>
+                    <dd
+                        x-text="one_week_cumulative_difficulty || one_month_cumulative_difficulty || one_quarter_cumulative_difficulty"
+                        class="text-sm font-medium text-gray-600"
+                    ></dd>
+                </div>
+                <div>
+                    <h2 class="text-lg font-semibold">Two Weeks Cumulative Difficulty</h2>
+                    <dd
+                        x-text="two_week_cumulative_difficulty || one_month_cumulative_difficulty || one_quarter_cumulative_difficulty"
+                        class="text-sm font-medium text-gray-600"
+                    ></dd>
+                </div>
+                <div>
+                    <h2 class="text-lg font-semibold">One Month Cumulative Difficulty</h2>
+                    <dd
+                        x-text="one_month_cumulative_difficulty || one_quarter_cumulative_difficulty"
+                        class="text-sm font-medium text-gray-600"
+                    ></dd>
+                </div>
+                <div>
+                    <h2 class="text-lg font-semibold">One Quarter Cumulative Difficulty</h2>
+                    <dd
+                        x-text="one_quarter_cumulative_difficulty"
+                        class="text-sm font-medium text-gray-600"
+                    ></dd>
+                </div>
+                <div>
+                    <h2 class="text-lg font-semibold">200 Day Moving Average</h2>
+                    <dd
+                        x-text="moving_average_200 ? moving_average_200 : 'Loading.....'"
+                        class="text-sm font-medium text-gray-600"
+                    ></dd>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-16">
+            <h1 class="text-2xl font-bold">GRIN Blockchain Difficulty Data</h1>
+
+            <div class="mb-6 text-sm text-gray-600">
+                <span>Available data from</span>
+                <strong class="text-gray-800" x-text="startTime ? startTime : 'Loading...'"></strong>
+                to
+                <strong class="text-gray-800" x-text="endTime ? endTime : 'Loading...'"></strong>
+                <dd
+                    x-text="interval ? `Interval: ${interval}` : 'No data available at the moment for this period'"
+                    class="text-sm font-medium text-gray-600"
+                ></dd>
+            </div>
+
+            <div class="grid grid-cols-4 gap-4">
+                <div>
+                    <h2 class="text-lg font-semibold">Current Difficulty</h2>
+                    <dd
+                        x-text="currentDifficulty ? currentDifficulty : 'No data available at the moment for this period'"
+                        class="text-sm font-medium text-gray-600"
+                    ></dd>
+                </div>
+                <div>
+                    <h2 class="text-lg font-semibold">2 Hour Cumulative Difficulty</h2>
+                    <dd
+                        x-text="two_hour_cumulative_difficulty || twenty_four_hour_cumulative_difficulty || seventy_two_hour_cumulative_difficulty || one_week_cumulative_difficulty || one_month_cumulative_difficulty || one_quarter_cumulative_difficulty"
+                        class="text-sm font-medium text-gray-600"
+                    ></dd>
+                </div>
+                <div>
+                    <h2 class="text-lg font-semibold">24 Hour Cumulative Difficulty</h2>
+                    <dd
+                        x-text="twenty_four_hour_cumulative_difficulty || seventy_two_hour_cumulative_difficulty || one_week_cumulative_difficulty || one_month_cumulative_difficulty || one_quarter_cumulative_difficulty"
+                        class="text-sm font-medium text-gray-600"
+                    ></dd>
+                </div>
+                <div>
+                    <h2 class="text-lg font-semibold">72 Hour Cumulative Difficulty</h2>
+                    <dd
+                        x-text="seventy_two_hour_cumulative_difficulty || one_week_cumulative_difficulty || one_month_cumulative_difficulty || one_quarter_cumulative_difficulty"
+                        class="text-sm font-medium text-gray-600"
+                    ></dd>
+                </div>
+                <div>
+                    <h2 class="text-lg font-semibold">One Week Cumulative Difficulty</h2>
+                    <dd
+                        x-text="one_week_cumulative_difficulty || one_month_cumulative_difficulty || one_quarter_cumulative_difficulty"
+                        class="text-sm font-medium text-gray-600"
+                    ></dd>
+                </div>
+                <div>
+                    <h2 class="text-lg font-semibold">Two Weeks Cumulative Difficulty</h2>
+                    <dd
+                        x-text="two_week_cumulative_difficulty || one_month_cumulative_difficulty || one_quarter_cumulative_difficulty"
+                        class="text-sm font-medium text-gray-600"
+                    ></dd>
+                </div>
+                <div>
+                    <h2 class="text-lg font-semibold">One Month Cumulative Difficulty</h2>
+                    <dd
+                        x-text="one_month_cumulative_difficulty || one_quarter_cumulative_difficulty"
+                        class="text-sm font-medium text-gray-600"
+                    ></dd>
+                </div>
+                <div>
+                    <h2 class="text-lg font-semibold">One Quarter Cumulative Difficulty</h2>
+                    <dd
+                        x-text="one_quarter_cumulative_difficulty"
+                        class="text-sm font-medium text-gray-600"
+                    ></dd>
+                </div>
+            </div>
+    </div>
 </div>
 
-	</div>
+</div>
 </div>
