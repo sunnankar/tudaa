@@ -323,7 +323,7 @@ export default (config = {}) => ({
 			const data = JSON.parse(msg.data);
 			const spotPrice = data.spot_price;
 			console.log("spotPrice",spotPrice)
-			this.spotPrice = spotPrice;
+			this.mwcusdtSpotPrice = spotPrice;
 		};
 
 		mwcusdt.onclose = () => {
