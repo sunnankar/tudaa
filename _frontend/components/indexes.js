@@ -299,7 +299,8 @@ export default (config = {}) => ({
 
 		pricesWs.onmessage = (msg) => {
 			const data = JSON.parse(msg.data);
-            const spotPrice = data.spot_price;
+			const spotPrice = data.spot_price;
+			console.log("spotPrice",spotPrice)
 			this.spotPrice = spotPrice;
 		};
 
@@ -319,8 +320,10 @@ export default (config = {}) => ({
 		};
 
 		mwcusdt.onmessage = (msg) => {
-			console.log("log spot"+msg.data)
-			this.mwcusdtSpotPrice = JSON.parse(msg.data);
+			const data = JSON.parse(msg.data);
+			const spotPrice = data.spot_price;
+			console.log("spotPrice",spotPrice)
+			this.spotPrice = spotPrice;
 		};
 
 		mwcusdt.onclose = () => {
@@ -332,7 +335,6 @@ export default (config = {}) => ({
 			console.error("WebSocket error:", error);
 		};
 	},
-
 	formatString(input) {
 		let trimmedInput = String(input).trim();
 		if (!isNaN(trimmedInput) && trimmedInput !== "") {
