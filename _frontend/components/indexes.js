@@ -116,7 +116,10 @@ export default (config = {}) => ({
 				}
 				const data = response.data;
 				console.log("VWAP Data:", data);
-				this.vwap_2h = this.formatToEightDecimalPlaces(data["2 hours"], 8);
+				if (data["2 hours"] !== "None" && data["2 hours"] !== "No data found for the given interval" && data["2 hours"] !== null) {
+                    this.vwap_2h = this.formatToEightDecimalPlaces(data["2 hours"], 8);
+                }
+				
 				this.vwap_24h = this.formatToEightDecimalPlaces(data["24 hours"], 8);
 				this.vwap_72h = this.formatToEightDecimalPlaces(data["72 hours"], 8);
 				this.vwap_1w = this.formatToEightDecimalPlaces(data["one week"], 8);
