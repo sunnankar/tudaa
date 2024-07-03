@@ -60,7 +60,7 @@ export default (config = {}) => ({
 			this.fetchMovingAverage();
 			this.fetchMWCVolumeVWAP();
 			this.fetchUSDTPriceVWAP();
-			this.setupPriceWebSocket();
+			// this.setupPriceWebSocket();
 		});
 	},
 
