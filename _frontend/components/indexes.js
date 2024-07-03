@@ -85,7 +85,7 @@ export default (config = {}) => ({
 
 	fetchDifficulty() {
 		axios
-			.get("https://mwc2.pacificpool.ws/api/price-indexes/cumulative_difficulty")
+			.get("https://mwc2.pacificpool.ws/api/price-indexes/cumulative_difficulty_optimized")
 			.then((response) => {
 				if (response.status !== 200) {
 					throw new Error("Failed to fetch data");
