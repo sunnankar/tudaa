@@ -275,8 +275,8 @@ export default (config = {}) => ({
 					throw new Error("Failed to fetch data");
 				}
 				const data = response.data;
-				console.log("moving_average_200 Data:", data);
-				this.spotPrice = data.spot_price;
+				console.log("MWC spot price Data:", data);
+				this.spotPrice = data;
 				this.saveToStorage();
 			})
 			.catch((error) => {
@@ -292,8 +292,8 @@ export default (config = {}) => ({
 					throw new Error("Failed to fetch data");
 				}
 				const data = response.data;
-				console.log("moving_average_200 Data:", data);
-				this.mwcusdtSpotPrice = data.spot_price;
+				console.log("USDT spot price Data:", data);
+				this.mwcusdtSpotPrice = data;
 				this.saveToStorage();
 			})
 			.catch((error) => {
