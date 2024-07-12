@@ -228,24 +228,24 @@ export default (config = {}) => ({
 			});
 	},
 
-	fetchInterval() {
-		axios
-			.get("https://mwc2.pacificpool.ws/api/price-indexes/cumulative_difficulty_db_interval")
-			.then((response) => {
-				if (response.status !== 200) {
-					throw new Error("Failed to fetch data");
-				}
-				const data = response.data;
-				console.log("Difficulty Interval Data:", data);
-				this.startTime = data.starttime;
-				this.endTime = data.endtime;
-				this.interval = data.interval;
-				this.saveToStorage();
-			})
-			.catch((error) => {
-				console.error("Error:", error.message);
-			});
-	},
+	// fetchInterval() {
+	// 	axios
+	// 		.get("https://mwc2.pacificpool.ws/api/price-indexes/cumulative_difficulty_db_interval")
+	// 		.then((response) => {
+	// 			if (response.status !== 200) {
+	// 				throw new Error("Failed to fetch data");
+	// 			}
+	// 			const data = response.data;
+	// 			console.log("Difficulty Interval Data:", data);
+	// 			this.startTime = data.starttime;
+	// 			this.endTime = data.endtime;
+	// 			this.interval = data.interval;
+	// 			this.saveToStorage();
+	// 		})
+	// 		.catch((error) => {
+	// 			console.error("Error:", error.message);
+	// 		});
+	// },
 
 	// fetchVwapInterval() {
 	// 	axios
