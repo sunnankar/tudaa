@@ -50,40 +50,21 @@ export default (config = {}) => ({
 
 	init() {
 		console.log('Component initialized');
-		this.loadFromStorage();
 		this.$nextTick(() => {
 			this.fetchDifficulty();
 			this.fetchUSDTVolumeVWAP();
-			this.fetchInterval();
+			// this.fetchInterval();
 			// this.fetchVwapInterval();
-			this.fetchMWCPriceVWAP();
-			this.fetchMovingAverage();
-			this.fetchMWCVolumeVWAP();
-			this.fetchUSDTPriceVWAP();
-			this.fetchMWCSpotPrice();
-			this.fetchUSDTSpotPrice();
+			// this.fetchMWCPriceVWAP();
+			// this.fetchMovingAverage();
+			// this.fetchMWCVolumeVWAP();
+			// this.fetchUSDTPriceVWAP();
+			// this.fetchMWCSpotPrice();
+			// this.fetchUSDTSpotPrice();
 			// this.setupPriceWebSocket();
 		});
 	},
 
-	loadFromStorage() {
-        const keys = Object.keys(this);
-        keys.forEach(key => {
-            const value = localStorage.getItem(key);
-            if (value !== null) {
-				console.log(`Loading ${key} from storage`);
-                this[key] = JSON.parse(value);
-            }
-        });
-    },
-
-    saveToStorage() {
-        const keys = Object.keys(this);
-        keys.forEach(key => {
-            localStorage.setItem(key, JSON.stringify(this[key]));
-			console.log(`Saving ${key} to storage`);
-        });
-    },
 
 	fetchDifficulty() {
 		axios
@@ -102,7 +83,6 @@ export default (config = {}) => ({
 				this.two_weeks_cumulative_difficulty = this.formatString(data["two weeks"]);
 				this.one_month_cumulative_difficulty = this.formatString(data["one month"]);
 				this.one_quarter_cumulative_difficulty = this.formatString(data["one quarter"]);
-				this.saveToStorage();
 			})
 			.catch((error) => {
 				console.error("Error:", error.message);
@@ -128,7 +108,7 @@ export default (config = {}) => ({
 				this.vwap_2w = this.formatToEightDecimalPlaces(data["two weeks"], 8);
 				this.vwap_1m = this.formatToEightDecimalPlaces(data["one month"], 8);
 				this.vwap_1q = this.formatToEightDecimalPlaces(data["one quarter"], 8);
-				this.saveToStorage();
+	
 			})
 			.catch((error) => {
 				console.error("Error:", error.message);
@@ -153,7 +133,7 @@ export default (config = {}) => ({
 				this.volume_2w = this.formatToEightDecimalPlaces(data["two weeks"], 8);
 				this.volume_1m = this.formatToEightDecimalPlaces(data["one month"], 8);
 				this.volume_1q = this.formatToEightDecimalPlaces(data["one quarter"], 8);
-				this.saveToStorage();
+				
 			})
 			.catch((error) => {
 				console.error("Error:", error.message);
@@ -178,7 +158,7 @@ export default (config = {}) => ({
 				this.vwap_usdt_2w = this.formatToEightDecimalPlaces(data["two weeks"], 8);
 				this.vwap_usdt_1m = this.formatToEightDecimalPlaces(data["one month"], 8);
 				this.vwap_usdt_1q = this.formatToEightDecimalPlaces(data["one quarter"], 8);
-				this.saveToStorage();
+				
 			})
 			.catch((error) => {
 				console.error("Error:", error.message);
@@ -203,7 +183,7 @@ export default (config = {}) => ({
 				this.volume_usdt_2w = this.formatToEightDecimalPlaces(data["two weeks"], 8);
 				this.volume_usdt_1m = this.formatToEightDecimalPlaces(data["one month"], 8);
 				this.volume_usdt_1q = this.formatToEightDecimalPlaces(data["one quarter"], 8);
-				this.saveToStorage();
+				
 			})
 			.catch((error) => {
 				console.error("Error:", error.message);
@@ -221,7 +201,7 @@ export default (config = {}) => ({
 				const data = response.data;
 				console.log("moving_average_200 Data:", data);
 				this.moving_average_200 = this.formatString(data["200_day_moving_average"]);
-				this.saveToStorage();
+				
 			})
 			.catch((error) => {
 				console.error("Error:", error.message);
@@ -240,7 +220,7 @@ export default (config = {}) => ({
 	// 			this.startTime = data.starttime;
 	// 			this.endTime = data.endtime;
 	// 			this.interval = data.interval;
-	// 			this.saveToStorage();
+	// 			
 	// 		})
 	// 		.catch((error) => {
 	// 			console.error("Error:", error.message);
@@ -260,7 +240,7 @@ export default (config = {}) => ({
 	// 			this.VwapstartTime = data["Start Time"];
 	// 			this.VwapEndTime = data["End Time"];
 	// 			this.VwapInterval = data["Interval"];
-	// 			this.saveToStorage();
+				
 	// 		})
 	// 		.catch((error) => {
 	// 			console.error("Error:", error.message);
@@ -277,7 +257,7 @@ export default (config = {}) => ({
 				const data = response.data;
 				console.log("MWC spot price Data:", data);
 				this.spotPrice = data;
-				this.saveToStorage();
+				
 			})
 			.catch((error) => {
 				console.error("Error:", error.message);
@@ -294,7 +274,7 @@ export default (config = {}) => ({
 				const data = response.data;
 				console.log("USDT spot price Data:", data);
 				this.mwcusdtSpotPrice = data;
-				this.saveToStorage();
+				
 			})
 			.catch((error) => {
 				console.error("Error:", error.message);
