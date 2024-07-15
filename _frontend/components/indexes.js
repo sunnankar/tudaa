@@ -55,12 +55,12 @@ export default (config = {}) => ({
 			this.fetchUSDTVolumeVWAP();
 			// this.fetchInterval();
 			// this.fetchVwapInterval();
-			// this.fetchMWCPriceVWAP();
-			// this.fetchMovingAverage();
-			// this.fetchMWCVolumeVWAP();
-			// this.fetchUSDTPriceVWAP();
-			// this.fetchMWCSpotPrice();
-			// this.fetchUSDTSpotPrice();
+			this.fetchMWCPriceVWAP();
+			this.fetchMovingAverage();
+			this.fetchMWCVolumeVWAP();
+			this.fetchUSDTPriceVWAP();
+			this.fetchMWCSpotPrice();
+			this.fetchUSDTSpotPrice();
 			// this.setupPriceWebSocket();
 		});
 	},
