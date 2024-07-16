@@ -121,9 +121,6 @@ export default (config = {}) => ({
 					this.vwap_24h = this.formatToEightDecimalPlaces(data["24 hours"], 8);
 				}
 
-				
-
-				this.vwap_24h = this.formatToEightDecimalPlaces(data["24 hours"], 8);
 				this.vwap_72h = this.formatToEightDecimalPlaces(data["72 hours"], 8);
 				this.vwap_1w = this.formatToEightDecimalPlaces(data["one week"], 8);
 				this.vwap_2w = this.formatToEightDecimalPlaces(data["two weeks"], 8);
