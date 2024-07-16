@@ -85,7 +85,7 @@ export default (config = {}) => ({
 
 				console.log("Assigned 2 Hour Cumulative Difficulty:", this.two_hour_cumulative_difficulty);
 
-				this.current_difficulty = this.formatToEightDecimalPlaces(data["current_difficulty"], 8);
+				this.currentDifficulty = this.formatToEightDecimalPlaces(data["current_difficulty"], 8);
 				this.twenty_four_hour_cumulative_difficulty = this.formatToEightDecimalPlaces(data["24 hours"], 8);
 				this.seventy_two_hour_cumulative_difficulty = this.formatToEightDecimalPlaces(data["72 hours"], 8);
 				this.one_week_cumulative_difficulty = this.formatToEightDecimalPlaces(data["one week"], 8);
