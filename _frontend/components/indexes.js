@@ -52,15 +52,15 @@ export default (config = {}) => ({
 		console.log('Component initialized');
 		this.$nextTick(() => {
 			this.fetchDifficulty();
-			// this.fetchUSDTVolumeVWAP();
+			this.fetchUSDTVolumeVWAP();
 			// this.fetchInterval();
 			// this.fetchVwapInterval();
 			this.fetchMWCPriceVWAP();
-			// this.fetchMovingAverage();
-			// this.fetchMWCVolumeVWAP();
-			// this.fetchUSDTPriceVWAP();
-			// this.fetchMWCSpotPrice();
-			// this.fetchUSDTSpotPrice();
+			this.fetchMovingAverage();
+			this.fetchMWCVolumeVWAP();
+			this.fetchUSDTPriceVWAP();
+			this.fetchMWCSpotPrice();
+			this.fetchUSDTSpotPrice();
 			// this.setupPriceWebSocket();
 		});
 	},
@@ -128,10 +128,10 @@ export default (config = {}) => ({
 					this.vwap_2h = this.formatToEightDecimalPlaces(data["2 hours"], 8);
 				}
 
+				if (data["2 hours"] === null || data["2 hours"] === "No data found for the given interval" || data["24 hours"] === null || data["24 hours"] === "No data found for the given interval") {
+					this.vwap_2h = this.formatToEightDecimalPlaces(data["72 hours"], 8);
+				} 
 				console.log("Assigned 2 Hour Cumulative Difficulty:", this.vwap_2h);
-
-				
-
 				
 			})
 			.catch((error) => {
@@ -150,13 +150,24 @@ export default (config = {}) => ({
 				console.log("Volume Data:", data);
 
                 // Check if "2 hours" value is not valid and use "24 hours" value instead
+				if (data["24 hours"] === null || data["24 hours"] === "No data found for the given interval") {
+					this.volume_24h = this.formatToEightDecimalPlaces(data["72 hours"], 8);
+				} else {
+					this.volume_24h = this.formatToEightDecimalPlaces(data["24 hours"], 8);
+				}
+
+				// Check if "2 hours" value is not valid and use "24 hours" value instead
 				if (data["2 hours"] === null || data["2 hours"] === "No data found for the given interval") {
 					this.volume_2h = this.formatToEightDecimalPlaces(data["24 hours"], 8);
 				} else {
 					this.volume_2h = this.formatToEightDecimalPlaces(data["2 hours"], 8);
 				}
 
-				this.volume_24h = this.formatToEightDecimalPlaces(data["24 hours"], 8);
+				if (data["2 hours"] === null || data["2 hours"] === "No data found for the given interval" || data["24 hours"] === null || data["24 hours"] === "No data found for the given interval") {
+					this.volume_2h = this.formatToEightDecimalPlaces(data["72 hours"], 8);
+				} 
+
+	
 				this.volume_72h = this.formatToEightDecimalPlaces(data["72 hours"], 8);
 				this.volume_1w = this.formatToEightDecimalPlaces(data["one week"], 8);
 				this.volume_2w = this.formatToEightDecimalPlaces(data["two weeks"], 8);
@@ -171,15 +182,28 @@ export default (config = {}) => ({
 		axios
 			.get("https://mwc2.pacificpool.ws/api/price-indexes/tudda_vwap_usdt_price")
 			.then((response) => {
-				if (response.status == 200) {
+				if (response.status !== 200) {
 					throw new Error("Failed to fetch data");
 				}
 				const data = response.data;
 				console.log("VWAPUSDT Data:", data);
-				if (data["2 hours"] == "No data found for the given interval" && data["2 hours"] == "No data found for the given interval" && data["2 hours"] == null) {
-                    this.vwap_usdt_2h = this.formatToEightDecimalPlaces(data["2 hours"], 8);
+				  // Check if "2 hours" value is not valid and use "24 hours" value instead
+				  if (data["24 hours"] === null || data["24 hours"] === "No data found for the given interval") {
+					this.vwap_usdt_24h = this.formatToEightDecimalPlaces(data["72 hours"], 8);
+				} else {
+					this.vwap_usdt_24h = this.formatToEightDecimalPlaces(data["24 hours"], 8);
 				}
-				this.vwap_usdt_24h = this.formatToEightDecimalPlaces(data["24 hours"], 8);
+
+				// Check if "2 hours" value is not valid and use "24 hours" value instead
+				if (data["2 hours"] === null || data["2 hours"] === "No data found for the given interval") {
+					this.vwap_usdt_2h = this.formatToEightDecimalPlaces(data["24 hours"], 8);
+				} else {
+					this.vwap_usdt_2h = this.formatToEightDecimalPlaces(data["2 hours"], 8);
+				}
+
+				if (data["2 hours"] === null || data["2 hours"] === "No data found for the given interval" || data["24 hours"] === null || data["24 hours"] === "No data found for the given interval") {
+					this.vwap_usdt_2h = this.formatToEightDecimalPlaces(data["72 hours"], 8);
+				} 
 				this.vwap_usdt_72h = this.formatToEightDecimalPlaces(data["72 hours"], 8);
 				this.vwap_usdt_1w = this.formatToEightDecimalPlaces(data["one week"], 8);
 				this.vwap_usdt_2w = this.formatToEightDecimalPlaces(data["two weeks"], 8);
@@ -196,15 +220,28 @@ export default (config = {}) => ({
 		axios
 			.get("https://mwc2.pacificpool.ws/api/price-indexes/tudda_vwap_usdt_volume")
 			.then((response) => {
-				if (response.status == 200) {
+				if (response.status !== 200) {
 					throw new Error("Failed to fetch data");
 				}
 				const data = response.data; // Corrected here: Use response.data directly
 				console.log("VWAPUSDT Data:", data);
-				if (data["2 hours"] == "No data found for the given interval" && data["2 hours"] == "No data found for the given interval" && data["2 hours"] == null) {
-                    this.volume_usdt_2h = this.formatToEightDecimalPlaces(data["2 hours"], 8);
+				  // Check if "2 hours" value is not valid and use "24 hours" value instead
+				  if (data["24 hours"] === null || data["24 hours"] === "No data found for the given interval") {
+					this.volume_usdt_24h = this.formatToEightDecimalPlaces(data["72 hours"], 8);
+				} else {
+					this.volume_usdt_24h = this.formatToEightDecimalPlaces(data["24 hours"], 8);
 				}
-				this.volume_usdt_24h = this.formatToEightDecimalPlaces(data["24 hours"], 8);
+
+				// Check if "2 hours" value is not valid and use "24 hours" value instead
+				if (data["2 hours"] === null || data["2 hours"] === "No data found for the given interval") {
+					this.volume_usdt_2h = this.formatToEightDecimalPlaces(data["24 hours"], 8);
+				} else {
+					this.volume_usdt_usdt_2h = this.formatToEightDecimalPlaces(data["2 hours"], 8);
+				}
+
+				if (data["2 hours"] === null || data["2 hours"] === "No data found for the given interval" || data["24 hours"] === null || data["24 hours"] === "No data found for the given interval") {
+					this.volume_usdt_2h = this.formatToEightDecimalPlaces(data["72 hours"], 8);
+				} 
 				this.volume_usdt_72h = this.formatToEightDecimalPlaces(data["72 hours"], 8);
 				this.volume_usdt_1w = this.formatToEightDecimalPlaces(data["one week"], 8);
 				this.volume_usdt_2w = this.formatToEightDecimalPlaces(data["two weeks"], 8);
@@ -278,7 +315,7 @@ export default (config = {}) => ({
 		axios
 			.get("https://mwc2.pacificpool.ws/api/price-indexes/spot_price_mwc")
 			.then((response) => {
-				if (response.status == 200) {
+				if (response.status !== 200) {
 					throw new Error("Failed to fetch data");
 				}
 				const data = response.data;
@@ -295,7 +332,7 @@ export default (config = {}) => ({
 		axios
 			.get("https://mwc2.pacificpool.ws/api/price-indexes/spot_price_usdt")
 			.then((response) => {
-				if (response.status == 200) {
+				if (response.status !== 200) {
 					throw new Error("Failed to fetch data");
 				}
 				const data = response.data;
