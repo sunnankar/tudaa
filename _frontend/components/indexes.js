@@ -108,12 +108,12 @@ export default (config = {}) => ({
 				const data = response.data;
 				console.log("VWAP Data:", data);
 
-				// Check if "2 hours" value is not valid and use "24 hours" value instead
-				if (data["2 hours"] === null || data["2 hours"] === "No data found for the given interval") {
-					this.vwap_2h = this.formatToEightDecimalPlaces(data["24 hours"], 8);
-				} else {
-					this.vwap_2h = this.formatToEightDecimalPlaces(data["2 hours"], 8);
-				}
+
+				this.vwap_72h = this.formatToEightDecimalPlaces(data["72 hours"], 8);
+				this.vwap_1w = this.formatToEightDecimalPlaces(data["one week"], 8);
+				this.vwap_2w = this.formatToEightDecimalPlaces(data["two weeks"], 8);
+				this.vwap_1m = this.formatToEightDecimalPlaces(data["one month"], 8);
+				this.vwap_1q = this.formatToEightDecimalPlaces(data["one quarter"], 8);
 
 				if (data["24 hours"] === null || data["24 hours"] === "No data found for the given interval") {
 					this.vwap_24h = this.formatToEightDecimalPlaces(data["72 hours"], 8);
@@ -121,11 +121,16 @@ export default (config = {}) => ({
 					this.vwap_24h = this.formatToEightDecimalPlaces(data["24 hours"], 8);
 				}
 
-				this.vwap_72h = this.formatToEightDecimalPlaces(data["72 hours"], 8);
-				this.vwap_1w = this.formatToEightDecimalPlaces(data["one week"], 8);
-				this.vwap_2w = this.formatToEightDecimalPlaces(data["two weeks"], 8);
-				this.vwap_1m = this.formatToEightDecimalPlaces(data["one month"], 8);
-				this.vwap_1q = this.formatToEightDecimalPlaces(data["one quarter"], 8);
+				// Check if "2 hours" value is not valid and use "24 hours" value instead
+				if (data["2 hours"] === null || data["2 hours"] === "No data found for the given interval") {
+					this.vwap_2h = this.formatToEightDecimalPlaces(data["24 hours"], 8);
+				} else {
+					this.vwap_2h = this.formatToEightDecimalPlaces(data["2 hours"], 8);
+				}
+
+				
+
+				
 			})
 			.catch((error) => {
 				console.error("Error:", error.message);
