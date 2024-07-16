@@ -52,15 +52,15 @@ export default (config = {}) => ({
 		console.log('Component initialized');
 		this.$nextTick(() => {
 			this.fetchDifficulty();
-			this.fetchUSDTVolumeVWAP();
+			// this.fetchUSDTVolumeVWAP();
 			// this.fetchInterval();
 			// this.fetchVwapInterval();
-			this.fetchMWCPriceVWAP();
+			// this.fetchMWCPriceVWAP();
 			// this.fetchMovingAverage();
-			this.fetchMWCVolumeVWAP();
-			this.fetchUSDTPriceVWAP();
-			this.fetchMWCSpotPrice();
-			this.fetchUSDTSpotPrice();
+			// this.fetchMWCVolumeVWAP();
+			// this.fetchUSDTPriceVWAP();
+			// this.fetchMWCSpotPrice();
+			// this.fetchUSDTSpotPrice();
 			// this.setupPriceWebSocket();
 		});
 	},
@@ -76,11 +76,11 @@ export default (config = {}) => ({
 				const data = response.data;
 				console.log("Difficulty Data:", data);
 
-				if (data["2 hours"] === "No data found for the given interval" || data["2 hours"] == null) {
+				// Check if "2 hours" value is not valid and use "24 hours" value instead
+				if (data["2 hours"] === null || data["2 hours"] === "No data found for the given interval") {
 					this.two_hour_cumulative_difficulty = this.formatToEightDecimalPlaces(data["24 hours"], 8);
-				}
-				if (data["24 hours"] === "No data found for the given interval" || data["24 hours"] == null) {
-					this.twenty_four_hour_cumulative_difficulty = this.formatToEightDecimalPlaces(data["72 hours"], 8);
+				} else {
+					this.two_hour_cumulative_difficulty = this.formatToEightDecimalPlaces(data["2 hours"], 8);
 				}
 
 				this.currentDifficulty = this.formatString(data["current_difficulty"]);
