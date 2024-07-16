@@ -115,6 +115,12 @@ export default (config = {}) => ({
 					this.vwap_2h = this.formatToEightDecimalPlaces(data["2 hours"], 8);
 				}
 
+				if (data["24 hours"] === null || data["24 hours"] === "No data found for the given interval") {
+					this.vwap_24h = this.formatToEightDecimalPlaces(data["72 hours"], 8);
+				} else {
+					this.vwap_24h = this.formatToEightDecimalPlaces(data["24 hours"], 8);
+				}
+
 				
 
 				this.vwap_24h = this.formatToEightDecimalPlaces(data["24 hours"], 8);
