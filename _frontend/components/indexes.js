@@ -128,6 +128,8 @@ export default (config = {}) => ({
 					this.vwap_2h = this.formatToEightDecimalPlaces(data["2 hours"], 8);
 				}
 
+				console.log("Assigned 2 Hour Cumulative Difficulty:", this.vwap_2h);
+
 				
 
 				
