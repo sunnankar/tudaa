@@ -56,7 +56,7 @@ export default (config = {}) => ({
 			// this.fetchInterval();
 			// this.fetchVwapInterval();
 			// this.fetchMWCPriceVWAP();
-			// this.fetchMovingAverage();
+			this.fetchMovingAverage();
 			// this.fetchMWCVolumeVWAP();
 			// this.fetchUSDTPriceVWAP();
 			// this.fetchMWCSpotPrice();
