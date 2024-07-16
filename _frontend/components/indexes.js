@@ -85,14 +85,13 @@ export default (config = {}) => ({
 
 				console.log("Assigned 2 Hour Cumulative Difficulty:", this.two_hour_cumulative_difficulty);
 
-				this.currentDifficulty = this.formatString(data["current_difficulty"]);
-				this.two_hour_cumulative_difficulty = this.formatString(data["2 hours"]);
-				this.twenty_four_hour_cumulative_difficulty = this.formatString(data["24 hours"]);
-				this.seventy_two_hour_cumulative_difficulty = this.formatString(data["72 hours"]);
-				this.one_week_cumulative_difficulty = this.formatString(data["one week"]);
-				this.two_weeks_cumulative_difficulty = this.formatString(data["two weeks"]);
-				this.one_month_cumulative_difficulty = this.formatString(data["one month"]);
-				this.one_quarter_cumulative_difficulty = this.formatString(data["one quarter"]);
+				this.current_difficulty = this.formatToEightDecimalPlaces(data["current_difficulty"], 8);
+				this.twenty_four_hour_cumulative_difficulty = this.formatToEightDecimalPlaces(data["24 hours"], 8);
+				this.seventy_two_hour_cumulative_difficulty = this.formatToEightDecimalPlaces(data["72 hours"], 8);
+				this.one_week_cumulative_difficulty = this.formatToEightDecimalPlaces(data["one week"], 8);
+				this.two_weeks_cumulative_difficulty = this.formatToEightDecimalPlaces(data["two weeks"], 8);
+				this.one_month_cumulative_difficulty = this.formatToEightDecimalPlaces(data["one month"], 8);
+				this.one_quarter_cumulative_difficulty = this.formatToEightDecimalPlaces(data["one quarter"], 8);
 			})
 			.catch((error) => {
 				console.error("Error:", error.message);
