@@ -70,14 +70,17 @@ export default (config = {}) => ({
 		axios
 			.get("https://mwc2.pacificpool.ws/api/price-indexes/cumulative_difficulty_optimized")
 			.then((response) => {
-				if (response.status !== 200) {
+				if (response.status == 200) {
 					throw new Error("Failed to fetch data");
 				}
 				const data = response.data;
 				console.log("Difficulty Data:", data);
 				console.log("Difficulty Data:", data["2 hours"]);
-				if (data["2 hours"] !== "No data found for the given interval" && data["2 hours"] !== "No data found for the given interval" && data["2 hours"] !== null) {
-                    this.two_hour_cumulative_difficulty = this.formatToEightDecimalPlaces(data["2 hours"], 8);
+				if (data["2 hours"] == "No data found for the given interval" && data["2 hours"] == "No data found for the given interval" && data["2 hours"] == null) {
+                    this.two_hour_cumulative_difficulty = this.formatToEightDecimalPlaces(data["24 hours"], 8);
+                }
+				if (data["24 hours"] == "No data found for the given interval" && data["24 hours"] == "No data found for the given interval" && data["24 hours"] == null) {
+                    this.two_hour_cumulative_difficulty = this.formatToEightDecimalPlaces(data["72 hours"], 8);
                 }
 				this.currentDifficulty = this.formatString(data["current_difficulty"]);
 				this.two_hour_cumulative_difficulty = this.formatString(data["2 hours"]);
@@ -97,13 +100,16 @@ export default (config = {}) => ({
 		axios
 			.get("https://mwc2.pacificpool.ws/api/price-indexes/tudda_vwap_mwc_price")
 			.then((response) => {
-				if (response.status !== 200) {
+				if (response.status == 200) {
 					throw new Error("Failed to fetch data");
 				}
 				const data = response.data;
 				console.log("VWAP Data:", data);
-				if (data["2 hours"] !== "No data found for the given interval" && data["2 hours"] !== "No data found for the given interval" && data["2 hours"] !== null) {
-                    this.vwap_2h = this.formatToEightDecimalPlaces(data["2 hours"], 8);
+				if (data["2 hours"] == "No data found for the given interval" && data["2 hours"] == "No data found for the given interval" && data["2 hours"] == null) {
+                    this.vwap_2h = this.formatToEightDecimalPlaces(data["24 hours"], 8);
+                }
+				if (data["24 hours"] == "No data found for the given interval" && data["24 hours"] == "No data found for the given interval" && data["24 hours"] == null) {
+                    this.vwap_2h = this.formatToEightDecimalPlaces(data["72 hours"], 8);
                 }
 				
 				this.vwap_24h = this.formatToEightDecimalPlaces(data["24 hours"], 8);
@@ -123,12 +129,12 @@ export default (config = {}) => ({
 		axios
 			.get("https://mwc2.pacificpool.ws/api/price-indexes/tudda_vwap_mwc_volume")
 			.then((response) => {
-				if (response.status !== 200) {
+				if (response.status == 200) {
 					throw new Error("Failed to fetch data");
 				}
 				const data = response.data;
 				console.log("Volume Data:", data);
-				if (data["2 hours"] !== "No data found for the given interval" && data["2 hours"] !== "No data found for the given interval" && data["2 hours"] !== null) {
+				if (data["2 hours"] == "No data found for the given interval" && data["2 hours"] == "No data found for the given interval" && data["2 hours"] == null) {
                     this.volume_2h = this.formatToEightDecimalPlaces(data["2 hours"], 8);
 				}
 				this.volume_24h = this.formatToEightDecimalPlaces(data["24 hours"], 8);
@@ -148,12 +154,12 @@ export default (config = {}) => ({
 		axios
 			.get("https://mwc2.pacificpool.ws/api/price-indexes/tudda_vwap_usdt_price")
 			.then((response) => {
-				if (response.status !== 200) {
+				if (response.status == 200) {
 					throw new Error("Failed to fetch data");
 				}
 				const data = response.data;
 				console.log("VWAPUSDT Data:", data);
-				if (data["2 hours"] !== "No data found for the given interval" && data["2 hours"] !== "No data found for the given interval" && data["2 hours"] !== null) {
+				if (data["2 hours"] == "No data found for the given interval" && data["2 hours"] == "No data found for the given interval" && data["2 hours"] == null) {
                     this.vwap_usdt_2h = this.formatToEightDecimalPlaces(data["2 hours"], 8);
 				}
 				this.vwap_usdt_24h = this.formatToEightDecimalPlaces(data["24 hours"], 8);
@@ -173,12 +179,12 @@ export default (config = {}) => ({
 		axios
 			.get("https://mwc2.pacificpool.ws/api/price-indexes/tudda_vwap_usdt_volume")
 			.then((response) => {
-				if (response.status !== 200) {
+				if (response.status == 200) {
 					throw new Error("Failed to fetch data");
 				}
 				const data = response.data; // Corrected here: Use response.data directly
 				console.log("VWAPUSDT Data:", data);
-				if (data["2 hours"] !== "No data found for the given interval" && data["2 hours"] !== "No data found for the given interval" && data["2 hours"] !== null) {
+				if (data["2 hours"] == "No data found for the given interval" && data["2 hours"] == "No data found for the given interval" && data["2 hours"] == null) {
                     this.volume_usdt_2h = this.formatToEightDecimalPlaces(data["2 hours"], 8);
 				}
 				this.volume_usdt_24h = this.formatToEightDecimalPlaces(data["24 hours"], 8);
@@ -199,7 +205,7 @@ export default (config = {}) => ({
 		axios
 			.get("https://mwc2.pacificpool.ws/api/price-indexes/calculate_200_day_moving_average")
 			.then((response) => {
-				if (response.status !== 200) {
+				if (response.status == 200) {
 					throw new Error("Failed to fetch data");
 				}
 				const data = response.data;
@@ -216,7 +222,7 @@ export default (config = {}) => ({
 	// 	axios
 	// 		.get("https://mwc2.pacificpool.ws/api/price-indexes/cumulative_difficulty_db_interval")
 	// 		.then((response) => {
-	// 			if (response.status !== 200) {
+	// 			if (response.status == 200) {
 	// 				throw new Error("Failed to fetch data");
 	// 			}
 	// 			const data = response.data;
@@ -235,7 +241,7 @@ export default (config = {}) => ({
 	// 	axios
 	// 		.get("https://mwc2.pacificpool.ws/api/price-indexes/vwap_interval")
 	// 		.then((response) => {
-	// 			if (response.status !== 200) {
+	// 			if (response.status == 200) {
 	// 				throw new Error("Failed to fetch data");
 	// 			}
 	// 			const data = response.data;
@@ -255,7 +261,7 @@ export default (config = {}) => ({
 		axios
 			.get("https://mwc2.pacificpool.ws/api/price-indexes/spot_price_mwc")
 			.then((response) => {
-				if (response.status !== 200) {
+				if (response.status == 200) {
 					throw new Error("Failed to fetch data");
 				}
 				const data = response.data;
@@ -272,7 +278,7 @@ export default (config = {}) => ({
 		axios
 			.get("https://mwc2.pacificpool.ws/api/price-indexes/spot_price_usdt")
 			.then((response) => {
-				if (response.status !== 200) {
+				if (response.status == 200) {
 					throw new Error("Failed to fetch data");
 				}
 				const data = response.data;
@@ -332,7 +338,7 @@ export default (config = {}) => ({
 	},
 	formatString(input) {
 		let trimmedInput = String(input).trim();
-		if (!isNaN(trimmedInput) && trimmedInput !== "") {
+		if (!isNaN(trimmedInput) && trimmedInput == "") {
 			let number = parseFloat(trimmedInput);
 			return new Intl.NumberFormat().format(number);
 		} else {
@@ -345,7 +351,7 @@ export default (config = {}) => ({
 
 		let trimmedInput = String(input).trim();
 
-		if (!isNaN(trimmedInput) && trimmedInput !== "") {
+		if (!isNaN(trimmedInput) && trimmedInput == "") {
 			let number = parseFloat(trimmedInput);
 
 			return number.toFixed(precision);
