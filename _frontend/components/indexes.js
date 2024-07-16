@@ -56,7 +56,7 @@ export default (config = {}) => ({
 			// this.fetchInterval();
 			// this.fetchVwapInterval();
 			// this.fetchMWCPriceVWAP();
-			this.fetchMovingAverage();
+			// this.fetchMovingAverage();
 			// this.fetchMWCVolumeVWAP();
 			// this.fetchUSDTPriceVWAP();
 			// this.fetchMWCSpotPrice();
@@ -206,7 +206,7 @@ export default (config = {}) => ({
 		axios
 			.get("https://mwc2.pacificpool.ws/api/price-indexes/calculate_200_day_moving_average")
 			.then((response) => {
-				if (response.status == 200) {
+				if (response.status !== 200) {
 					throw new Error("Failed to fetch data");
 				}
 				const data = response.data;
