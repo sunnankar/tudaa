@@ -55,7 +55,7 @@ export default (config = {}) => ({
 			// this.fetchUSDTVolumeVWAP();
 			// this.fetchInterval();
 			// this.fetchVwapInterval();
-			// this.fetchMWCPriceVWAP();
+			this.fetchMWCPriceVWAP();
 			// this.fetchMovingAverage();
 			// this.fetchMWCVolumeVWAP();
 			// this.fetchUSDTPriceVWAP();
@@ -108,12 +108,14 @@ export default (config = {}) => ({
 				const data = response.data;
 				console.log("VWAP Data:", data);
 
-				if (data["2 hours"] === "No data found for the given interval" || data["2 hours"] == null) {
+				// Check if "2 hours" value is not valid and use "24 hours" value instead
+				if (data["2 hours"] === null || data["2 hours"] === "No data found for the given interval") {
 					this.vwap_2h = this.formatToEightDecimalPlaces(data["24 hours"], 8);
+				} else {
+					this.vwap_2h = this.formatToEightDecimalPlaces(data["2 hours"], 8);
 				}
-				if (data["24 hours"] === "No data found for the given interval" || data["24 hours"] == null) {
-					this.vwap_24h = this.formatToEightDecimalPlaces(data["72 hours"], 8);
-				}
+
+				
 
 				this.vwap_24h = this.formatToEightDecimalPlaces(data["24 hours"], 8);
 				this.vwap_72h = this.formatToEightDecimalPlaces(data["72 hours"], 8);
@@ -137,9 +139,13 @@ export default (config = {}) => ({
 				const data = response.data;
 				console.log("Volume Data:", data);
 
-				if (data["2 hours"] === "No data found for the given interval" || data["2 hours"] == null) {
+                // Check if "2 hours" value is not valid and use "24 hours" value instead
+				if (data["2 hours"] === null || data["2 hours"] === "No data found for the given interval") {
+					this.volume_2h = this.formatToEightDecimalPlaces(data["24 hours"], 8);
+				} else {
 					this.volume_2h = this.formatToEightDecimalPlaces(data["2 hours"], 8);
 				}
+
 				this.volume_24h = this.formatToEightDecimalPlaces(data["24 hours"], 8);
 				this.volume_72h = this.formatToEightDecimalPlaces(data["72 hours"], 8);
 				this.volume_1w = this.formatToEightDecimalPlaces(data["one week"], 8);
