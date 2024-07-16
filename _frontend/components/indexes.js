@@ -75,6 +75,10 @@ export default (config = {}) => ({
 				}
 				const data = response.data;
 				console.log("Difficulty Data:", data);
+				console.log("Difficulty Data:", data["2 hours"]);
+				if (data["2 hours"] !== "No data found for the given interval" && data["2 hours"] !== "No data found for the given interval" && data["2 hours"] !== null) {
+                    this.two_hour_cumulative_difficulty = this.formatToEightDecimalPlaces(data["2 hours"], 8);
+                }
 				this.currentDifficulty = this.formatString(data["current_difficulty"]);
 				this.two_hour_cumulative_difficulty = this.formatString(data["2 hours"]);
 				this.twenty_four_hour_cumulative_difficulty = this.formatString(data["24 hours"]);
@@ -98,7 +102,7 @@ export default (config = {}) => ({
 				}
 				const data = response.data;
 				console.log("VWAP Data:", data);
-				if (data["2 hours"] !== "None" && data["2 hours"] !== "No data found for the given interval" && data["2 hours"] !== null) {
+				if (data["2 hours"] !== "No data found for the given interval" && data["2 hours"] !== "No data found for the given interval" && data["2 hours"] !== null) {
                     this.vwap_2h = this.formatToEightDecimalPlaces(data["2 hours"], 8);
                 }
 				
@@ -124,7 +128,7 @@ export default (config = {}) => ({
 				}
 				const data = response.data;
 				console.log("Volume Data:", data);
-				if (data["2 hours"] !== "None" && data["2 hours"] !== "No data found for the given interval" && data["2 hours"] !== null) {
+				if (data["2 hours"] !== "No data found for the given interval" && data["2 hours"] !== "No data found for the given interval" && data["2 hours"] !== null) {
                     this.volume_2h = this.formatToEightDecimalPlaces(data["2 hours"], 8);
 				}
 				this.volume_24h = this.formatToEightDecimalPlaces(data["24 hours"], 8);
@@ -149,7 +153,7 @@ export default (config = {}) => ({
 				}
 				const data = response.data;
 				console.log("VWAPUSDT Data:", data);
-				if (data["2 hours"] !== "None" && data["2 hours"] !== "No data found for the given interval" && data["2 hours"] !== null) {
+				if (data["2 hours"] !== "No data found for the given interval" && data["2 hours"] !== "No data found for the given interval" && data["2 hours"] !== null) {
                     this.vwap_usdt_2h = this.formatToEightDecimalPlaces(data["2 hours"], 8);
 				}
 				this.vwap_usdt_24h = this.formatToEightDecimalPlaces(data["24 hours"], 8);
@@ -174,7 +178,7 @@ export default (config = {}) => ({
 				}
 				const data = response.data; // Corrected here: Use response.data directly
 				console.log("VWAPUSDT Data:", data);
-				if (data["2 hours"] !== "None" && data["2 hours"] !== "No data found for the given interval" && data["2 hours"] !== null) {
+				if (data["2 hours"] !== "No data found for the given interval" && data["2 hours"] !== "No data found for the given interval" && data["2 hours"] !== null) {
                     this.volume_usdt_2h = this.formatToEightDecimalPlaces(data["2 hours"], 8);
 				}
 				this.volume_usdt_24h = this.formatToEightDecimalPlaces(data["24 hours"], 8);
