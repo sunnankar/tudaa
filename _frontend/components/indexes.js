@@ -75,7 +75,7 @@ export default (config = {}) => ({
 				}
 				const data = response.data;
 				console.log("Difficulty Data:", data);
-
+                
 				// Check if "2 hours" value is not valid and use "24 hours" value instead
 				if (data["2 hours"] === null || data["2 hours"] === "No data found for the given interval") {
 					this.two_hour_cumulative_difficulty = this.formatToEightDecimalPlaces(data["24 hours"], 8);
