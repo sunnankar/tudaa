@@ -172,7 +172,7 @@ export default (config = {}) => ({
 
     async fetchMWCVolumeVWAP() {
         try {
-            const response = await axios.get("https://mwc2.pacificpool.ws/api/price-indexes/tudda_vwap_mwc_volume");
+            const response = await axios.get("https://mwc2.pacificpool.ws/api/price-indexes/tudda_vwap_mwc_volume_optimized");
             if (response.status !== 200) {
                 throw new Error("Failed to fetch data");
             }
