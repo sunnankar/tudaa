@@ -92,6 +92,7 @@ export default (config = {}) => ({
             this.fetchUSDTPriceVWAP(),
             this.fetchMWCSpotPrice(),
             this.fetchUSDTSpotPrice(),
+			this.fetchCurrentDifficulty(),
             this.fetchUSDTVolumeVWAP()
         ];
         
@@ -121,13 +122,26 @@ export default (config = {}) => ({
 
             console.log("Assigned 2 Hour Cumulative Difficulty:", this.two_hour_cumulative_difficulty);
 
-            this.currentDifficulty = this.formatToEightDecimalPlaces(data["current_difficulty"], 8);
             this.twenty_four_hour_cumulative_difficulty = this.formatToEightDecimalPlaces(data["24 hours"], 8);
             this.seventy_two_hour_cumulative_difficulty = this.formatToEightDecimalPlaces(data["72 hours"], 8);
             this.one_week_cumulative_difficulty = this.formatToEightDecimalPlaces(data["one week"], 8);
             this.two_weeks_cumulative_difficulty = this.formatToEightDecimalPlaces(data["two weeks"], 8);
             this.one_month_cumulative_difficulty = this.formatToEightDecimalPlaces(data["one month"], 8);
             this.one_quarter_cumulative_difficulty = this.formatToEightDecimalPlaces(data["one quarter"], 8);
+        } catch (error) {
+            console.error("Error:", error.message);
+        }
+    },
+
+async fetchCurrentDifficulty() {
+        try {
+            const response = await axios.get("https://mwc2.pacificpool.ws/api/price-indexes/cumulative_difficulty");
+            if (response.status !== 200) {
+                throw new Error("Failed to fetch data");
+            }
+            const data = response.data;
+            console.log("Difficulty Data:", data);
+            this.currentDifficulty = this.formatToEightDecimalPlaces(data["current_difficulty"], 8);
         } catch (error) {
             console.error("Error:", error.message);
         }
