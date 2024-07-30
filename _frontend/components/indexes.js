@@ -175,9 +175,6 @@ async fetchCurrentDifficulty() {
                 this.vwap_2h = this.formatToEightDecimalPlaces(data["2 hours"], 8);
             }
 
-            if (data["2 hours"] === null || data["2 hours"] === "No data found for the given interval" || data["24 hours"] === null || data["24 hours"] === "No data found for the given interval") {
-                this.vwap_2h = this.formatToEightDecimalPlaces(data["72 hours"], 8);
-            }
             console.log("Assigned 2 Hour Cumulative Difficulty:", this.vwap_2h);
         } catch (error) {
             console.error("Error:", error.message);
@@ -207,9 +204,6 @@ async fetchCurrentDifficulty() {
                 this.volume_2h = this.formatToEightDecimalPlaces(data["2 hours"], 8);
             }
 
-            if (data["2 hours"] === null || data["2 hours"] === "No data found for the given interval" || data["24 hours"] === null || data["24 hours"] === "No data found for the given interval") {
-                this.volume_2h = this.formatToEightDecimalPlaces(data["72 hours"], 8);
-            }
 
             this.volume_72h = this.formatToEightDecimalPlaces(data["72 hours"], 8);
             this.volume_1w = this.formatToEightDecimalPlaces(data["one week"], 8);
@@ -242,10 +236,6 @@ async fetchCurrentDifficulty() {
                 this.vwap_usdt_2h = this.formatToEightDecimalPlaces(data["24 hours"], 8);
             } else {
                 this.vwap_usdt_2h = this.formatToEightDecimalPlaces(data["2 hours"], 8);
-            }
-
-            if (data["2 hours"] === null || data["2 hours"] === "No data found for the given interval" || data["24 hours"] === null || data["24 hours"] === "No data found for the given interval") {
-                this.vwap_usdt_2h = this.formatToEightDecimalPlaces(data["72 hours"], 8);
             }
 
             this.vwap_usdt_72h = this.formatToEightDecimalPlaces(data["72 hours"], 8);
@@ -281,9 +271,6 @@ async fetchCurrentDifficulty() {
                 this.volume_usdt_2h = this.formatToEightDecimalPlaces(data["2 hours"], 8);
             }
 
-            if (data["2 hours"] === null || data["2 hours"] === "No data found for the given interval" || data["24 hours"] === null || data["24 hours"] === "No data found for the given interval") {
-                this.volume_usdt_2h = this.formatToEightDecimalPlaces(data["72 hours"], 8);
-            }
 
             this.volume_usdt_72h = this.formatToEightDecimalPlaces(data["72 hours"], 8);
             this.volume_usdt_1w = this.formatToEightDecimalPlaces(data["one week"], 8);
