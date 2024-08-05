@@ -124,10 +124,10 @@ export default (config = {}) => ({
 
             this.twenty_four_hour_cumulative_difficulty = this.formatWithCommas(this.formatToEightDecimalPlaces(data["24 hours"], 8));
             this.seventy_two_hour_cumulative_difficulty = this.formatWithCommas(this.formatToEightDecimalPlaces(data["72 hours"], 8));
-            this.one_week_cumulative_difficulty = this.formatToEightDecimalPlaces(data["one week"], 8);
-            this.two_weeks_cumulative_difficulty = this.formatToEightDecimalPlaces(data["two weeks"], 8);
-            this.one_month_cumulative_difficulty = this.formatToEightDecimalPlaces(data["one month"], 8);
-            this.one_quarter_cumulative_difficulty = this.formatToEightDecimalPlaces(data["one quarter"], 8);
+            this.one_week_cumulative_difficulty = this.formatWithCommas(this.formatToEightDecimalPlaces(data["one week"], 8));
+            this.two_weeks_cumulative_difficulty = this.formatWithCommas(this.formatToEightDecimalPlaces(data["two weeks"], 8));
+            this.one_month_cumulative_difficulty = this.formatWithCommas(this.formatToEightDecimalPlaces(data["one month"], 8));
+            this.one_quarter_cumulative_difficulty = this.formatWithCommas(this.formatToEightDecimalPlaces(data["one quarter"], 8));
         } catch (error) {
             console.error("Error:", error.message);
         }
@@ -141,7 +141,7 @@ async fetchCurrentDifficulty() {
             }
             const data = response.data;
             console.log("Difficulty Data:", data);
-            this.currentDifficulty = this.formatToEightDecimalPlaces(data["current_difficulty"], 8);
+            this.currentDifficulty = this.formatWithCommas(this.formatToEightDecimalPlaces(data["current_difficulty"], 8));
         } catch (error) {
             console.error("Error:", error.message);
         }
@@ -156,23 +156,23 @@ async fetchCurrentDifficulty() {
             const data = response.data;
             console.log("VWAP Data:", data);
 
-            this.vwap_72h = this.formatToEightDecimalPlaces(data["72 hours"], 8);
-            this.vwap_1w = this.formatToEightDecimalPlaces(data["one week"], 8);
-            this.vwap_2w = this.formatToEightDecimalPlaces(data["two weeks"], 8);
-            this.vwap_1m = this.formatToEightDecimalPlaces(data["one month"], 8);
-            this.vwap_1q = this.formatToEightDecimalPlaces(data["one quarter"], 8);
+            this.vwap_72h = this.formatWithCommas(this.formatToEightDecimalPlaces(data["72 hours"], 8));
+            this.vwap_1w = this.formatWithCommas(this.formatToEightDecimalPlaces(data["one week"], 8));
+            this.vwap_2w = this.formatWithCommas(this.formatToEightDecimalPlaces(data["two weeks"], 8));
+            this.vwap_1m = this.formatWithCommas(this.formatToEightDecimalPlaces(data["one month"], 8));
+            this.vwap_1q = this.formatWithCommas(this.formatToEightDecimalPlaces(data["one quarter"], 8));
 
             if (data["24 hours"] === null || data["24 hours"] === "No data found for the given interval") {
-                this.vwap_24h = this.formatToEightDecimalPlaces(data["72 hours"], 8);
+                this.vwap_24h = this.formatWithCommas(this.formatToEightDecimalPlaces(data["72 hours"], 8));
             } else {
-                this.vwap_24h = this.formatToEightDecimalPlaces(data["24 hours"], 8);
+                this.vwap_24h = this.formatWithCommas(this.formatToEightDecimalPlaces(data["24 hours"], 8));
             }
 
             // Check if "2 hours" value is not valid and use "24 hours" value instead
             if (data["2 hours"] === null || data["2 hours"] === "No data found for the given interval") {
-                this.vwap_2h = this.formatToEightDecimalPlaces(data["24 hours"], 8);
+                this.vwap_2h = this.formatWithCommas(this.formatToEightDecimalPlaces(data["24 hours"], 8));
             } else {
-                this.vwap_2h = this.formatToEightDecimalPlaces(data["2 hours"], 8);
+                this.vwap_2h = this.formatWithCommas(this.formatToEightDecimalPlaces(data["2 hours"], 8));
             }
 
             console.log("Assigned 2 Hour Cumulative Difficulty:", this.vwap_2h);
@@ -192,24 +192,24 @@ async fetchCurrentDifficulty() {
 
             // Check if "2 hours" value is not valid and use "24 hours" value instead
             if (data["24 hours"] === null || data["24 hours"] === "No data found for the given interval") {
-                this.volume_24h = this.formatToEightDecimalPlaces(data["72 hours"], 8);
+                this.volume_24h = this.formatWithCommas(this.formatToEightDecimalPlaces(data["72 hours"], 8));
             } else {
-                this.volume_24h = this.formatToEightDecimalPlaces(data["24 hours"], 8);
+                this.volume_24h = this.formatWithCommas(this.formatToEightDecimalPlaces(data["24 hours"], 8));
             }
 
             // Check if "2 hours" value is not valid and use "24 hours" value instead
             if (data["2 hours"] === null || data["2 hours"] === "No data found for the given interval") {
-                this.volume_2h = this.formatToEightDecimalPlaces(data["24 hours"], 8);
+                this.volume_2h = this.formatWithCommas(this.formatToEightDecimalPlaces(data["24 hours"], 8));
             } else {
-                this.volume_2h = this.formatToEightDecimalPlaces(data["2 hours"], 8);
+                this.volume_2h = this.formatWithCommas(this.formatToEightDecimalPlaces(data["2 hours"], 8));
             }
 
 
-            this.volume_72h = this.formatToEightDecimalPlaces(data["72 hours"], 8);
-            this.volume_1w = this.formatToEightDecimalPlaces(data["one week"], 8);
-            this.volume_2w = this.formatToEightDecimalPlaces(data["two weeks"], 8);
-            this.volume_1m = this.formatToEightDecimalPlaces(data["one month"], 8);
-            this.volume_1q = this.formatToEightDecimalPlaces(data["one quarter"], 8);
+            this.volume_72h = this.formatWithCommas(this.formatToEightDecimalPlaces(data["72 hours"], 8));
+            this.volume_1w = this.formatWithCommas(this.formatToEightDecimalPlaces(data["one week"], 8));
+            this.volume_2w = this.formatWithCommas(this.formatToEightDecimalPlaces(data["two weeks"], 8));
+            this.volume_1m = this.formatWithCommas(this.formatToEightDecimalPlaces(data["one month"], 8));
+            this.volume_1q = this.formatWithCommas(this.formatToEightDecimalPlaces(data["one quarter"], 8));
         } catch (error) {
             console.error("Error:", error.message);
         }
@@ -226,23 +226,23 @@ async fetchCurrentDifficulty() {
 
             // Check if "2 hours" value is not valid and use "24 hours" value instead
             if (data["24 hours"] === null || data["24 hours"] === "No data found for the given interval") {
-                this.vwap_usdt_24h = this.formatToEightDecimalPlaces(data["72 hours"], 8);
+                this.vwap_usdt_24h = this.formatWithCommas(this.formatToEightDecimalPlaces(data["72 hours"], 8));
             } else {
-                this.vwap_usdt_24h = this.formatToEightDecimalPlaces(data["24 hours"], 8);
+                this.vwap_usdt_24h = this.formatWithCommas(this.formatToEightDecimalPlaces(data["24 hours"], 8));
             }
 
             // Check if "2 hours" value is not valid and use "24 hours" value instead
             if (data["2 hours"] === null || data["2 hours"] === "No data found for the given interval") {
-                this.vwap_usdt_2h = this.formatToEightDecimalPlaces(data["24 hours"], 8);
+                this.vwap_usdt_2h = this.formatWithCommas(this.formatToEightDecimalPlaces(data["24 hours"], 8));
             } else {
-                this.vwap_usdt_2h = this.formatToEightDecimalPlaces(data["2 hours"], 8);
+                this.vwap_usdt_2h = this.formatWithCommas(this.formatToEightDecimalPlaces(data["2 hours"], 8));
             }
 
-            this.vwap_usdt_72h = this.formatToEightDecimalPlaces(data["72 hours"], 8);
-            this.vwap_usdt_1w = this.formatToEightDecimalPlaces(data["one week"], 8);
-            this.vwap_usdt_2w = this.formatToEightDecimalPlaces(data["two weeks"], 8);
-            this.vwap_usdt_1m = this.formatToEightDecimalPlaces(data["one month"], 8);
-            this.vwap_usdt_1q = this.formatToEightDecimalPlaces(data["one quarter"], 8);
+            this.vwap_usdt_72h = this.formatWithCommas(this.formatToEightDecimalPlaces(data["72 hours"], 8));
+            this.vwap_usdt_1w = this.formatWithCommas(this.formatToEightDecimalPlaces(data["one week"], 8));
+            this.vwap_usdt_2w = this.formatWithCommas(this.formatToEightDecimalPlaces(data["two weeks"], 8));
+            this.vwap_usdt_1m = this.formatWithCommas(this.formatToEightDecimalPlaces(data["one month"], 8));
+            this.vwap_usdt_1q = this.formatWithCommas(this.formatToEightDecimalPlaces(data["one quarter"], 8));
         } catch (error) {
             console.error("Error:", error.message);
         }
@@ -259,24 +259,24 @@ async fetchCurrentDifficulty() {
 
             // Check if "2 hours" value is not valid and use "24 hours" value instead
             if (data["24 hours"] === null || data["24 hours"] === "No data found for the given interval") {
-                this.volume_usdt_24h = this.formatToEightDecimalPlaces(data["72 hours"], 8);
+                this.volume_usdt_24h = this.formatWithCommas(this.formatToEightDecimalPlaces(data["72 hours"], 8));
             } else {
-                this.volume_usdt_24h = this.formatToEightDecimalPlaces(data["24 hours"], 8);
+                this.volume_usdt_24h = this.formatWithCommas(this.formatToEightDecimalPlaces(data["24 hours"], 8));
             }
 
             // Check if "2 hours" value is not valid and use "24 hours" value instead
             if (data["2 hours"] === null || data["2 hours"] === "No data found for the given interval") {
-                this.volume_usdt_2h = this.formatToEightDecimalPlaces(data["24 hours"], 8);
+                this.volume_usdt_2h = this.formatWithCommas(this.formatToEightDecimalPlaces(data["24 hours"], 8));
             } else {
-                this.volume_usdt_2h = this.formatToEightDecimalPlaces(data["2 hours"], 8);
+                this.volume_usdt_2h = this.formatWithCommas(this.formatToEightDecimalPlaces(data["2 hours"], 8));
             }
 
 
-            this.volume_usdt_72h = this.formatToEightDecimalPlaces(data["72 hours"], 8);
-            this.volume_usdt_1w = this.formatToEightDecimalPlaces(data["one week"], 8);
-            this.volume_usdt_2w = this.formatToEightDecimalPlaces(data["two weeks"], 8);
-            this.volume_usdt_1m = this.formatToEightDecimalPlaces(data["one month"], 8);
-            this.volume_usdt_1q = this.formatToEightDecimalPlaces(data["one quarter"], 8);
+            this.volume_usdt_72h = this.formatWithCommas(this.formatToEightDecimalPlaces(data["72 hours"], 8));
+            this.volume_usdt_1w = this.formatWithCommas(this.formatToEightDecimalPlaces(data["one week"], 8));
+            this.volume_usdt_2w = this.formatWithCommas(this.formatToEightDecimalPlaces(data["two weeks"], 8));
+            this.volume_usdt_1m = this.formatWithCommas(this.formatToEightDecimalPlaces(data["one month"], 8));
+            this.volume_usdt_1q = this.formatWithCommas(this.formatToEightDecimalPlaces(data["one quarter"], 8));
         } catch (error) {
             console.error("Error:", error.message);
         }
@@ -290,7 +290,7 @@ async fetchCurrentDifficulty() {
             }
             const data = response.data;
             console.log("moving_average_200 Data:", data);
-            this.moving_average_200 = this.formatString(data["200_day_moving_average"]);
+            this.moving_average_200 = this.formatWithCommas(this.formatString(data["200_day_moving_average"]));
         } catch (error) {
             console.error("Error:", error.message);
         }
