@@ -115,15 +115,15 @@ export default (config = {}) => ({
 
             // Check if "2 hours" value is not valid and use "24 hours" value instead
             if (data["2 hours"] === null || data["2 hours"] === "No data found for the given interval") {
-                this.two_hour_cumulative_difficulty = this.formatToEightDecimalPlaces(data["24 hours"], 8);
+                this.two_hour_cumulative_difficulty = this.formatWithCommas(this.formatToEightDecimalPlaces(data["24 hours"], 8));
             } else {
-                this.two_hour_cumulative_difficulty = this.formatToEightDecimalPlaces(data["2 hours"], 8);
+                this.two_hour_cumulative_difficulty = this.formatWithCommas(this.formatToEightDecimalPlaces(data["2 hours"], 8));
             }
 
             console.log("Assigned 2 Hour Cumulative Difficulty:", this.two_hour_cumulative_difficulty);
 
-            this.twenty_four_hour_cumulative_difficulty = this.formatToEightDecimalPlaces(data["24 hours"], 8);
-            this.seventy_two_hour_cumulative_difficulty = this.formatToEightDecimalPlaces(data["72 hours"], 8);
+            this.twenty_four_hour_cumulative_difficulty = this.formatWithCommas(this.formatToEightDecimalPlaces(data["24 hours"], 8));
+            this.seventy_two_hour_cumulative_difficulty = this.formatWithCommas(this.formatToEightDecimalPlaces(data["72 hours"], 8));
             this.one_week_cumulative_difficulty = this.formatToEightDecimalPlaces(data["one week"], 8);
             this.two_weeks_cumulative_difficulty = this.formatToEightDecimalPlaces(data["two weeks"], 8);
             this.one_month_cumulative_difficulty = this.formatToEightDecimalPlaces(data["one month"], 8);
@@ -323,6 +323,13 @@ async fetchCurrentDifficulty() {
 			console.error("Error:", error.message);
 		}
 	},
+
+    formatWithCommas(value) {
+        if (isNaN(value)) {
+            return value;
+        }
+        return parseFloat(value).toLocaleString('en-US', { minimumFractionDigits: 8, maximumFractionDigits: 8 });
+    },
 	
 
     formatString(input) {
