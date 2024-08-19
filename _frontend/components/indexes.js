@@ -85,14 +85,14 @@ export default (config = {}) => ({
 
     fetchAllData() {
         const promises = [
-            this.fetchDifficulty(),
-            this.fetchMWCPriceVWAP(),
-            this.fetchMovingAverage(),
-            this.fetchMWCVolumeVWAP(),
-            this.fetchUSDTPriceVWAP(),
             this.fetchMWCSpotPrice(),
             this.fetchUSDTSpotPrice(),
-			this.fetchCurrentDifficulty(),
+            this.fetchDifficulty(),
+            this.fetchCurrentDifficulty(),
+            this.fetchMovingAverage(),
+            this.fetchMWCPriceVWAP(),
+            this.fetchMWCVolumeVWAP(),
+            this.fetchUSDTPriceVWAP(),
             this.fetchUSDTVolumeVWAP()
         ];
         
@@ -217,7 +217,7 @@ async fetchCurrentDifficulty() {
 
     async fetchUSDTPriceVWAP() {
         try {
-            const response = await axios.get("https://mwc2.pacificpool.ws/api/price-indexes/tudda_vwap_usdt_price");
+            const response = await axios.get("https://mwc2.pacificpool.ws/api/price-indexes/current_usdt_price_vwap");
             if (response.status !== 200) {
                 throw new Error("Failed to fetch data");
             }
@@ -250,7 +250,7 @@ async fetchCurrentDifficulty() {
 
     async fetchUSDTVolumeVWAP() {
         try {
-            const response = await axios.get("https://mwc2.pacificpool.ws/api/price-indexes/tudda_vwap_usdt_volume");
+            const response = await axios.get("https://mwc2.pacificpool.ws/api/price-indexes/current_usdt_volume_vwap");
             if (response.status !== 200) {
                 throw new Error("Failed to fetch data");
             }
