@@ -41,12 +41,10 @@ export default (config = {}) => ({
     spotPrice: null,
     mwcusdtSpotPrice: null,
     bitcoinPrice: null,
-    startTime: null,
-    endTime: null,
-    interval: null,
-    VwapstartTime: null,
-    VwapEndTime: null,
-    VwapInterval: null,
+    MwcStartTime: null,
+    MwcEndTime: null,
+    UsdtStartTime: null,
+    UsdtEndTime: null,
 
     init() {
         console.log('Component initialized');
@@ -93,7 +91,9 @@ export default (config = {}) => ({
             this.fetchMWCPriceVWAP(),
             this.fetchMWCVolumeVWAP(),
             this.fetchUSDTPriceVWAP(),
-            this.fetchUSDTVolumeVWAP()
+            this.fetchUSDTVolumeVWAP(),
+            this.fetchCurrentUSDTInterval(),
+            this.fetchCurrentMWCInterval()
         ];
         
         promises.forEach(promise => {
@@ -142,6 +142,36 @@ async fetchCurrentDifficulty() {
             const data = response.data;
             console.log("Difficulty Data:", data);
             this.currentDifficulty = this.formatWithCommas(this.formatToEightDecimalPlaces(data["current_difficulty"], 8));
+        } catch (error) {
+            console.error("Error:", error.message);
+        }
+    },
+
+    async fetchCurrentMWCInterval() {
+        try {
+            const response = await axios.get("https://mwc2.pacificpool.ws/api/price-indexes/trade_data_mwc_time_interval");
+            if (response.status !== 200) {
+                throw new Error("Failed to fetch data");
+            }
+            const data = response.data;
+            console.log("MWCInterval Data:", data);
+            this.MwcStartTime = data.min_timestamp;
+            this.MwcEndTime = data.max_timestamp;
+        } catch (error) {
+            console.error("Error:", error.message);
+        }
+    },
+
+    async fetchCurrentUSDTInterval() {
+        try {
+            const response = await axios.get("https://mwc2.pacificpool.ws/api/price-indexes/trade_data_usdt_time_interval");
+            if (response.status !== 200) {
+                throw new Error("Failed to fetch data");
+            }
+            const data = response.data;
+            console.log("USDTInterval Data:", data.max_timestamp);
+            this.UsdtStartTime = data.min_timestamp;
+            this.UsdtEndTime = data.max_timestamp;
         } catch (error) {
             console.error("Error:", error.message);
         }
