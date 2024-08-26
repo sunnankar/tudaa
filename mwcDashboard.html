@@ -1,0 +1,38 @@
+---
+layout: default
+title: "Dashboard Indexes"
+permalink: "mwcDashboard"
+---
+
+
+<div x-data="mwcDashboard()">
+    <div class="grid grid-cols-1 gap-4">
+        <!-- Spot Price and Current Difficulty Chart -->
+        <div>
+            <h3>Spot Price and Current Difficulty (Past Year)</h3>
+            <div x-ref="spotPriceChart" class="chart-container"></div>
+        </div>
+        <div>
+            <h3>Current Difficulty (Past Year)</h3>
+            <div x-ref="difficultyChart" class="chart-container"></div>
+        </div>
+
+        <!-- 2-hour and 24-hour VWAP & Cumulative Difficulty Chart -->
+        <div>
+            <h3>2-hour and 24-hour VWAP & Cumulative Difficulty (Past Month)</h3>
+            <div x-ref="vwapCumulativeChart" class="chart-container"></div>
+        </div>
+
+        <!-- Other VWAPs and Cumulative Difficulty (Past Year) -->
+        <div>
+            <h3>VWAPs & Cumulative Difficulty (Past Year)</h3>
+            <div x-ref="yearlyVwapCumulativeChart" class="chart-container"></div>
+        </div>
+
+        <!-- 200-day Moving Averages Chart -->
+        <div>
+            <h3>200-day Moving Averages (Price & Difficulty)</h3>
+            <div x-ref="movingAverageChart" class="chart-container"></div>
+        </div>
+    </div>
+</div>

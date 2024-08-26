@@ -87,7 +87,7 @@ export default (config = {}) => ({
 		// Send GET request using Axios
 		axios
 			.get(
-				"https://api.coingecko.com/api/v3/coins/bitcoin/ohlc?vs_currency=usd&days=max"
+				"https://api.coingecko.com/api/v3/coins/bitcoin/ohlc?vs_currency=usd&days=365"
 			)
 			.then((response) => {
 				// Check if request was successful (status code 200)
@@ -96,6 +96,7 @@ export default (config = {}) => ({
 				}
 
 				this.rawPriceData = response.data;
+				console.log(this.rawPriceData);
 				this.priceObject = this.formatData(this.rawPriceData);
 				this.drawChart();
 			})
@@ -170,6 +171,8 @@ export default (config = {}) => ({
 	drawChart() {
 		this.chart = new ApexCharts(this.$refs.chart, this.getChartOption());
 		this.chart.render();
+
+		console.log({priceObject: this.priceObject});
 
 		// Line
 		var optionsLine = {
