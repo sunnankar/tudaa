@@ -45,6 +45,8 @@ export default (config = {}) => ({
     MwcEndTime: null,
     UsdtStartTime: null,
     UsdtEndTime: null,
+    moving_average_usdt_200: null,
+
 
     init() {
         console.log('Component initialized');
@@ -93,7 +95,8 @@ export default (config = {}) => ({
             this.fetchUSDTPriceVWAP(),
             this.fetchUSDTVolumeVWAP(),
             this.fetchCurrentUSDTInterval(),
-            this.fetchCurrentMWCInterval()
+            this.fetchCurrentMWCInterval(),
+            this.fetchMovingAverageUSDT()
         ];
         
         promises.forEach(promise => {
@@ -330,6 +333,19 @@ async fetchCurrentDifficulty() {
             const data = response.data;
             console.log("moving_average_200 Data:", data);
             this.moving_average_200 = this.formatWithCommas(this.formatString(data["200_day_moving_average"]));
+        } catch (error) {
+            console.error("Error:", error.message);
+        }
+    },
+    async fetchMovingAverageUSDT() {
+        try {
+            const response = await axios.get("https://mwc2.pacificpool.ws/api/price-indexes/calculate_moving_average_usdt");
+            if (response.status !== 200) {
+                throw new Error("Failed to fetch data");
+            }
+            const data = response.data;
+            console.log("usdt moving_average_200 Data:", data);
+            this.moving_average_200 = this.formatWithCommas(this.formatString(data["moving_averages"]));
         } catch (error) {
             console.error("Error:", error.message);
         }
