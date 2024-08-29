@@ -345,7 +345,7 @@ async fetchCurrentDifficulty() {
             }
             const data = response.data;
             console.log("usdt moving_average_200 Data:", data);
-            this.moving_average_200 = this.formatWithCommas(this.formatString(data["moving_averages"]));
+            this.moving_average_usdt_200 = this.formatWithCommas(this.formatString(data["moving_averages"]));
         } catch (error) {
             console.error("Error:", error.message);
         }
