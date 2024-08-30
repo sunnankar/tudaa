@@ -12,4 +12,5 @@ Start developing your Jekyll website. -->
 <li><a href="/dashboard">Dashboard</a></li>
 <li><a href="/volatility">Volatility</a></li>
 <li><a href="/indexes">Price Indexes</a></li>
+<li><a href="/mwcDashboard">MWC Dashboard</a></li>
 </ul>
