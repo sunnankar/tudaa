@@ -24,7 +24,7 @@ export default (config = {}) => ({
     // Initialization method
     init() {
         this.fetchData();
-        this.fetchAndDrawChart('24h'); // Default view
+        // this.fetchAndDrawChart('24h'); // Default view
     },
 
     async fetchData() {
@@ -73,7 +73,7 @@ export default (config = {}) => ({
             this.drawSpotPriceChart();
             this.drawUSDTSpotPriceChart30();
             this.drawMovingAverageChart();
-            this.drawDifficultyChart();
+            // this.drawDifficultyChart();
             this.drawMovingAverageChartMwc();
             this.drawUSDTSpotPriceChart365();
             this.drawSpotPriceChart365();
