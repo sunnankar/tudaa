@@ -36,11 +36,13 @@ export default (config = {}) => ({
             const spotPriceResponseUsdt = await axios.get("https://mwc2.pacificpool.ws/api/price-indexes/get-spot-price-monthly_usdt");
             this.spotPriceDataUsdt = this.formatDataForChart(spotPriceResponseUsdt.data, "Spot Price MWC-USDT");
 
+
+
             const spotPriceResponse365 = await axios.get("https://mwc2.pacificpool.ws/api/price-indexes/get-mwc-btc/");
             this.spotPriceData365 = this.formatDataForChart(spotPriceResponse365.data, "Spot Price one year");
 
             const spotPriceResponseUsdt365 = await axios.get("https://mwc2.pacificpool.ws/api/price-indexes/get-mwc-usd/");
-            this.spotPriceDataUsdt365 = this.formatDataForChart(spotPriceResponseUsdt365.data, "Spot Price MWC-USDT");
+            this.spotPriceDataUsdt365 = this.formatDataForChart(spotPriceResponseUsdt365.data, "Spot Price MWC-USDT one year");
 
             // console.log(spotPriceData)
 
@@ -68,8 +70,8 @@ export default (config = {}) => ({
             this.movingAverageDataMwc = this.formatDataForChart(movingAverageResponseMwc.data, "200-day Moving Average MWC-BTC");
 
             // Draw charts
-            // this.drawSpotPriceChart();
-            // this.drawUSDTSpotPriceChart30();
+            this.drawSpotPriceChart();
+            this.drawUSDTSpotPriceChart30();
             this.drawMovingAverageChart();
             this.drawDifficultyChart();
             this.drawMovingAverageChartMwc();
