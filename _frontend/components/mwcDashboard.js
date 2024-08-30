@@ -64,7 +64,7 @@ export default (config = {}) => ({
             this.movingAverageData = this.formatDataForChart(movingAverageResponse.data, "200-day Moving Average");
 
             // Fetch 200-day Moving Average data
-            const movingAverageResponseMwc = await axios.get("http://127.0.0.1:8000/get-mwc-btc-ma/");
+            const movingAverageResponseMwc = await axios.get("https://mwc2.pacificpool.ws/api/price-indexes/get-mwc-btc-ma/");
             this.movingAverageDataMwc = this.formatDataForChart(movingAverageResponseMwc.data, "200-day Moving Average MWC-BTC");
 
             // Draw charts
