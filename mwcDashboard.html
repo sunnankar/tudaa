@@ -7,32 +7,94 @@ permalink: "mwcDashboard"
 
 <div x-data="mwcDashboard()">
     <div class="grid grid-cols-1 gap-4">
-        <!-- Spot Price and Current Difficulty Chart -->
+
+        <!--div class="grid grid-cols-1 py-2 bg-slate-50">
+            <div class="h-40 bg-white shadow-md">
+                <div class="p-4 pb-5 sm:flex sm:justify-between">
+                    <h3 class="text-base font-semibold leading-6 text-gray-900">
+                        Bitcoin Realized Volatility % In (N) Days
+                    </h3>
+                    <div class="mt-3 sm:ml-4 sm:mt-0">
+                        <div class="flex items-center space-x-6">
+                            
+                            <span class="inline-flex rounded-md shadow-sm isolate">
+                                <button
+                                    type="button"
+                                    class="relative inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-l-md ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-10"
+                                    x-on:click="fetchAndDrawChart('2h')"
+                                >
+                                    2h
+                                </button>
+                                
+                                <button
+                                    type="button"
+                                    class="relative inline-flex items-center px-3 py-2 -ml-px text-sm font-medium text-gray-700 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-10"
+                                    x-on:click="fetchAndDrawChart('24h')"
+                                >
+                                    24h
+                                </button>
+
+                                <button
+                                type="button"
+                                class="relative inline-flex items-center px-3 py-2 -ml-px text-sm font-medium text-gray-700 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-10"
+                                x-on:click="fetchAndDrawChart('72h')"
+                                >
+                                72h
+                               </button>
+                               <button
+                               type="button"
+                               class="relative inline-flex items-center px-3 py-2 -ml-px text-sm font-medium text-gray-700 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-10"
+                               x-on:click="fetchAndDrawChart('1w')"
+                               >
+                               1w
+                              </button>
+                                
+                            </span>
+
+                        </div>
+                    </div>
+                </div>
+    
+                 
+            </div>
+            <div  x-ref="vwapCumulativeChart" class="pt-4"></div>
+           
+        </div-->
+        
+    </div>
+    <div class="grid grid-cols-1 gap-4">
+        
         <div>
-            <h3>Spot Price(Past Year)</h3>
+            <h3>Spot Price MWC-BTC(One Month)</h3>
             <div x-ref="spotPriceChart" class="chart-container"></div>
         </div>
         <div>
+            <h3>Spot Price MWC-USDT(One Month)</h3>
+            <div x-ref="spotPriceChartUSDT" class="chart-container"></div>
+        </div>
+        <div>
+            <h3>Spot Price MWC-BTC(One year)</h3>
+            <div x-ref="spotPriceChart365" class="chart-container"></div>
+        </div>
+        <div>
+            <h3>Spot Price MWC-USDT(One year)</h3>
+            <div x-ref="spotPriceChartUSDT365" class="chart-container"></div>
+        </div>
+        <!-- <div>
             <h3>Current Difficulty (Past Year)</h3>
             <div x-ref="difficultyChart" class="chart-container"></div>
-        </div>
-
-        <!-- 2-hour and 24-hour VWAP & Cumulative Difficulty Chart -->
-        <div>
-            <h3>2-hour and 24-hour VWAP & Cumulative Difficulty (Past Month)</h3>
-            <div x-ref="vwapCumulativeChart" class="chart-container"></div>
-        </div>
-
-        <!-- Other VWAPs and Cumulative Difficulty (Past Year) -->
-        <div>
-            <h3>VWAPs & Cumulative Difficulty (Past Year)</h3>
-            <div x-ref="yearlyVwapCumulativeChart" class="chart-container"></div>
-        </div>
+        </div> -->
 
         <!-- 200-day Moving Averages Chart -->
         <div>
-            <h3>200-day Moving Averages (Price & Difficulty)</h3>
+            <h3>200-day Moving Averages MWC-UDT</h3>
             <div x-ref="movingAverageChart" class="chart-container"></div>
         </div>
+        <div>
+            <h3>200-day Moving Averages MWC-BTC</h3>
+            <div x-ref="movingAverageChartMwc" class="chart-container"></div>
+        </div>
+        
     </div>
+    
 </div>
