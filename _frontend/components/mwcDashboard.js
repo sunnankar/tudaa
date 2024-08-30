@@ -30,16 +30,16 @@ export default (config = {}) => ({
     async fetchData() {
         try {
             // Fetch spot price data
-            // const spotPriceResponse = await axios.get("https://mwc2.pacificpool.ws/api/price-indexes/historical-spot-price-30-days?start_date=2024-06-07&end_date=2024-08-26");
-            // this.spotPriceData = this.formatDataForChart(spotPriceResponse.data, "Spot Price");
+            const spotPriceResponse = await axios.get("https://mwc2.pacificpool.ws/api/price-indexes/get-spot-price-monthly");
+            this.spotPriceData = this.formatDataForChart(spotPriceResponse.data, "Spot Price");
 
-            // const spotPriceResponseUsdt = await axios.get("https://mwc2.pacificpool.ws/api/price-indexes/historical-spot-price-usdt-30-days?start_date=2024-06-21&end_date=2024-08-29");
-            // this.spotPriceDataUsdt = this.formatDataForChart(spotPriceResponseUsdt.data, "Spot Price MWC-USDT");
+            const spotPriceResponseUsdt = await axios.get("https://mwc2.pacificpool.ws/api/price-indexes/get-spot-price-monthly_usdt");
+            this.spotPriceDataUsdt = this.formatDataForChart(spotPriceResponseUsdt.data, "Spot Price MWC-USDT");
 
-            const spotPriceResponse365 = await axios.get("http://127.0.0.1:8000/get-mwc-btc/");
+            const spotPriceResponse365 = await axios.get("https://mwc2.pacificpool.ws/api/price-indexes/get-mwc-btc/");
             this.spotPriceData365 = this.formatDataForChart(spotPriceResponse365.data, "Spot Price one year");
 
-            const spotPriceResponseUsdt365 = await axios.get("http://127.0.0.1:8000/get-mwc-usd/");
+            const spotPriceResponseUsdt365 = await axios.get("https://mwc2.pacificpool.ws/api/price-indexes/get-mwc-usd/");
             this.spotPriceDataUsdt365 = this.formatDataForChart(spotPriceResponseUsdt365.data, "Spot Price MWC-USDT");
 
             // console.log(spotPriceData)
