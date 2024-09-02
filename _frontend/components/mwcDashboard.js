@@ -82,25 +82,40 @@ export default (config = {}) => ({
             console.error("Error fetching data:", error);
         }
     },
-
     formatDataForChart(data, type) {
+        if (type === "200-day Moving Average MWC-BTC") {
+          console.log("mwc moving_average_200 Data:", data);
+          return Object.entries(data).map(([date, price]) => {
+            const value = parseFloat(price);
+            console.log("mwc moving_average_200 value Data:", value);
+            return {
+              x: new Date(date),
+              y: !isNaN(value) ? parseFloat(value.toFixed(8)) : null
+            };
+          });
+        }
         return Object.entries(data).map(([date, price]) => ({
-            x: new Date(date),
-            y: price
+          x: new Date(date),
+          y: price
         }));
-    }
+      }
+      
+      
     ,
 
     drawSpotPriceChart() {
         const options = {
             chart: {
                 type: 'line',
-                height: 350,
+                height: 250,
+                width: '100%',
+                foreColor: '#9606E4'
             },
             series: [
                 {
                     name: 'Spot Price',
-                    data: this.spotPriceData,  // Data formatted with x (timestamp) and y (difficulty)
+                    data: this.spotPriceData,
+                    color: '#9606E4'  // Data formatted with x (timestamp) and y (difficulty)
                 },
             ],
             xaxis: {
@@ -129,12 +144,15 @@ export default (config = {}) => ({
         const options = {
             chart: {
                 type: 'line',
-                height: 350,
+                height: 250,
+                width: '100%',
+                foreColor: '#9606E4'
             },
             series: [
                 {
                     name: 'Spot Price MWC-USDT',
-                    data: this.spotPriceDataUsdt,  // Data formatted with x (timestamp) and y (difficulty)
+                    data: this.spotPriceDataUsdt,
+                    color: '#9606E4' // Data formatted with x (timestamp) and y (difficulty)
                 },
             ],
             xaxis: {
@@ -162,12 +180,15 @@ export default (config = {}) => ({
         const options = {
             chart: {
                 type: 'line',
-                height: 350,
+                height: 250,
+                width: '100%',
+                foreColor: '#9606E4'
             },
             series: [
                 {
                     name: 'Spot Price one year',
-                    data: this.spotPriceData365,  // Data formatted with x (timestamp) and y (difficulty)
+                    data: this.spotPriceData365,
+                    color: '#9606E4'  // Data formatted with x (timestamp) and y (difficulty)
                 },
             ],
             xaxis: {
@@ -196,12 +217,15 @@ export default (config = {}) => ({
         const options = {
             chart: {
                 type: 'line',
-                height: 350,
+                height: 250,
+                width: '100%',
+                foreColor: '#9606E4'
             },
             series: [
                 {
                     name: 'Spot Price MWC-USDT one year',
-                    data: this.spotPriceDataUsdt365,  // Data formatted with x (timestamp) and y (difficulty)
+                    data: this.spotPriceDataUsdt365,
+                    color: '#9606E4'  // Data formatted with x (timestamp) and y (difficulty)
                 },
             ],
             xaxis: {
@@ -264,12 +288,15 @@ export default (config = {}) => ({
         const options = {
             chart: {
                 type: 'line',
-                height: 350,
+                        height: 250,
+                        width: '100%',
+                        foreColor: '#9606E4'
             },
             series: [
                 {
                     name: "200-day Moving Average",
-                    data: this.movingAverageData // Data formatted with x (timestamp) and y (difficulty)
+                            data: this.movingAverageData,
+                            color: '#9606E4' // Data formatted with x (timestamp) and y (difficulty)
                 },
             ],
             xaxis: {
@@ -298,12 +325,15 @@ export default (config = {}) => ({
         const options = {
             chart: {
                 type: 'line',
-                height: 350,
+                height: 250,
+                width: '100%',
+                foreColor: '#9606E4'
             },
             series: [
                 {
                     name: "200-day Moving Average MWC-BTC",
-                    data: this.movingAverageDataMwc // Data formatted with x (timestamp) and y (difficulty)
+                    data: this.movingAverageDataMwc,
+                    color: '#9606E4'// Data formatted with x (timestamp) and y (difficulty)
                 },
             ],
             xaxis: {

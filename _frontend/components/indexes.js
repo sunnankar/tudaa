@@ -111,33 +111,38 @@ export default (config = {}) => ({
 
     async fetchDifficulty() {
         try {
-            const response = await axios.get("https://mwc2.pacificpool.ws/api/price-indexes/cumulative_difficulty_optimized");
-            if (response.status !== 200) {
-                throw new Error("Failed to fetch data");
-            }
-            const data = response.data;
-            console.log("Difficulty Data:", data);
-
-            // Check if "2 hours" value is not valid and use "24 hours" value instead
-            if (data["2 hours"] === null || data["2 hours"] === "No data found for the given interval") {
-                this.two_hour_cumulative_difficulty = this.formatWithCommas(this.formatToEightDecimalPlaces(data["24 hours"], 8));
-            } else {
-                this.two_hour_cumulative_difficulty = this.formatWithCommas(this.formatToEightDecimalPlaces(data["2 hours"], 8));
-            }
-
-            console.log("Assigned 2 Hour Cumulative Difficulty:", this.two_hour_cumulative_difficulty);
-
-            this.twenty_four_hour_cumulative_difficulty = this.formatWithCommas(this.formatToEightDecimalPlaces(data["24 hours"], 8));
-            this.seventy_two_hour_cumulative_difficulty = this.formatWithCommas(this.formatToEightDecimalPlaces(data["72 hours"], 8));
-            this.one_week_cumulative_difficulty = this.formatWithCommas(this.formatToEightDecimalPlaces(data["one week"], 8));
-            this.two_weeks_cumulative_difficulty = this.formatWithCommas(this.formatToEightDecimalPlaces(data["two weeks"], 8));
-            this.one_month_cumulative_difficulty = this.formatWithCommas(this.formatToEightDecimalPlaces(data["one month"], 8));
-            this.one_quarter_cumulative_difficulty = this.formatWithCommas(this.formatToEightDecimalPlaces(data["one quarter"], 8));
+          const response = await axios.get("https://mwc2.pacificpool.ws/api/price-indexes/cumulative_difficulty_optimized");
+          if (response.status !== 200) {
+            throw new Error("Failed to fetch data");
+          }
+          const data = response.data;
+          console.log("Difficulty Data:", data);
+      
+          // Helper function to format and remove trailing zeroes
+          const formatAndRemoveZeros = (value) => {
+            return this.formatWithCommasDifficulty(this.formatToEightDecimalPlaces(value, 8));
+          };
+      
+          // Check if "2 hours" value is not valid and use "24 hours" value instead
+          if (data["2 hours"] === null || data["2 hours"] === "No data found for the given interval") {
+            this.two_hour_cumulative_difficulty = formatAndRemoveZeros(data["24 hours"]);
+          } else {
+            this.two_hour_cumulative_difficulty = formatAndRemoveZeros(data["2 hours"]);
+          }
+      
+          console.log("Assigned 2 Hour Cumulative Difficulty:", this.two_hour_cumulative_difficulty);
+      
+          this.twenty_four_hour_cumulative_difficulty = formatAndRemoveZeros(data["24 hours"]);
+          this.seventy_two_hour_cumulative_difficulty = formatAndRemoveZeros(data["72 hours"]);
+          this.one_week_cumulative_difficulty = formatAndRemoveZeros(data["one week"]);
+          this.two_weeks_cumulative_difficulty = formatAndRemoveZeros(data["two weeks"]);
+          this.one_month_cumulative_difficulty = formatAndRemoveZeros(data["one month"]);
+          this.one_quarter_cumulative_difficulty = formatAndRemoveZeros(data["one quarter"]);
         } catch (error) {
-            console.error("Error:", error.message);
+          console.error("Error:", error.message);
         }
-    },
-
+      },
+      
 async fetchCurrentDifficulty() {
         try {
             const response = await axios.get("https://mwc2.pacificpool.ws/api/price-indexes/cumulative_difficulty");
@@ -146,7 +151,12 @@ async fetchCurrentDifficulty() {
             }
             const data = response.data;
             console.log("Difficulty Data:", data);
-            this.currentDifficulty = this.formatWithCommas(this.formatToEightDecimalPlaces(data["current_difficulty"], 8));
+
+            const formatAndRemoveZeros = (value) => {
+                return this.formatWithCommasDifficulty(this.formatToEightDecimalPlaces(value, 8));
+              };
+            
+            this.currentDifficulty = formatAndRemoveZeros(data["current_difficulty"], 8);
         } catch (error) {
             console.error("Error:", error.message);
         }
@@ -400,6 +410,40 @@ async fetchCurrentDifficulty() {
         }
         return parseFloat(value).toLocaleString('en-US', { minimumFractionDigits: 8, maximumFractionDigits: 8 });
     },
+
+    formatWithCommasDifficulty(value) {
+        if (isNaN(value)) {
+            return value;
+        }
+        // Format the number with commas and up to 8 decimal places
+        let formattedValue = parseFloat(value).toLocaleString('en-US', { minimumFractionDigits: 8, maximumFractionDigits: 8 });
+        
+        // Remove trailing zeros and the trailing decimal point if necessary
+        formattedValue = formattedValue.replace(/(\.0+|(?<=\.\d*)0+)$/, '');
+        
+        return formattedValue;
+    },
+    
+
+    removeTrailingZeros(numberStr) {
+        if (typeof numberStr !== 'string') {
+          numberStr = numberStr.toString();
+        }
+        
+        if (!numberStr.includes('.')) {
+          return numberStr;
+        }
+        
+        // Remove trailing zeros
+        numberStr = numberStr.replace(/0+$/, '');
+        
+        // Remove trailing decimal point if there are no digits following it
+        if (numberStr.endsWith('.')) {
+          numberStr = numberStr.slice(0, -1);
+        }
+        
+        return numberStr;
+      },
 	
 
     formatString(input) {
@@ -423,5 +467,6 @@ async fetchCurrentDifficulty() {
         } else {
             return trimmedInput;
         }
-    },
+    }
+    
 });
