@@ -100,18 +100,6 @@ export default (config = {}) => ({
                 };
             });
         }
-        
-        if (type === "MWC-BTC Vwap") {
-            console.log("MWC-BTC Vwap Data:", data);
-            return Object.entries(data).map(([date, price]) => {
-                const value = parseFloat(price);
-                console.log("MWC-BTC Vwap value Data:", value);
-                return {
-                    x: new Date(date),
-                    y: !isNaN(value) ? parseFloat(value.toFixed(8)) : null
-                };
-            });
-        }
     
         return Object.entries(data).map(([date, price]) => ({
             x: new Date(date),
