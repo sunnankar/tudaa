@@ -3,6 +3,39 @@
 	<meta charset="utf-8" />
 	<title>{{ page.title }} - {{ site.title }}</title>
 
+	<style>
+        html {
+            --tw-bg-opacity: 1;
+            background-color: rgb(7 0 22 / var(--tw-bg-opacity));
+            font-family: 'Match-Regular', sans-serif;
+            font-size: 1rem;
+            line-height: 1.5rem;
+            --tw-text-opacity: 1;
+            color: rgb(161 152 195 / var(--tw-text-opacity));
+        }
+        .tab-active {
+            background-color: #9606E4;
+            color: white;
+        }
+        .bg-purple-light {
+            background-color: #9606E4;
+        }
+        .text-purple-light {
+            color: #9606E4;
+        }
+        .chart-container {
+            overflow: hidden;
+            position: relative;
+        }
+        .chart-container .apexcharts-canvas {
+            position: absolute !important;
+            top: 0;
+            left: 0;
+            width: 100% !important;
+            height: 100% !important;
+        }
+    </style>
+
 	<!-- meta tags, etc -->
 	{% vite_client_tag %} {% vite_javascript_tag application %} {%
 	vite_stylesheet_tag application.scss %}

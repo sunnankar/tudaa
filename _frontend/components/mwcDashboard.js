@@ -19,12 +19,18 @@ export default (config = {}) => ({
     vwapCumulativeChart: null,
     yearlyVwapCumulativeChart: null,
     movingAverageChart: null,
+    selectedTimeframe: '2h',
 
 
     // Initialization method
     init() {
         this.fetchData();
-        // this.fetchAndDrawChart('24h'); // Default view
+        this.fetchAndDrawChart(this.selectedTimeframe); // Default view
+    },
+
+    selectTimeframe(timeframe) {
+        this.selectedTimeframe = timeframe;
+        this.fetchAndDrawChart(timeframe);
     },
 
     async fetchData() {
@@ -58,8 +64,8 @@ export default (config = {}) => ({
             // const cumulativeDifficultyResponse = await axios.get("https://mwc2.pacificpool.ws/api/price-indexes/cumulative_difficulty_optimized");
 
 
-            // this.vwapData = this.formatDataForChart(vwapResponse.data, "VWAP");
-            // this.cumulativeDifficultyData = this.formatDataForChart(cumulativeDifficultyResponse.data, "Cumulative Difficulty");
+            // const vwapMwcData = this.formatDataForChart("https://mwc2.pacificpool.ws/api/price-indexes/tudda_vwap_mwc_price_optimized");
+            // this.vwapData = this.formatDataForChart(vwapMwcData.data, "VWAP");
 
             // Fetch 200-day Moving Average data
             const movingAverageResponse = await axios.get("https://mwc2.pacificpool.ws/api/price-indexes/get-mwc-usd-ma/");
@@ -84,24 +90,34 @@ export default (config = {}) => ({
     },
     formatDataForChart(data, type) {
         if (type === "200-day Moving Average MWC-BTC") {
-          console.log("mwc moving_average_200 Data:", data);
-          return Object.entries(data).map(([date, price]) => {
-            const value = parseFloat(price);
-            console.log("mwc moving_average_200 value Data:", value);
-            return {
-              x: new Date(date),
-              y: !isNaN(value) ? parseFloat(value.toFixed(8)) : null
-            };
-          });
+            console.log("mwc moving_average_200 Data:", data);
+            return Object.entries(data).map(([date, price]) => {
+                const value = parseFloat(price);
+                console.log("mwc moving_average_200 value Data:", value);
+                return {
+                    x: new Date(date),
+                    y: !isNaN(value) ? parseFloat(value.toFixed(8)) : null
+                };
+            });
         }
+        
+        if (type === "MWC-BTC Vwap") {
+            console.log("MWC-BTC Vwap Data:", data);
+            return Object.entries(data).map(([date, price]) => {
+                const value = parseFloat(price);
+                console.log("MWC-BTC Vwap value Data:", value);
+                return {
+                    x: new Date(date),
+                    y: !isNaN(value) ? parseFloat(value.toFixed(8)) : null
+                };
+            });
+        }
+    
         return Object.entries(data).map(([date, price]) => ({
-          x: new Date(date),
-          y: price
+            x: new Date(date),
+            y: price
         }));
-      }
-      
-      
-    ,
+    },
 
     drawSpotPriceChart() {
         const options = {
@@ -360,38 +376,17 @@ export default (config = {}) => ({
     ,
     
     async fetchAndDrawChart(timeframe) {
-        this.calculateStartTime(timeframe);
 
         try {
-            const response = await axios.get(`https://mwc2.pacificpool.ws/api/price-indexes/vwap/mwc`, {
-                params: { start_date: this.MwcStartTime, end_date: this.MwcEndTime, interval:timeframe }
+            const response = await axios.get(`https://mwc2.pacificpool.ws/api/price-indexes/vwap_historical_mwc?interval`, {
+                params: {interval:timeframe }
             });
 
-            const chartData = this.formatDataForChart(response.data);
+            const chartData = this.formatDataForChart(response.data,"MWC-BTC Vwap");
             this.drawVwapCumulativeChart(chartData, timeframe);
 
         } catch (error) {
             console.error("Error fetching chart data:", error);
-        }
-    },
-
-    calculateStartTime(timeframe) {
-        const now = new Date();
-        switch (timeframe) {
-            case '2h':
-                this.MwcStartTime = new Date(now.getTime() - 2 * 60 * 60 * 1000).toISOString();
-                break;
-            case '24h':
-                this.MwcStartTime = new Date(now.getTime() - 24 * 60 * 60 * 1000).toISOString();
-                break;
-            case '72h':
-                this.MwcStartTime = new Date(now.getTime() - 72 * 60 * 60 * 1000).toISOString();
-                break;
-            case '1w':
-                this.MwcStartTime = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString();
-                break;
-            default:
-                this.MwcStartTime = new Date(now.getTime() - 2 * 60 * 60 * 1000).toISOString();
         }
     },
     drawVwapCumulativeChart(data, timeframe) {
@@ -399,9 +394,11 @@ export default (config = {}) => ({
             chart: {
                 type: 'line',
                 height: 350,
+                width: '100%',
+                foreColor: '#9606E4'
             },
             series: [
-                { name: `VWAP & Cumulative Difficulty (${timeframe})`, data: data },
+                { name: `MWC-BTC VWAP (${timeframe})`, data: data, color: '#9606E4' },
             ],
             xaxis: { type: 'datetime' },
             yaxis: { title: { text: 'Value' } },
