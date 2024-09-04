@@ -37,23 +37,23 @@ export default (config = {}) => ({
         try {
             // Fetch spot price data
             const spotPriceResponse = await axios.get("https://mwc2.pacificpool.ws/api/price-indexes/get-mwc-btc" ,{
-                params: {interval:"30d" }
+                params: {period:"30d" }
             });
             this.spotPriceData = this.formatDataForChart(spotPriceResponse.data, "Spot Price");
 
             const spotPriceResponseUsdt = await axios.get("https://mwc2.pacificpool.ws/api/price-indexes/get-mwc-usd",{
-                params: {interval:"30d" }
+                params: {period:"30d" }
             });
             this.spotPriceDataUsdt = this.formatDataForChart(spotPriceResponseUsdt.data, "Spot Price MWC-USDT");
 
 
             const spotPriceResponse365 = await axios.get("https://mwc2.pacificpool.ws/api/price-indexes/get-mwc-btc/",{
-                params: {interval:"1y" }
+                params: {period:"1y" }
             });
             this.spotPriceData365 = this.formatDataForChart(spotPriceResponse365.data, "Spot Price one year");
 
             const spotPriceResponseUsdt365 = await axios.get("https://mwc2.pacificpool.ws/api/price-indexes/get-mwc-usd/",{
-                params: {interval:"1y" }
+                params: {period:"1y" }
             });
             this.spotPriceDataUsdt365 = this.formatDataForChart(spotPriceResponseUsdt365.data, "Spot Price MWC-USDT one year");
 
