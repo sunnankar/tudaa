@@ -373,7 +373,7 @@ export default (config = {}) => ({
     async fetchAndDrawChart(timeframe) {
 
         try {
-            const response = await axios.get(`https://mwc2.pacificpool.ws/api/price-indexes/vwap_historical_mwc?interval`, {
+            const response = await axios.get(`https://mwc2.pacificpool.ws/api/price-indexes/test_vwap_mwc_interval?interval`, {
                 params: {interval:timeframe }
             });
 
