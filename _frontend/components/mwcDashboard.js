@@ -61,8 +61,9 @@ export default (config = {}) => ({
 
             // Fetch current difficulty data
             // const response = await axios.get("https://mwc2.pacificpool.ws/api/price-indexes-background/fetch-difficulty-data/");
-            // this.currentDifficultyData = this.formatDataForChart(response.data);
-
+            const response = await axios.get("https://mwc2.pacificpool.ws/api/price-indexes-background/fetch-difficulty-data/");
+            this.currentDifficultyData = this.formatDataForChart(response.data,"Current Difficulty");
+            
 
             // this.currentDifficultyData = this.formatDataForChart(this.jsonP, "Current Difficulty");
 
@@ -86,7 +87,7 @@ export default (config = {}) => ({
             this.drawSpotPriceChart();
             this.drawUSDTSpotPriceChart30();
             this.drawMovingAverageChart();
-            // this.drawDifficultyChart();
+            this.drawDifficultyChart();
             this.drawMovingAverageChartMwc();
             this.drawUSDTSpotPriceChart365();
             this.drawSpotPriceChart365();
@@ -94,6 +95,9 @@ export default (config = {}) => ({
         } catch (error) {
             console.error("Error fetching data:", error);
         }
+    },
+    formatWithCommas(value) {
+        return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     },
     formatDataForChart(data, type) {
         if (type === "200-day Moving Average MWC-BTC") {
@@ -104,6 +108,19 @@ export default (config = {}) => ({
                 return {
                     x: new Date(date),
                     y: !isNaN(value) ? parseFloat(value.toFixed(8)) : null
+                };
+            });
+        }
+
+        if (type === "Current Difficulty") {
+            console.log("Current Difficulty Data:", data);
+            return Object.entries(data).map(([date, price]) => {
+                let formattedPrice = parseFloat(price);  
+                console.log("Current Difficulty value Data:", formattedPrice);
+                const formattedPricevalue = this.formatWithCommas(formattedPrice); 
+                return {
+                    x: new Date(date),
+                    y: formattedPricevalue
                 };
             });
         }
@@ -265,12 +282,15 @@ export default (config = {}) => ({
         const options = {
             chart: {
                 type: 'line',
-                height: 350,
+                height: 250,
+                width: '100%',
+                foreColor: '#9606E4'
             },
             series: [
                 {
                     name: 'Current Difficulty',
                     data: this.currentDifficultyData,  // Data formatted with x (timestamp) and y (difficulty)
+                    color: '#9606E4'
                 },
             ],
             xaxis: {
