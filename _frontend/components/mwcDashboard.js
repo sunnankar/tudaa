@@ -25,12 +25,12 @@ export default (config = {}) => ({
     // Initialization method
     init() {
         this.fetchData();
-        this.fetchAndDrawCharts(this.selectedTimeframe); // Default view
+        this.fetchAndDrawCombinedChart(this.selectedTimeframe); // Default view
     },
 
     selectTimeframe(timeframe) {
         this.selectedTimeframe = timeframe;
-        this.fetchAndDrawCharts(timeframe);
+        this.fetchAndDrawCombinedChart(timeframe);
     },
 
     async fetchData() {
@@ -407,33 +407,55 @@ export default (config = {}) => ({
         }
     },
 
-    drawVwapCumulativeChart(data, timeframe) {
-        const options = {
-            chart: { type: 'line', height: 350, width: '100%', foreColor: '#9606E4' },
-            series: [{ name: `MWC-BTC VWAP (${timeframe})`, data, color: '#9606E4' }],
-            xaxis: { type: 'datetime' },
-            yaxis: { title: { text: 'Value' } },
-        };
-        if (this.vwapCumulativeChart) {
-            this.vwapCumulativeChart.updateOptions(options);
-        } else {
-            this.vwapCumulativeChart = new ApexCharts(this.$refs.vwapCumulativeChart, options);
-            this.vwapCumulativeChart.render();
+    async fetchAndDrawCombinedChart(timeframe) {
+        try {
+            const [vwapResponse, cumulativeDifficultyResponse] = await Promise.all([
+                axios.get(`https://mwc2.pacificpool.ws/api/price-indexes/test_vwap_mwc_interval`, { params: { interval: timeframe } }),
+                axios.get(`https://mwc2.pacificpool.ws/api/price-indexes-background/cumulative_difficulty_data_interval`, { params: { interval: timeframe } })
+            ]);
+    
+            const vwapData = this.formatDataForChart(vwapResponse.data, "MWC-BTC Vwap");
+            const cumulativeDifficultyData = this.formatDataForChart(cumulativeDifficultyResponse.data, "Cumulative Difficulty");
+    
+            this.drawCombinedChart(vwapData, cumulativeDifficultyData, timeframe);
+        } catch (error) {
+            console.error("Error fetching chart data:", error);
         }
     },
 
-    drawCumulativeDifficultyChart(data, timeframe) {
+    drawCombinedChart(vwapData, cumulativeDifficultyData, timeframe) {
         const options = {
-            chart: { type: 'line', height: 350, width: '100%', foreColor: '#8804E4' },
-            series: [{ name: `Cumulative Difficulty (${timeframe})`, data, color: '#8804E4' }],
+            chart: {
+                type: 'line',
+                height: 350,
+                width: '100%',
+                foreColor: '#9606E4',
+            },
+            series: [
+                {
+                    name: `MWC-BTC VWAP (${timeframe})`,
+                    data: vwapData,
+                    color: '#9606E4',
+                },
+                {
+                    name: `Cumulative Difficulty (${timeframe})`,
+                    data: cumulativeDifficultyData,
+                    color: '#8804E4',
+                }
+            ],
             xaxis: { type: 'datetime' },
-            yaxis: { title: { text: 'Difficulty' } },
+            yaxis: { title: { text: 'Value' } },
+            stroke: { curve: 'smooth' },
+            tooltip: { x: { format: 'dd MMM yyyy' } },
+            legend: { show: true }
         };
-        if (this.cumulativeDifficultyChart) {
-            this.cumulativeDifficultyChart.updateOptions(options);
-        } else {
-            this.cumulativeDifficultyChart = new ApexCharts(this.$refs.cumulativeDifficultyChart, options);
-            this.cumulativeDifficultyChart.render();
+    
+        this.combinedChart = new ApexCharts(this.$refs.combinedChart, options);
+        this.combinedChart.render();
+    },
+    toggleChartSeries(seriesName) {
+        if (this.combinedChart) {
+            this.combinedChart.toggleSeries(seriesName);
         }
     }
 })
