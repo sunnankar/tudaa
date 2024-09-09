@@ -25,12 +25,12 @@ export default (config = {}) => ({
     // Initialization method
     init() {
         this.fetchData();
-        this.fetchAndDrawChart(this.selectedTimeframe); // Default view
+        this.fetchAndDrawCharts(this.selectedTimeframe); // Default view
     },
 
     selectTimeframe(timeframe) {
         this.selectedTimeframe = timeframe;
-        this.fetchAndDrawChart(timeframe);
+        this.fetchAndDrawCharts(timeframe);
     },
 
     async fetchData() {
@@ -66,10 +66,6 @@ export default (config = {}) => ({
             
 
             // this.currentDifficultyData = this.formatDataForChart(this.jsonP, "Current Difficulty");
-
-            // Fetch VWAP and Cumulative Difficulty data
-            // const vwapResponse = await axios.get("https://mwc2.pacificpool.ws/api/price-indexes/tudda_vwap_mwc_price_optimized");
-            // const cumulativeDifficultyResponse = await axios.get("https://mwc2.pacificpool.ws/api/price-indexes/cumulative_difficulty_optimized");
 
 
             // const vwapMwcData = this.formatDataForChart("https://mwc2.pacificpool.ws/api/price-indexes/tudda_vwap_mwc_price_optimized");
@@ -390,31 +386,31 @@ export default (config = {}) => ({
     }
     ,
     
-    async fetchAndDrawChart(timeframe) {
-
+    async fetchAndDrawCharts(timeframe) {
         try {
-            const response = await axios.get(`https://mwc2.pacificpool.ws/api/price-indexes/test_vwap_mwc_interval?interval`, {
-                params: {interval:timeframe }
-            });
+            // Fetch data for both VWAP and Cumulative Difficulty
+            const [vwapResponse, cumulativeDifficultyResponse] = await Promise.all([
+                axios.get(`https://mwc2.pacificpool.ws/api/price-indexes/test_vwap_mwc_interval`, { params: { interval: timeframe } }),
+                axios.get(`https://mwc2.pacificpool.ws/api/price-indexes-background/cumulative_difficulty_data_interval`, { params: { interval: timeframe } })
+            ]);
 
-            const chartData = this.formatDataForChart(response.data,"MWC-BTC Vwap");
-            this.drawVwapCumulativeChart(chartData, timeframe);
+            // Format and draw VWAP chart
+            const vwapData = this.formatDataForChart(vwapResponse.data, "MWC-BTC Vwap");
+            this.drawVwapCumulativeChart(vwapData, timeframe);
+
+            // Format and draw Cumulative Difficulty chart
+            const cumulativeDifficultyData = this.formatDataForChart(cumulativeDifficultyResponse.data, "Cumulative Difficulty");
+            this.drawCumulativeDifficultyChart(cumulativeDifficultyData, timeframe);
 
         } catch (error) {
             console.error("Error fetching chart data:", error);
         }
     },
+
     drawVwapCumulativeChart(data, timeframe) {
         const options = {
-            chart: {
-                type: 'line',
-                height: 350,
-                width: '100%',
-                foreColor: '#9606E4'
-            },
-            series: [
-                { name: `MWC-BTC VWAP (${timeframe})`, data: data, color: '#9606E4' },
-            ],
+            chart: { type: 'line', height: 350, width: '100%', foreColor: '#9606E4' },
+            series: [{ name: `MWC-BTC VWAP (${timeframe})`, data, color: '#9606E4' }],
             xaxis: { type: 'datetime' },
             yaxis: { title: { text: 'Value' } },
         };
@@ -425,6 +421,21 @@ export default (config = {}) => ({
             this.vwapCumulativeChart.render();
         }
     },
+
+    drawCumulativeDifficultyChart(data, timeframe) {
+        const options = {
+            chart: { type: 'line', height: 350, width: '100%', foreColor: '#8804E4' },
+            series: [{ name: `Cumulative Difficulty (${timeframe})`, data, color: '#8804E4' }],
+            xaxis: { type: 'datetime' },
+            yaxis: { title: { text: 'Difficulty' } },
+        };
+        if (this.cumulativeDifficultyChart) {
+            this.cumulativeDifficultyChart.updateOptions(options);
+        } else {
+            this.cumulativeDifficultyChart = new ApexCharts(this.$refs.cumulativeDifficultyChart, options);
+            this.cumulativeDifficultyChart.render();
+        }
+    }
 })
   
 
