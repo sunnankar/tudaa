@@ -125,19 +125,6 @@ export default (config = {}) => ({
                 };
             });
         }
-
-        if (type === "Cumulative Difficulty") {
-            console.log("Cumulative Difficulty:", data);
-            return Object.entries(data).map(([date, price]) => {
-                let formattedPrice = parseFloat(price);  
-                console.log("Cumulative Difficultyvalue Data:", formattedPrice);
-                const formattedPricevalue = this.formatWithCommas(this.removeTrailingZeros(formattedPrice)); 
-                return {
-                    x: new Date(date),
-                    y: formattedPricevalue
-                };
-            });
-        }
     
         return Object.entries(data).map(([date, price]) => ({
             x: new Date(date),
@@ -512,27 +499,7 @@ export default (config = {}) => ({
         if (this.combinedChart) {
             this.combinedChart.toggleSeries(seriesName);
         }
-    },
-    removeTrailingZeros(numberStr) {
-        if (typeof numberStr !== 'string') {
-          numberStr = numberStr.toString();
-        }
-        
-        if (!numberStr.includes('.')) {
-          return numberStr;
-        }
-        
-        // Remove trailing zeros
-        numberStr = numberStr.replace(/0+$/, '');
-        
-        // Remove trailing decimal point if there are no digits following it
-        if (numberStr.endsWith('.')) {
-          numberStr = numberStr.slice(0, -1);
-        }
-        
-        return numberStr;
-      }
-	
+    }
 })
   
 
