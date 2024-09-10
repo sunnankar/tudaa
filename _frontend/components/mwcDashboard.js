@@ -10,6 +10,7 @@ export default (config = {}) => ({
     cumulativeDifficultyData: [],
     movingAverageData: [],
     movingAverageDataMwc:[],
+    movingAverageDifficulty:[],
     MwcStartTime: null,
     MwcEndTime: new Date().toISOString(),
 
@@ -79,6 +80,9 @@ export default (config = {}) => ({
             const movingAverageResponseMwc = await axios.get("https://mwc2.pacificpool.ws/api/price-indexes/get-mwc-btc-ma/");
             this.movingAverageDataMwc = this.formatDataForChart(movingAverageResponseMwc.data, "200-day Moving Average MWC-BTC");
 
+            const movingAverageDifficulty = await axios.get("https://mwc2.pacificpool.ws/api/price-indexes-background/calculate_200_day_moving_average_graph/");
+            this.movingAverageDifficulty = this.formatDataForChart(movingAverageDifficulty.data, "200-day Moving Average MWC-BTC");
+
             // Draw charts
             this.drawSpotPriceChart();
             this.drawUSDTSpotPriceChart30();
@@ -87,6 +91,7 @@ export default (config = {}) => ({
             this.drawMovingAverageChartMwc();
             this.drawUSDTSpotPriceChart365();
             this.drawSpotPriceChart365();
+            this.fetchMovingAverageData();
 
         } catch (error) {
             console.error("Error fetching data:", error);
@@ -114,6 +119,19 @@ export default (config = {}) => ({
                 let formattedPrice = parseFloat(price);  
                 console.log("Current Difficulty value Data:", formattedPrice);
                 const formattedPricevalue = this.formatWithCommas(formattedPrice); 
+                return {
+                    x: new Date(date),
+                    y: formattedPricevalue
+                };
+            });
+        }
+
+        if (type === "Cumulative Difficulty") {
+            console.log("Cumulative Difficulty:", data);
+            return Object.entries(data).map(([date, price]) => {
+                let formattedPrice = parseFloat(price);  
+                console.log("Cumulative Difficultyvalue Data:", formattedPrice);
+                const formattedPricevalue = this.formatWithCommas(this.removeTrailingZeros(formattedPrice)); 
                 return {
                     x: new Date(date),
                     y: formattedPricevalue
@@ -385,6 +403,43 @@ export default (config = {}) => ({
         this.movingAverageChartMwc.render();
     }
     ,
+    fetchMovingAverageData() {
+        const options = {
+            chart: {
+                type: 'line',
+                height: 250,
+                width: '100%',
+                foreColor: '#9606E4'
+            },
+            series: [
+                {
+                    name: "200-day Moving Average Difficulty",
+                    data: this.movingAverageDifficulty,
+                    color: '#9606E4'// Data formatted with x (timestamp) and y (difficulty)
+                },
+            ],
+            xaxis: {
+                type: 'datetime',
+            },
+            yaxis: {
+                title: {
+                    text: '200-day Moving Average Difficulty',
+                },
+            },
+            stroke: {
+                curve: 'smooth'
+            },
+            tooltip: {
+                x: {
+                    format: 'dd MMM yyyy'
+                },
+            }
+        };
+    
+        this.movingAverageDifficulty = new ApexCharts(this.$refs.movingAverageDifficulty, options);
+        this.movingAverageDifficulty.render();
+    }
+    ,
     
     async fetchAndDrawCharts(timeframe) {
         try {
@@ -457,7 +512,27 @@ export default (config = {}) => ({
         if (this.combinedChart) {
             this.combinedChart.toggleSeries(seriesName);
         }
-    }
+    },
+    removeTrailingZeros(numberStr) {
+        if (typeof numberStr !== 'string') {
+          numberStr = numberStr.toString();
+        }
+        
+        if (!numberStr.includes('.')) {
+          return numberStr;
+        }
+        
+        // Remove trailing zeros
+        numberStr = numberStr.replace(/0+$/, '');
+        
+        // Remove trailing decimal point if there are no digits following it
+        if (numberStr.endsWith('.')) {
+          numberStr = numberStr.slice(0, -1);
+        }
+        
+        return numberStr;
+      }
+	
 })
   
 
