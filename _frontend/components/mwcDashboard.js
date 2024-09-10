@@ -91,7 +91,7 @@ export default (config = {}) => ({
             this.drawMovingAverageChartMwc();
             this.drawUSDTSpotPriceChart365();
             this.drawSpotPriceChart365();
-            this.fetchMovingAverageData();
+            // this.fetchMovingAverageData();
 
         } catch (error) {
             console.error("Error fetching data:", error);
