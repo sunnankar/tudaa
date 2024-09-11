@@ -7,7 +7,7 @@ export default (config = {}) => ({
     spotPriceDataUsdt365: [],
     currentDifficultyData: [],
     vwapData: [],
-    // cumulativeDifficultyData: [],
+    cumulativeDifficultyData: [],
     movingAverageData: [],
     movingAverageDataMwc:[],
     movingAverageDifficulty:[],
@@ -80,8 +80,8 @@ export default (config = {}) => ({
             const movingAverageResponseMwc = await axios.get("https://mwc2.pacificpool.ws/api/price-indexes/get-mwc-btc-ma/");
             this.movingAverageDataMwc = this.formatDataForChart(movingAverageResponseMwc.data, "200-day Moving Average MWC-BTC");
 
-            // const movingAverageDifficulty = await axios.get("https://mwc2.pacificpool.ws/api/price-indexes-background/calculate_200_day_moving_average_graph/");
-            // this.movingAverageDifficulty = this.formatDataForChart(movingAverageDifficulty.data, "200-day Moving Average MWC-BTC");
+            const movingAverageDifficulty = await axios.get("https://mwc2.pacificpool.ws/api/price-indexes-background/moving-averages/");
+            this.movingAverageDifficulty = this.formatDataForChart(movingAverageDifficulty.data, "200-day Moving Average Dificulty");
 
             // Draw charts
             this.drawSpotPriceChart();
@@ -91,7 +91,7 @@ export default (config = {}) => ({
             this.drawMovingAverageChartMwc();
             this.drawUSDTSpotPriceChart365();
             this.drawSpotPriceChart365();
-            // this.fetchMovingAverageData();
+            this.fetchMovingAverageData();
 
         } catch (error) {
             console.error("Error fetching data:", error);
@@ -390,42 +390,42 @@ export default (config = {}) => ({
         this.movingAverageChartMwc.render();
     }
     ,
-    // fetchMovingAverageData() {
-    //     const options = {
-    //         chart: {
-    //             type: 'line',
-    //             height: 250,
-    //             width: '100%',
-    //             foreColor: '#9606E4'
-    //         },
-    //         series: [
-    //             {
-    //                 name: "200-day Moving Average Difficulty",
-    //                 data: this.movingAverageDifficulty,
-    //                 color: '#9606E4'// Data formatted with x (timestamp) and y (difficulty)
-    //             },
-    //         ],
-    //         xaxis: {
-    //             type: 'datetime',
-    //         },
-    //         yaxis: {
-    //             title: {
-    //                 text: '200-day Moving Average Difficulty',
-    //             },
-    //         },
-    //         stroke: {
-    //             curve: 'smooth'
-    //         },
-    //         tooltip: {
-    //             x: {
-    //                 format: 'dd MMM yyyy'
-    //             },
-    //         }
-    //     };
+    fetchMovingAverageData() {
+        const options = {
+            chart: {
+                type: 'line',
+                height: 250,
+                width: '100%',
+                foreColor: '#9606E4'
+            },
+            series: [
+                {
+                    name: "200-day Moving Average Difficulty",
+                    data: this.movingAverageDifficulty,
+                    color: '#9606E4'// Data formatted with x (timestamp) and y (difficulty)
+                },
+            ],
+            xaxis: {
+                type: 'datetime',
+            },
+            yaxis: {
+                title: {
+                    text: '200-day Moving Average Difficulty',
+                },
+            },
+            stroke: {
+                curve: 'smooth'
+            },
+            tooltip: {
+                x: {
+                    format: 'dd MMM yyyy'
+                },
+            }
+        };
     
-    //     this.movingAverageDifficulty = new ApexCharts(this.$refs.movingAverageDifficulty, options);
-    //     this.movingAverageDifficulty.render();
-    // }
+        this.movingAverageDifficulty = new ApexCharts(this.$refs.movingAverageDifficulty, options);
+        this.movingAverageDifficulty.render();
+    },
     
     async fetchAndDrawCharts(timeframe) {
         try {
