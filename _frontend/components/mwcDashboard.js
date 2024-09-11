@@ -26,7 +26,8 @@ export default (config = {}) => ({
     // Initialization method
     init() {
         this.fetchData();
-        this.fetchAndDrawCombinedChart(this.selectedTimeframe); // Default view
+        // this.fetchAndDrawCombinedChart(this.selectedTimeframe); // Default view
+        this.selectTimeframe(this.selectedTimeframe)
     },
 
     selectTimeframe(timeframe) {
@@ -465,6 +466,11 @@ export default (config = {}) => ({
     },
 
     drawCombinedChart(vwapData, cumulativeDifficultyData, timeframe) {
+        // Destroy existing chart if it exists
+        if (this.combinedChart) {
+            this.combinedChart.destroy();
+        }
+    
         const options = {
             chart: {
                 type: 'line',
@@ -476,12 +482,12 @@ export default (config = {}) => ({
                 {
                     name: `MWC-BTC VWAP (${timeframe})`,
                     data: vwapData,
-                    color: '#9606E4',
+                    color: '#9606E4',  // Purple color for VWAP chart
                 },
                 {
                     name: `Cumulative Difficulty (${timeframe})`,
                     data: cumulativeDifficultyData,
-                    color: '#8804E4',
+                    color: '#E44B06',  // Orange color for Cumulative Difficulty chart
                 }
             ],
             xaxis: { type: 'datetime' },
@@ -491,9 +497,11 @@ export default (config = {}) => ({
             legend: { show: true }
         };
     
+        // Render new chart
         this.combinedChart = new ApexCharts(this.$refs.combinedChart, options);
         this.combinedChart.render();
-    },
+    }    
+    ,
     toggleChartSeries(seriesName) {
         if (this.combinedChart) {
             this.combinedChart.toggleSeries(seriesName);
