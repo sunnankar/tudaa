@@ -26,29 +26,18 @@ export default (config = {}) => ({
     // Initialization method
     init() {
         this.fetchData();
-        // this.fetchAndDrawCombinedChart(this.selectedTimeframe); // Default view
+        this.fetchAndDrawCharts(this.selectedTimeframe); // Default view
         this.selectTimeframe(this.selectedTimeframe)
     },
 
     selectTimeframe(timeframe) {
         this.selectedTimeframe = timeframe;
-        this.fetchAndDrawCombinedChart(timeframe);
+        this.fetchAndDrawCharts(timeframe);
     },
 
     async fetchData() {
         try {
             // Fetch spot price data
-            const spotPriceResponse = await axios.get("https://mwc2.pacificpool.ws/api/price-indexes/get-mwc-btc" ,{
-                params: {period:"30d" }
-            });
-            this.spotPriceData = this.formatDataForChart(spotPriceResponse.data, "Spot Price");
-
-            const spotPriceResponseUsdt = await axios.get("https://mwc2.pacificpool.ws/api/price-indexes/get-mwc-usd",{
-                params: {period:"30d" }
-            });
-            this.spotPriceDataUsdt = this.formatDataForChart(spotPriceResponseUsdt.data, "Spot Price MWC-USDT");
-
-
             const spotPriceResponse365 = await axios.get("https://mwc2.pacificpool.ws/api/price-indexes/get-mwc-btc/",{
                 params: {period:"1y" }
             });
@@ -57,7 +46,7 @@ export default (config = {}) => ({
             const spotPriceResponseUsdt365 = await axios.get("https://mwc2.pacificpool.ws/api/price-indexes/get-mwc-usd/",{
                 params: {period:"1y" }
             });
-            this.spotPriceDataUsdt365 = this.formatDataForChart(spotPriceResponseUsdt365.data, "Spot Price MWC-USDT one year");
+            this.spotPriceDataUsdt365 = this.formatDataForChart(spotPriceResponseUsdt365.data, "Current Difficulty");
 
             // console.log(spotPriceData)
 
@@ -75,24 +64,24 @@ export default (config = {}) => ({
 
             // Fetch 200-day Moving Average data
             const movingAverageResponse = await axios.get("https://mwc2.pacificpool.ws/api/price-indexes/get-mwc-usd-ma/");
-            this.movingAverageData = this.formatDataForChart(movingAverageResponse.data, "200-day Moving Average");
+            this.movingAverageData = this.formatDataForChart(movingAverageResponse.data, "Current Difficulty");
 
             // Fetch 200-day Moving Average data
             const movingAverageResponseMwc = await axios.get("https://mwc2.pacificpool.ws/api/price-indexes/get-mwc-btc-ma/");
             this.movingAverageDataMwc = this.formatDataForChart(movingAverageResponseMwc.data, "200-day Moving Average MWC-BTC");
 
             const movingAverageDifficulty = await axios.get("https://mwc2.pacificpool.ws/api/price-indexes-background/moving-averages/");
-            this.movingAverageDifficulty = this.formatDataForChart(movingAverageDifficulty.data, "200-day Moving Average Dificulty");
+            this.movingAverageDifficulty = this.formatDataForChart(movingAverageDifficulty.data, "Current Difficulty");
+
 
             // Draw charts
-            this.drawSpotPriceChart();
-            this.drawUSDTSpotPriceChart30();
             this.drawMovingAverageChart();
-            this.drawDifficultyChart();
+            this.drawCurrentDifficultyChart();
             this.drawMovingAverageChartMwc();
             this.drawUSDTSpotPriceChart365();
             this.drawSpotPriceChart365();
             this.fetchMovingAverageData();
+            this.drawDifficultyChart();
 
         } catch (error) {
             console.error("Error fetching data:", error);
@@ -114,18 +103,18 @@ export default (config = {}) => ({
             });
         }
 
-        if (type === "Current Difficulty") {
-            console.log("Current Difficulty Data:", data);
-            return Object.entries(data).map(([date, price]) => {
-                let formattedPrice = parseFloat(price);  
-                console.log("Current Difficulty value Data:", formattedPrice);
-                const formattedPricevalue = this.formatWithCommas(formattedPrice); 
-                return {
-                    x: new Date(date),
-                    y: formattedPricevalue
-                };
-            });
-        }
+        // if (type === "Current Difficulty") {
+        //     console.log("Current Difficulty Data:", data);
+        //     return Object.entries(data).map(([date, price]) => {
+        //         let formattedPrice = parseFloat(price);  
+        //         console.log("Current Difficulty value Data:", formattedPrice);
+        //         const formattedPricevalue = this.formatWithCommas(formattedPrice); 
+        //         return {
+        //             x: new Date(date),
+        //             y: formattedPricevalue
+        //         };
+        //     });
+        // }
     
         return Object.entries(data).map(([date, price]) => ({
             x: new Date(date),
@@ -133,79 +122,7 @@ export default (config = {}) => ({
         }));
     },
 
-    drawSpotPriceChart() {
-        const options = {
-            chart: {
-                type: 'line',
-                height: 250,
-                width: '100%',
-                foreColor: '#9606E4'
-            },
-            series: [
-                {
-                    name: 'Spot Price',
-                    data: this.spotPriceData,
-                    color: '#9606E4'  // Data formatted with x (timestamp) and y (difficulty)
-                },
-            ],
-            xaxis: {
-                type: 'datetime',
-            },
-            yaxis: {
-                title: {
-                    text: 'Spot Price',
-                },
-            },
-            stroke: {
-                curve: 'smooth'
-            },
-            tooltip: {
-                x: {
-                    format: 'dd MMM yyyy'
-                },
-            }
-        };
-    
-        this.spotPriceChart = new ApexCharts(this.$refs.spotPriceChart, options);
-        this.spotPriceChart.render();
-    },
-
-    drawUSDTSpotPriceChart30() {
-        const options = {
-            chart: {
-                type: 'line',
-                height: 250,
-                width: '100%',
-                foreColor: '#9606E4'
-            },
-            series: [
-                {
-                    name: 'Spot Price MWC-USDT',
-                    data: this.spotPriceDataUsdt,
-                    color: '#9606E4' // Data formatted with x (timestamp) and y (difficulty)
-                },
-            ],
-            xaxis: {
-                type: 'datetime',
-            },
-            yaxis: {
-                title: {
-                    text: 'Spot Price MWC-USDT',
-                },
-            },
-            stroke: {
-                curve: 'smooth'
-            },
-            tooltip: {
-                x: {
-                    format: 'dd MMM yyyy'
-                },
-            }
-        };
-    
-        this.spotPriceChartUSDT = new ApexCharts(this.$refs.spotPriceChartUSDT, options);
-        this.spotPriceChartUSDT.render();
-    },
+   
     drawSpotPriceChart365() {
         const options = {
             chart: {
@@ -265,6 +182,11 @@ export default (config = {}) => ({
                 title: {
                     text: 'Spot Price MWC-USDT one year',
                 },
+                labels: {
+                    formatter: function (value) {
+                        return parseInt(value); // Remove decimals by converting to an integer
+                    }
+                }
             },
             stroke: {
                 curve: 'smooth'
@@ -280,7 +202,7 @@ export default (config = {}) => ({
         this.spotPriceChartUSDT365.render();
     },
 
-    drawDifficultyChart() {
+    drawCurrentDifficultyChart() {
         const options = {
             chart: {
                 type: 'line',
@@ -313,8 +235,8 @@ export default (config = {}) => ({
             }
         };
     
-        this.difficultyChart = new ApexCharts(this.$refs.difficultyChart, options);
-        this.difficultyChart.render();
+        this.CurrentdifficultyChart = new ApexCharts(this.$refs.CurrentdifficultyChart, options);
+        this.CurrentdifficultyChart.render();
     }
     ,
     drawMovingAverageChart() {
@@ -339,6 +261,11 @@ export default (config = {}) => ({
                 title: {
                     text: '200-day Moving Average',
                 },
+                labels: {
+                    formatter: function (value) {
+                        return parseInt(value); // Remove decimals by converting to an integer
+                    }
+                }
             },
             stroke: {
                 curve: 'smooth'
@@ -429,82 +356,168 @@ export default (config = {}) => ({
     },
     
     async fetchAndDrawCharts(timeframe) {
-        try {
-            // Fetch data for both VWAP and Cumulative Difficulty
-            const [vwapResponse, cumulativeDifficultyResponse] = await Promise.all([
-                axios.get(`https://mwc2.pacificpool.ws/api/price-indexes/test_vwap_mwc_interval`, { params: { interval: timeframe } }),
-                axios.get(`https://mwc2.pacificpool.ws/api/price-indexes-background/cumulative_difficulty_data_interval`, { params: { interval: timeframe } })
-            ]);
-
-            // Format and draw VWAP chart
-            const vwapData = this.formatDataForChart(vwapResponse.data, "MWC-BTC Vwap");
-            this.drawVwapCumulativeChart(vwapData, timeframe);
-
-            // Format and draw Cumulative Difficulty chart
-            const cumulativeDifficultyData = this.formatDataForChart(cumulativeDifficultyResponse.data, "Cumulative Difficulty");
-            this.drawCumulativeDifficultyChart(cumulativeDifficultyData, timeframe);
-
-        } catch (error) {
-            console.error("Error fetching chart data:", error);
-        }
+        // Fetch data for VWAP chart
+        const vwapData = await axios.get("https://mwc2.pacificpool.ws/api/price-indexes/test_vwap_mwc_interval", {
+            params: { interval: timeframe }
+        });
+        this.vwapData = this.formatDataForChart(vwapData.data, "200-day Moving Average MWC-BTC");
+    
+        // Fetch data for Difficulty chart
+        const cumulativeDifficulty = await axios.get("https://mwc2.pacificpool.ws/api/price-indexes-background/cumulative_difficulty_data_interval", {
+            params: { interval: timeframe }
+        });
+        this.cumulativeDifficultyData = this.formatDataForChart(cumulativeDifficulty.data, "Current Difficulty");
+    
+        // Draw both charts
+        this.drawVWAPChart(timeframe);
+        this.drawDifficultyChart(timeframe);
     },
-
-    async fetchAndDrawCombinedChart(timeframe) {
-        try {
-            const [vwapResponse, cumulativeDifficultyResponse] = await Promise.all([
-                axios.get(`https://mwc2.pacificpool.ws/api/price-indexes/test_vwap_mwc_interval`, { params: { interval: timeframe } }),
-                axios.get(`https://mwc2.pacificpool.ws/api/price-indexes-background/cumulative_difficulty_data_interval`, { params: { interval: timeframe } })
-            ]);
     
-            const vwapData = this.formatDataForChart(vwapResponse.data, "MWC-BTC Vwap");
-            const cumulativeDifficultyData = this.formatDataForChart(cumulativeDifficultyResponse.data, "Cumulative Difficulty");
-    
-            this.drawCombinedChart(vwapData, cumulativeDifficultyData, timeframe);
-        } catch (error) {
-            console.error("Error fetching chart data:", error);
-        }
-    },
-
-    drawCombinedChart(vwapData, cumulativeDifficultyData, timeframe) {
-        // Destroy existing chart if it exists
-        if (this.combinedChart) {
-            this.combinedChart.destroy();
-        }
-    
+    drawVWAPChart() {
         const options = {
             chart: {
                 type: 'line',
                 height: 350,
                 width: '100%',
-                foreColor: '#9606E4',
+                foreColor: '#9606E4'
             },
             series: [
                 {
-                    name: `MWC-BTC VWAP (${timeframe})`,
-                    data: vwapData,
-                    color: '#9606E4',  // Purple color for VWAP chart
-                },
-                {
-                    name: `Cumulative Difficulty (${timeframe})`,
-                    data: cumulativeDifficultyData,
-                    color: '#E44B06',  // Orange color for Cumulative Difficulty chart
+                    name: "200-day Moving Average MWC-BTC",
+                    data: this.vwapData, // Data formatted with x (timestamp) and y (price)
+                    color: '#9606E4'
                 }
             ],
-            xaxis: { type: 'datetime' },
-            yaxis: { title: { text: 'Value' } },
-            stroke: { curve: 'smooth' },
-            tooltip: { x: { format: 'dd MMM yyyy' } },
-            legend: { show: true }
+            xaxis: {
+                type: 'datetime',
+            },
+            yaxis: {
+                title: {
+                    text: '200-day Moving Average MWC-BTC'
+                }
+            },
+            stroke: {
+                curve: 'smooth'
+            },
+            tooltip: {
+                x: {
+                    format: 'dd MMM yyyy'
+                }
+            }
         };
     
-        // Render new chart
-        this.combinedChart = new ApexCharts(this.$refs.combinedChart, options);
-        this.combinedChart.render();
-    }    
+        if (this.vwapChart) {
+            this.vwapChart.updateOptions(options);
+        } else {
+            this.vwapChart = new ApexCharts(this.$refs.vwapChart, options);
+            this.vwapChart.render();
+        }
+    },
+    
+    drawDifficultyChart() {
+        const options = {
+            chart: {
+                type: 'line',
+                height: 350,
+                width: '100%',
+                foreColor: '#9606E4'
+            },
+            series: [
+                {
+                    name: "Current Difficulty",
+                    data: this.cumulativeDifficultyData, // Data formatted with x (timestamp) and y (difficulty)
+                    color: '#E44B06'
+                }
+            ],
+            xaxis: {
+                type: 'datetime',
+            },
+            yaxis: {
+                title: {
+                    text: 'Current Difficulty'
+                }
+            },
+            stroke: {
+                curve: 'smooth'
+            },
+            tooltip: {
+                x: {
+                    format: 'dd MMM yyyy'
+                }
+            }
+        };
+    
+        if (this.difficultyChart) {
+            this.difficultyChart.updateOptions(options);
+        } else {
+            this.difficultyChart = new ApexCharts(this.$refs.difficultyChart, options);
+            this.difficultyChart.render();
+        }
+    }
     ,
-    toggleChartSeries(seriesName) {
-        if (this.combinedChart) {
-            this.combinedChart.toggleSeries(seriesName);
+
+    formatWithCommas(value) {
+        if (isNaN(value)) {
+            return value;
+        }
+        return parseFloat(value).toLocaleString('en-US', { minimumFractionDigits: 8, maximumFractionDigits: 8 });
+    },
+
+    formatWithCommasDifficulty(value) {
+        if (isNaN(value)) {
+            return value;
+        }
+        // Format the number with commas and up to 8 decimal places
+        let formattedValue = parseFloat(value).toLocaleString('en-US', { minimumFractionDigits: 8, maximumFractionDigits: 8 });
+        
+        // Remove trailing zeros and the trailing decimal point if necessary
+        formattedValue = formattedValue.replace(/(\.0+|(?<=\.\d*)0+)$/, '');
+        
+        return formattedValue;
+    },
+    
+
+    removeTrailingZeros(numberStr) {
+        if (typeof numberStr !== 'string') {
+          numberStr = numberStr.toString();
+        }
+        
+        if (!numberStr.includes('.')) {
+          return numberStr;
+        }
+        
+        // Remove trailing zeros
+        numberStr = numberStr.replace(/0+$/, '');
+        
+        // Remove trailing decimal point if there are no digits following it
+        if (numberStr.endsWith('.')) {
+          numberStr = numberStr.slice(0, -1);
+        }
+        
+        return numberStr;
+      },
+	
+
+    formatString(input) {
+        let trimmedInput = String(input).trim();
+        if (!isNaN(trimmedInput) && trimmedInput == "") {
+            let number = parseFloat(trimmedInput);
+            return new Intl.NumberFormat().format(number);
+        } else {
+            return trimmedInput;
+        }
+    },
+
+    formatToEightDecimalPlaces(input, precision) {
+        if (input === null) return null;
+
+        let trimmedInput = String(input).trim();
+
+        if (!isNaN(trimmedInput) && trimmedInput == "") {
+            let number = parseFloat(trimmedInput);
+            return number.toFixed(precision);
+        } else {
+            return trimmedInput;
         }
     }
 })
