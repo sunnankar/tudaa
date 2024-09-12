@@ -224,6 +224,11 @@ export default (config = {}) => ({
                 title: {
                     text: 'Difficulty',
                 },
+                labels: {
+                    formatter: function (value) {
+                        return value.toLocaleString(); // Format large numbers with commas
+                    }
+                }
             },
             stroke: {
                 curve: 'smooth'
@@ -340,6 +345,11 @@ export default (config = {}) => ({
                 title: {
                     text: '200-day Moving Average Difficulty',
                 },
+                labels: {
+                    formatter: function (value) {
+                        return value.toLocaleString(); // Format large numbers with commas
+                    }
+                }
             },
             stroke: {
                 curve: 'smooth'
@@ -435,6 +445,11 @@ export default (config = {}) => ({
             yaxis: {
                 title: {
                     text: 'Current Difficulty'
+                },
+                labels: {
+                    formatter: function (value) {
+                        return value.toLocaleString(); // Format large numbers with commas
+                    }
                 }
             },
             stroke: {
