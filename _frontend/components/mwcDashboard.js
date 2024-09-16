@@ -245,6 +245,7 @@ export default (config = {}) => ({
     }
     ,
     drawMovingAverageChart() {
+        console.log({Movingavaerage:this.movingAverageData})
         const options = {
             chart: {
                 type: 'line',
