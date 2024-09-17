@@ -48,27 +48,28 @@ export default (config = {}) => ({
             });
             this.spotPriceDataUsdt365 = this.formatDataForChart(spotPriceResponseUsdt365.data, "Current Difficulty");
 
-            // console.log(spotPriceData)
-
-            // Fetch current difficulty data
-            // const response = await axios.get("https://mwc2.pacificpool.ws/api/price-indexes-background/fetch-difficulty-data/");
             const response = await axios.get("https://mwc2.pacificpool.ws/api/price-indexes-background/fetch-difficulty-data/");
             this.currentDifficultyData = this.formatDataForChart(response.data,"Current Difficulty");
             
-
-            // this.currentDifficultyData = this.formatDataForChart(this.jsonP, "Current Difficulty");
-
-
-            // const vwapMwcData = this.formatDataForChart("https://mwc2.pacificpool.ws/api/price-indexes/tudda_vwap_mwc_price_optimized");
-            // this.vwapData = this.formatDataForChart(vwapMwcData.data, "VWAP");
-
             // Fetch 200-day Moving Average data
             const movingAverageResponse = await axios.get("https://mwc2.pacificpool.ws/api/price-indexes/get-mwc-usd-ma/");
-            this.movingAverageData = this.formatDataForChart(movingAverageResponse.data, "Current Difficulty");
+            // this.movingAverageData = this.formatDataForChart(movingAverageResponse.data, "Current Difficulty");
+            const rawData = movingAverageResponse.data;
+             // Log raw data to verify
+            console.log("Raw Data:", rawData);
+            // Filter data to only include entries from the past year
+            this.movingAverageData = this.filterDataForOneYear(rawData);
+            // Format the data for the chart
+           this.movingAverageData = this.formatDataForChart(this.movingAverageData, "Moving Average");
+
 
             // Fetch 200-day Moving Average data
             const movingAverageResponseMwc = await axios.get("https://mwc2.pacificpool.ws/api/price-indexes/get-mwc-btc-ma/");
-            this.movingAverageDataMwc = this.formatDataForChart(movingAverageResponseMwc.data, "200-day Moving Average MWC-BTC");
+            const rawDataMWC = movingAverageResponseMwc.data;
+            this.movingAverageDataMwc = this.filterDataForOneYear(rawDataMWC);
+            this.movingAverageDataMwc = this.formatDataForChart(this.movingAverageDataMwc, "Moving Average");
+
+
 
             const movingAverageDifficulty = await axios.get("https://mwc2.pacificpool.ws/api/price-indexes-background/moving-averages/");
             this.movingAverageDifficulty = this.formatDataForChart(movingAverageDifficulty.data, "Current Difficulty");
@@ -92,7 +93,6 @@ export default (config = {}) => ({
     },
     formatDataForChart(data, type) {
         if (type === "200-day Moving Average MWC-BTC") {
-            console.log("mwc moving_average_200 Data:", data);
             return Object.entries(data).map(([date, price]) => {
                 const value = parseFloat(price);
                 console.log("mwc moving_average_200 value Data:", value);
@@ -102,28 +102,40 @@ export default (config = {}) => ({
                 };
             });
         }
-
-        // if (type === "Current Difficulty") {
-        //     console.log("Current Difficulty Data:", data);
-        //     return Object.entries(data).map(([date, price]) => {
-        //         let formattedPrice = parseFloat(price);  
-        //         console.log("Current Difficulty value Data:", formattedPrice);
-        //         const formattedPricevalue = this.formatWithCommas(formattedPrice); 
-        //         return {
-        //             x: new Date(date),
-        //             y: formattedPricevalue
-        //         };
-        //     });
-        // }
-    
         return Object.entries(data).map(([date, price]) => ({
             x: new Date(date),
             y: price
         }));
     },
 
-   
+    filterDataForOneYear(data) {
+        // Convert object to array of { x: date, y: value }
+        const dataArray = Object.entries(data).map(([date, value]) => ({
+            x: new Date(date),  // Convert date string to Date object for comparison
+            y: parseFloat(value)  // Ensure the value is a number
+        }));
+    
+        const oneYearAgo = new Date();
+        oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
+    
+        // Filter the data to only include entries from the last year
+        const filteredArray = dataArray.filter(item => item.x >= oneYearAgo);
+    
+        // Convert filtered array back to an object
+        const filteredObject = filteredArray.reduce((acc, item) => {
+            const dateKey = item.x.toISOString().split('T')[0];  // Convert Date object back to date string (YYYY-MM-DD)
+            acc[dateKey] = item.y.toString();  // Convert the value back to string (if needed)
+            return acc;
+        }, {});
+    
+        return filteredObject;
+    }
+    ,
+
+    
+
     drawSpotPriceChart365() {
+        console.log({spotPriceData365:this.spotPriceData365});
         const options = {
             chart: {
                 type: 'line',
@@ -245,7 +257,9 @@ export default (config = {}) => ({
     }
     ,
     drawMovingAverageChart() {
-        console.log({Movingavaerage:this.movingAverageData})
+        console.log({Movingavaerage:this.movingAverageData});
+        const length = Object.keys(this.movingAverageData).length;
+        console.log("leght of two datd",length); // Output: 3
         const options = {
             chart: {
                 type: 'line',
@@ -288,6 +302,7 @@ export default (config = {}) => ({
     }
     ,
     drawMovingAverageChartMwc() {
+        console.log({MovingavaerageMWC:this.movingAverageDataMwc});
         const options = {
             chart: {
                 type: 'line',
