@@ -104,21 +104,25 @@ export default (config = {}) => ({
         return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     },
     formatDataForChart(data, type) {
+        // Handle 200-day Moving Average formatting
         if (type === "200-day Moving Average MWC-BTC") {
             return Object.entries(data).map(([date, price]) => {
                 const value = parseFloat(price);
-                console.log("mwc moving_average_200 value Data:", value);
+                console.log("MWC 200-day Moving Average value:", value);
                 return {
-                    x: new Date(date),
-                    y: !isNaN(value) ? parseFloat(value.toFixed(8)) : null
+                    x: new Date(date).getTime(),  // Convert date to timestamp for ApexCharts
+                    y: !isNaN(value) ? parseFloat(value.toFixed(8)) : null  // Round to 8 decimal places
                 };
             });
         }
+        
+        // Default formatting for other types
         return Object.entries(data).map(([date, price]) => ({
-            x: new Date(date),
+            x: new Date(date).getTime(),  // Convert date to timestamp for uniformity in ApexCharts
             y: price
         }));
     },
+    
 
     filterDataForOneYear(data) {
         // Convert object to array of { x: date, y: value }
@@ -237,12 +241,18 @@ export default (config = {}) => ({
             series: [
                 {
                     name: 'Current Difficulty',
-                    data: this.currentDifficultyData,  // Data formatted with x (timestamp) and y (difficulty)
+                    data: this.currentDifficultyData,  // Ensure this is properly formatted with x (timestamp) and y (value)
                     color: '#9606E4'
                 },
             ],
             xaxis: {
                 type: 'datetime',
+                tickAmount: 12, // Set this to 12 for monthly intervals
+                min: new Date('2023-09-20').getTime(),  // Explicitly set the range
+                max: new Date('2024-09-19').getTime(),
+                labels: {
+                    format: 'MMM yyyy'  // Consistent label format
+                }
             },
             yaxis: {
                 title: {
@@ -263,10 +273,11 @@ export default (config = {}) => ({
                 },
             }
         };
-    
+        
         this.CurrentdifficultyChart = new ApexCharts(this.$refs.CurrentdifficultyChart, options);
         this.CurrentdifficultyChart.render();
     }
+    
     ,
     drawMovingAverageChart() {
         console.log({Movingavaerage:this.movingAverageData});
