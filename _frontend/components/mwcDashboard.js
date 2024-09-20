@@ -21,18 +21,28 @@ export default (config = {}) => ({
     yearlyVwapCumulativeChart: null,
     movingAverageChart: null,
     selectedTimeframe: '2h',
+    difficultyselectedTimeframe: '2h',
+
 
 
     // Initialization method
     init() {
         this.fetchData();
         this.fetchAndDrawCharts(this.selectedTimeframe); // Default view
-        this.selectTimeframe(this.selectedTimeframe)
+        this.selectTimeframe(this.selectedTimeframe);            // Default view for VWAP
+        this.selectDifficultyTimeframe(this.difficultyselectedTimeframe);  // Default view for Difficulty
     },
 
+    // VWAP Tab Selection and Chart
     selectTimeframe(timeframe) {
         this.selectedTimeframe = timeframe;
-        this.fetchAndDrawCharts(timeframe);
+        this.fetchVWAPChart(timeframe);
+    },
+
+    // Difficulty Tab Selection and Chart
+    selectDifficultyTimeframe(timeframe) {
+        this.difficultyselectedTimeframe = timeframe;
+        this.fetchDifficultyChart(timeframe);
     },
 
     async fetchData() {
@@ -83,6 +93,8 @@ export default (config = {}) => ({
             this.drawSpotPriceChart365();
             this.fetchMovingAverageData();
             this.drawDifficultyChart();
+            this.fetchDifficultyChart(this.difficultyselectedTimeframe);
+            this.fetchVWAPChart(this.selectedTimeframe);
 
         } catch (error) {
             console.error("Error fetching data:", error);
@@ -381,57 +393,50 @@ export default (config = {}) => ({
         this.movingAverageDifficulty.render();
     },
     
-    async fetchAndDrawCharts(timeframe) {
-        // Fetch data for VWAP chart
-        const vwapData = await axios.get("https://mwc2.pacificpool.ws/api/price-indexes/test_vwap_mwc_interval", {
-            params: { interval: timeframe }
-        });
-        this.vwapData = this.formatDataForChart(vwapData.data, "200-day Moving Average MWC-BTC");
-    
-        // Fetch data for Difficulty chart
-        const cumulativeDifficulty = await axios.get("https://mwc2.pacificpool.ws/api/price-indexes-background/cumulative_difficulty_data_interval", {
-            params: { interval: timeframe }
-        });
-        this.cumulativeDifficultyData = this.formatDataForChart(cumulativeDifficulty.data, "Current Difficulty");
-    
-        // Draw both charts
-        this.drawVWAPChart(timeframe);
-        this.drawDifficultyChart(timeframe);
+    async fetchVWAPChart(timeframe) {
+        try {
+            const vwapData = await axios.get("https://mwc2.pacificpool.ws/api/price-indexes/test_vwap_mwc_interval", {
+                params: { interval: timeframe }
+            });
+            this.vwapData = this.formatDataForChart(vwapData.data, "VWAP MWC-BTC");
+            this.drawVWAPChart();
+        } catch (error) {
+            console.error("Error fetching VWAP data:", error);
+        }
     },
-    
+
+    // Fetch Difficulty data and draw the Difficulty chart
+    async fetchDifficultyChart(timeframe) {
+        try {
+            const cumulativeDifficulty = await axios.get("https://mwc2.pacificpool.ws/api/price-indexes-background/cumulative_difficulty_data_interval", {
+                params: { interval: timeframe }
+            });
+            this.cumulativeDifficultyData = this.formatDataForChart(cumulativeDifficulty.data, "Current Difficulty");
+            this.drawDifficultyChart();
+        } catch (error) {
+            console.error("Error fetching Difficulty data:", error);
+        }
+    },
+
+    // Draw the VWAP chart
     drawVWAPChart() {
         const options = {
             chart: {
                 type: 'line',
                 height: 350,
-                width: '100%',
-                foreColor: '#9606E4'
+                foreColor: '#9606E4',
             },
-            series: [
-                {
-                    name: "200-day Moving Average MWC-BTC",
-                    data: this.vwapData, // Data formatted with x (timestamp) and y (price)
-                    color: '#9606E4'
-                }
-            ],
-            xaxis: {
-                type: 'datetime',
-            },
-            yaxis: {
-                title: {
-                    text: '200-day Moving Average MWC-BTC'
-                }
-            },
-            stroke: {
-                curve: 'smooth'
-            },
-            tooltip: {
-                x: {
-                    format: 'dd MMM yyyy'
-                }
-            }
+            series: [{
+                name: "VWAP MWC-BTC",
+                data: this.vwapData,
+                color: '#9606E4'
+            }],
+            xaxis: { type: 'datetime' },
+            yaxis: { title: { text: 'VWAP MWC-BTC' } },
+            stroke: { curve: 'smooth' },
+            tooltip: { x: { format: 'dd MMM yyyy' } }
         };
-    
+
         if (this.vwapChart) {
             this.vwapChart.updateOptions(options);
         } else {
@@ -439,53 +444,41 @@ export default (config = {}) => ({
             this.vwapChart.render();
         }
     },
-    
+
+    // Draw the Difficulty chart
     drawDifficultyChart() {
         const options = {
             chart: {
                 type: 'line',
                 height: 350,
-                width: '100%',
-                foreColor: '#9606E4'
+                foreColor: '#9606E4',
             },
-            series: [
-                {
-                    name: "Current Difficulty",
-                    data: this.cumulativeDifficultyData, // Data formatted with x (timestamp) and y (difficulty)
-                    color: '#E44B06'
-                }
-            ],
-            xaxis: {
-                type: 'datetime',
-            },
+            series: [{
+                name: "Current Difficulty",
+                data: this.cumulativeDifficultyData,
+                color: '#E44B06'
+            }],
+            xaxis: { type: 'datetime' },
             yaxis: {
-                title: {
-                    text: 'Current Difficulty'
-                },
+                title: { text: 'Current Difficulty' },
                 labels: {
                     formatter: function (value) {
                         return value.toLocaleString(); // Format large numbers with commas
                     }
                 }
             },
-            stroke: {
-                curve: 'smooth'
-            },
-            tooltip: {
-                x: {
-                    format: 'dd MMM yyyy'
-                }
-            }
+            stroke: { curve: 'smooth' },
+            tooltip: { x: { format: 'dd MMM yyyy' } }
         };
-    
+
         if (this.difficultyChart) {
             this.difficultyChart.updateOptions(options);
         } else {
             this.difficultyChart = new ApexCharts(this.$refs.difficultyChart, options);
             this.difficultyChart.render();
         }
-    }
-    ,
+    },
+    
 
     formatWithCommas(value) {
         if (isNaN(value)) {

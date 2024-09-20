@@ -13,7 +13,7 @@ permalink: "mwcDashboard"
     <div class="flex space-x-2 mb-4">
         <template x-for="timeframe in ['2h', '24h', '72h', '1w', '1m', '1q']" :key="timeframe">
             <button
-                :class="{'tab-active': selectedTimeframe === timeframe, 'bg-purple-light text-white': selectedTimeframe !== timeframe}"
+                :class="{'bg-purple-light text-white': selectedTimeframe === timeframe}"
                 class="px-4 py-2 rounded"
                 @click="selectTimeframe(timeframe)"
                 x-text="timeframe">
@@ -23,10 +23,26 @@ permalink: "mwcDashboard"
 
     <!-- VWAP Chart -->
     <div class="chart-container h-96 bg-white shadow rounded-lg p-4" x-ref="vwapChart"></div>
+</div>
+
+<div class="mb-8">
+    <h3 class="text-2xl font-bold mb-4 text-purple-light">MWC-BTC Historical Difficulty 3 Months</h3>
+    
+    <div class="flex space-x-2 mb-4">
+        <template x-for="timeframe in ['2h', '24h', '72h', '1w', '1m', '1q']" :key="timeframe">
+            <button
+                :class="{'bg-purple-light text-white': difficultyselectedTimeframe === timeframe}"
+                class="px-4 py-2 rounded"
+                @click="selectDifficultyTimeframe(timeframe)"
+                x-text="timeframe">
+            </button>
+        </template>
+    </div>
 
     <!-- Difficulty Chart -->
     <div class="chart-container h-96 bg-white shadow rounded-lg p-4" x-ref="difficultyChart"></div>
 </div>
+
 
 
 
@@ -52,9 +68,9 @@ permalink: "mwcDashboard"
             <h3 class="text-xl font-bold mb-2 text-purple-light">Current Difficulty Chart</h3>
             <div x-ref="CurrentdifficultyChart" class="chart-container h-64"></div>
         </div>
-        <div class="bg-white shadow rounded-lg p-6">
+        <!-- <div class="bg-white shadow rounded-lg p-6">
             <h3 class="text-xl font-bold mb-2 text-purple-light">200-day Moving Average Difficulty Chart</h3>
             <div x-ref="movingAverageDifficulty" class="chart-container h-64"></div>
-        </div>
+        </div> -->
     </div>
 </div>
