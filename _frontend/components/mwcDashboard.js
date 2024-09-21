@@ -168,6 +168,12 @@ export default (config = {}) => ({
             ],
             xaxis: {
                 type: 'datetime',
+                tickAmount: 12, // Set this to 12 for monthly intervals
+                min: new Date('2023-09-20').getTime(),  // Explicitly set the range
+                max: new Date('2024-09-19').getTime(),
+                labels: {
+                    format: 'MMM yyyy'  // Consistent label format
+                }
             },
             yaxis: {
                 title: {
@@ -205,6 +211,12 @@ export default (config = {}) => ({
             ],
             xaxis: {
                 type: 'datetime',
+                tickAmount: 12, // Set this to 12 for monthly intervals
+                min: new Date('2023-09-20').getTime(),  // Explicitly set the range
+                max: new Date('2024-09-19').getTime(),
+                labels: {
+                    format: 'MMM yyyy'  // Consistent label format
+                }
             },
             yaxis: {
                 title: {
@@ -299,6 +311,12 @@ export default (config = {}) => ({
             ],
             xaxis: {
                 type: 'datetime',
+                tickAmount: 12, // Set this to 12 for monthly intervals
+                min: new Date('2023-09-20').getTime(),  // Explicitly set the range
+                max: new Date('2024-09-19').getTime(),
+                labels: {
+                    format: 'MMM yyyy'  // Consistent label format
+                }
             },
             yaxis: {
                 title: {
@@ -342,6 +360,12 @@ export default (config = {}) => ({
             ],
             xaxis: {
                 type: 'datetime',
+                tickAmount: 12, // Set this to 12 for monthly intervals
+                min: new Date('2023-09-20').getTime(),  // Explicitly set the range
+                max: new Date('2024-09-19').getTime(),
+                labels: {
+                    format: 'MMM yyyy'  // Consistent label format
+                }
             },
             yaxis: {
                 title: {
@@ -379,6 +403,12 @@ export default (config = {}) => ({
             ],
             xaxis: {
                 type: 'datetime',
+                tickAmount: 12, // Set this to 12 for monthly intervals
+                min: new Date('2023-09-20').getTime(),  // Explicitly set the range
+                max: new Date('2024-09-19').getTime(),
+                labels: {
+                    format: 'MMM yyyy'  // Consistent label format
+                }
             },
             yaxis: {
                 title: {
