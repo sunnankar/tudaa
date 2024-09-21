@@ -147,9 +147,6 @@ export default (config = {}) => ({
         return filteredObject;
     }
     ,
-
-    
-
     drawSpotPriceChart365() {
         console.log({spotPriceData365:this.spotPriceData365});
         const options = {
