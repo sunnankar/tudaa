@@ -28,7 +28,6 @@ export default (config = {}) => ({
     // Initialization method
     init() {
         this.fetchData();
-        this.fetchAndDrawCharts(this.selectedTimeframe); // Default view
         this.selectTimeframe(this.selectedTimeframe);            // Default view for VWAP
         this.selectDifficultyTimeframe(this.difficultyselectedTimeframe);  // Default view for Difficulty
     },
@@ -51,16 +50,43 @@ export default (config = {}) => ({
             const spotPriceResponse365 = await axios.get("https://mwc2.pacificpool.ws/api/price-indexes/get-mwc-btc/",{
                 params: {period:"1y" }
             });
-            this.spotPriceData365 = this.formatDataForChart(spotPriceResponse365.data, "Spot Price one year");
+
+            const ResponseData365=spotPriceResponse365.data;
+            this.spotPriceData365 = this.filterDataForOneYear(ResponseData365);
+
+            this.spotPriceData365 = this.formatDataForChart(this.spotPriceData365, "Spot Price one year");
+
+
 
             const spotPriceResponseUsdt365 = await axios.get("https://mwc2.pacificpool.ws/api/price-indexes/get-mwc-usd/",{
                 params: {period:"1y" }
             });
-            this.spotPriceDataUsdt365 = this.formatDataForChart(spotPriceResponseUsdt365.data, "Current Difficulty");
+            const ResponseDataUsdt365=spotPriceResponseUsdt365.data;
+            this.spotPriceDataUsdt365 = this.filterDataForOneYear(ResponseDataUsdt365);
 
-            const response = await axios.get("https://mwc2.pacificpool.ws/api/price-indexes-background/fetch-difficulty-data/");
-            this.currentDifficultyData = this.formatDataForChart(response.data,"Current Difficulty");
+            this.spotPriceDataUsdt365 = this.formatDataForChart(this.spotPriceDataUsdt365, "Current Difficulty");
+
+            try {
+                const response = await axios.get("https://mwc2.pacificpool.ws/api/price-indexes-background/fetch-difficulty-data/");
+                const rawDataResponse = response.data;
+                console.log("Full response:", response);
+                console.log("Response data:", rawDataResponse);
+                // Check if the rawDataResponse and rawDataResponse.data exist
+                if (rawDataResponse && rawDataResponse) {
+                    this.currentDifficultyData = this.filterDataForOneYear(rawDataResponse);
+                    this.currentDifficultyData = this.formatDataForChart(this.currentDifficultyData, "Current Difficulty");
+                } else {
+                    console.error("Error: Data not available or response structure is invalid.");
+                }
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
             
+
+
+
+
+
             // Fetch 200-day Moving Average data
             const movingAverageResponse = await axios.get("https://mwc2.pacificpool.ws/api/price-indexes/get-mwc-usd-ma/");
             // this.movingAverageData = this.formatDataForChart(movingAverageResponse.data, "Current Difficulty");
@@ -122,6 +148,35 @@ export default (config = {}) => ({
             y: price
         }));
     },
+
+    filterDataForThreeMonths(data) {
+        if (!data || Object.keys(data).length === 0) {
+            console.error("No data available to filter for the last three months.");
+            return {};  // Return an empty object if no data is available
+        }
+    
+        // Convert object to array of { x: date, y: value }
+        const dataArray = Object.entries(data).map(([date, value]) => ({
+            x: new Date(date),  // Convert date string to Date object for comparison
+            y: parseFloat(value)  // Ensure the value is a number
+        }));
+    
+        const threeMonthsAgo = new Date();
+        threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 4);  // Subtract 3 months from the current date
+    
+        // Filter the data to only include entries from the last 3 months
+        const filteredArray = dataArray.filter(item => item.x >= threeMonthsAgo);
+    
+        // Convert filtered array back to an object
+        const filteredObject = filteredArray.reduce((acc, item) => {
+            const dateKey = item.x.toISOString().split('T')[0];  // Convert Date object back to date string (YYYY-MM-DD)
+            acc[dateKey] = item.y.toString();  // Convert the value back to string (if needed)
+            return acc;
+        }, {});
+    
+        return filteredObject;
+    },
+    
     
 
     filterDataForOneYear(data) {
@@ -165,11 +220,10 @@ export default (config = {}) => ({
             ],
             xaxis: {
                 type: 'datetime',
-                tickAmount: 12, // Set this to 12 for monthly intervals
-                min: new Date('2023-09-20').getTime(),  // Explicitly set the range
-                max: new Date('2024-09-19').getTime(),
+                tickAmount: 12,  // 12 ticks for 12 months
+                tickPlacement: 'between',
                 labels: {
-                    format: 'MMM yyyy'  // Consistent label format
+                    format: 'MMM yy'  // Month and year format
                 }
             },
             yaxis: {
@@ -208,11 +262,10 @@ export default (config = {}) => ({
             ],
             xaxis: {
                 type: 'datetime',
-                tickAmount: 12, // Set this to 12 for monthly intervals
-                min: new Date('2023-09-20').getTime(),  // Explicitly set the range
-                max: new Date('2024-09-19').getTime(),
+                tickAmount: 12,  // 12 ticks for 12 months
+                tickPlacement: 'between',
                 labels: {
-                    format: 'MMM yyyy'  // Consistent label format
+                    format: 'MMM yy'  // Month and year format
                 }
             },
             yaxis: {
@@ -256,11 +309,10 @@ export default (config = {}) => ({
             ],
             xaxis: {
                 type: 'datetime',
-                tickAmount: 12, // Set this to 12 for monthly intervals
-                min: new Date('2023-09-20').getTime(),  // Explicitly set the range
-                max: new Date('2024-09-19').getTime(),
+                tickAmount: 12,  // 12 ticks for 12 months
+                tickPlacement: 'between',
                 labels: {
-                    format: 'MMM yyyy'  // Consistent label format
+                    format: 'MMM yy'  // Month and year format
                 }
             },
             yaxis: {
@@ -308,11 +360,10 @@ export default (config = {}) => ({
             ],
             xaxis: {
                 type: 'datetime',
-                tickAmount: 12, // Set this to 12 for monthly intervals
-                min: new Date('2023-09-20').getTime(),  // Explicitly set the range
-                max: new Date('2024-09-19').getTime(),
+                tickAmount: 12,  // 12 ticks for 12 months
+                tickPlacement: 'between',
                 labels: {
-                    format: 'MMM yyyy'  // Consistent label format
+                    format: 'MMM yy'  // Month and year format
                 }
             },
             yaxis: {
@@ -357,11 +408,10 @@ export default (config = {}) => ({
             ],
             xaxis: {
                 type: 'datetime',
-                tickAmount: 12, // Set this to 12 for monthly intervals
-                min: new Date('2023-09-20').getTime(),  // Explicitly set the range
-                max: new Date('2024-09-19').getTime(),
+                tickAmount: 12,  // 12 ticks for 12 months
+                tickPlacement: 'between',
                 labels: {
-                    format: 'MMM yyyy'  // Consistent label format
+                    format: 'MMM yy'  // Month and year format
                 }
             },
             yaxis: {
@@ -400,11 +450,10 @@ export default (config = {}) => ({
             ],
             xaxis: {
                 type: 'datetime',
-                tickAmount: 12, // Set this to 12 for monthly intervals
-                min: new Date('2023-09-20').getTime(),  // Explicitly set the range
-                max: new Date('2024-09-19').getTime(),
+                tickAmount: 12,  // 12 ticks for 12 months
+                tickPlacement: 'between',
                 labels: {
-                    format: 'MMM yyyy'  // Consistent label format
+                    format: 'MMM yy'  // Month and year format
                 }
             },
             yaxis: {
