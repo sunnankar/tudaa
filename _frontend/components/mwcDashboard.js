@@ -67,7 +67,7 @@ export default (config = {}) => ({
             this.spotPriceDataUsdt365 = this.formatDataForChart(this.spotPriceDataUsdt365, "Current Difficulty");
 
             try {
-                const response = await axios.get("https://mwc2.pacificpool.ws/api/price-indexes-background/fetch-difficulty-data/");
+                const response = await axios.get("https://mwc2.pacificpool.ws/api/price-indexes/fetch-difficulty-data/");
                 const rawDataResponse = response.data;
                 console.log("Full response:", response);
                 console.log("Response data:", rawDataResponse);
@@ -107,8 +107,10 @@ export default (config = {}) => ({
 
 
 
-            const movingAverageDifficulty = await axios.get("https://mwc2.pacificpool.ws/api/price-indexes-background/moving-averages/");
-            this.movingAverageDifficulty = this.formatDataForChart(movingAverageDifficulty.data, "Current Difficulty");
+            const movingAverageDifficulty = await axios.get("https://mwc2.pacificpool.ws/api/price-indexes/moving-averages/");
+            const mAverageDifficulty = movingAverageDifficulty.data;
+            this.movingAverageDifficulty = this.filterDataForOneYear(mAverageDifficulty);
+            this.movingAverageDifficulty = this.formatDataForChart(this.movingAverageDifficulty, "Current Difficulty");
 
 
             // Draw charts
@@ -495,7 +497,7 @@ export default (config = {}) => ({
     // Fetch Difficulty data and draw the Difficulty chart
     async fetchDifficultyChart(timeframe) {
         try {
-            const cumulativeDifficulty = await axios.get("https://mwc2.pacificpool.ws/api/price-indexes-background/cumulative_difficulty_data_interval", {
+            const cumulativeDifficulty = await axios.get("https://mwc2.pacificpool.ws/api/price-indexes/cumulative_difficulty_data_interval", {
                 params: { interval: timeframe }
             });
             this.cumulativeDifficultyData = this.formatDataForChart(cumulativeDifficulty.data, "Current Difficulty");
