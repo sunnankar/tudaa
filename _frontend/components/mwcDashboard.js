@@ -484,7 +484,7 @@ export default (config = {}) => ({
     
     async fetchVWAPChart(timeframe) {
         try {
-            const vwapData = await axios.get("https://mwc2.pacificpool.ws/api/price-indexes/test_vwap_mwc_interval", {
+            const vwapData = await axios.get("https://mwc2.pacificpool.ws/api/price-indexes/test_vwap_mwc_interval/", {
                 params: { interval: timeframe }
             });
             this.vwapData = this.formatDataForChart(vwapData.data, "VWAP MWC-BTC");
@@ -497,7 +497,7 @@ export default (config = {}) => ({
     // Fetch Difficulty data and draw the Difficulty chart
     async fetchDifficultyChart(timeframe) {
         try {
-            const cumulativeDifficulty = await axios.get("https://mwc2.pacificpool.ws/api/price-indexes/cumulative_difficulty_data_interval", {
+            const cumulativeDifficulty = await axios.get("https://mwc2.pacificpool.ws/api/price-indexes/cumulative_difficulty_data_interval/", {
                 params: { interval: timeframe }
             });
             this.cumulativeDifficultyData = this.formatDataForChart(cumulativeDifficulty.data, "Current Difficulty");
