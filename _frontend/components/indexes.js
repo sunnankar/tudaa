@@ -1,5 +1,6 @@
 export default (config = {}) => ({
     currentDifficulty: null,
+    grincurrentDifficulty: null,
     two_hour_cumulative_difficulty: null,
     twenty_four_hour_cumulative_difficulty: null,
     seventy_two_hour_cumulative_difficulty: null,
@@ -7,6 +8,13 @@ export default (config = {}) => ({
     one_month_cumulative_difficulty: null,
     one_quarter_cumulative_difficulty: null,
     two_weeks_cumulative_difficulty: null,
+    two_hour_grin_cumulative_difficulty: null,
+    twenty_four_hour_grin_cumulative_difficulty: null,
+    seventy_two_hour_grin_cumulative_difficulty: null,
+    one_week_cumulative_grin_difficulty: null,
+    one_month_cumulative_grin_difficulty: null,
+    one_quarter_cumulative_grin_difficulty: null,
+    two_weeks_cumulative_grin_difficulty: null,
     blockHeight: null,
     market: null,
     vwap_1q: null,
@@ -89,7 +97,9 @@ export default (config = {}) => ({
             this.fetchMWCSpotPrice(),
             this.fetchUSDTSpotPrice(),
             this.fetchDifficulty(),
+            this.fetchgrinDifficulty(),
             this.fetchCurrentDifficulty(),
+            this.fetchGrinCurrentDifficulty(),
             this.fetchMovingAverage(),
             this.fetchMWCPriceVWAP(),
             this.fetchMWCVolumeVWAP(),
@@ -142,6 +152,40 @@ export default (config = {}) => ({
           console.error("Error:", error.message);
         }
       },
+
+      async fetchgrinDifficulty() {
+        try {
+          const response = await axios.get("https://mwc2.pacificpool.ws/api/price-indexes/grin_cumulative_difficulty_optimized");
+          if (response.status !== 200) {
+            throw new Error("Failed to fetch data");
+          }
+          const data = response.data;
+          console.log("Grin Difficulty Data:", data);
+      
+          // Helper function to format and remove trailing zeroes
+          const formatAndRemoveZeros = (value) => {
+            return this.formatWithCommasDifficulty(this.formatToEightDecimalPlaces(value, 8));
+          };
+      
+          // Check if "2 hours" value is not valid and use "24 hours" value instead
+          if (data["2 hours"] === null || data["2 hours"] === "No data found for the given interval") {
+            this.two_hour_grin_cumulative_difficulty = formatAndRemoveZeros(data["24 hours"]);
+          } else {
+            this.two_hour_grin_cumulative_difficulty = formatAndRemoveZeros(data["2 hours"]);
+          }
+      
+          console.log("Assigned 2 Hour Cumulative Difficulty:", this.two_hour_cumulative_difficulty);
+      
+          this.twenty_four_hour_grin_cumulative_difficulty = formatAndRemoveZeros(data["24 hours"]);
+          this.seventy_two_hour_grin_cumulative_difficulty = formatAndRemoveZeros(data["72 hours"]);
+          this.one_week_cumulative_grin_difficulty = formatAndRemoveZeros(data["one week"]);
+          this.two_weeks_cumulative_grin_difficulty = formatAndRemoveZeros(data["two weeks"]);
+          this.one_month_cumulative_grin_difficulty = formatAndRemoveZeros(data["one month"]);
+          this.one_quarter_cumulative_grin_difficulty = formatAndRemoveZeros(data["one quarter"]);
+        } catch (error) {
+          console.error("Error:", error.message);
+        }
+      },
       
 async fetchCurrentDifficulty() {
         try {
@@ -157,6 +201,25 @@ async fetchCurrentDifficulty() {
               };
             
             this.currentDifficulty = formatAndRemoveZeros(data["current_difficulty"], 8);
+        } catch (error) {
+            console.error("Error:", error.message);
+        }
+    },
+
+    async fetchGrinCurrentDifficulty() {
+        try {
+            const response = await axios.get("https://mwc2.pacificpool.ws/api/price-indexes/grin_current_difficulty");
+            if (response.status !== 200) {
+                throw new Error("Failed to fetch data");
+            }
+            const data = response.data;
+            console.log("Grin Difficulty Data:", data);
+
+            const formatAndRemoveZeros = (value) => {
+                return this.formatWithCommasDifficulty(this.formatToEightDecimalPlaces(value, 8));
+              };
+            
+            this.grincurrentDifficulty = formatAndRemoveZeros(data["current_difficulty"], 8);
         } catch (error) {
             console.error("Error:", error.message);
         }
